@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ © 2017 Yellow of the EGG Cooperation
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated egglanguage -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="egglanguage.presentation.EgglanguageModelWizardID"
+            name="%_UI_EgglanguageModelWizard_label"
+            class="egglanguage.presentation.EgglanguageModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/EgglanguageModelFile.gif">
+         <description>%_UI_EgglanguageModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated egglanguage -->
+      <editor
+            id="egglanguage.presentation.EgglanguageEditorID"
+            name="%_UI_EgglanguageEditor_label"
+            icon="icons/full/obj16/EgglanguageModelFile.gif"
+            extensions="egglanguage"
+            class="egglanguage.presentation.EgglanguageEditor"
+            contributorClass="egglanguage.presentation.EgglanguageActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated egglanguage -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="egglanguage.gui.presentation.GuiModelWizardID"
+            name="%_UI_GuiModelWizard_label"
+            class="egglanguage.gui.presentation.GuiModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/GuiModelFile.gif">
+         <description>%_UI_GuiModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated egglanguage -->
+      <editor
+            id="egglanguage.gui.presentation.GuiEditorID"
+            name="%_UI_GuiEditor_label"
+            icon="icons/full/obj16/GuiModelFile.gif"
+            extensions="gui"
+            class="egglanguage.gui.presentation.GuiEditor"
+            contributorClass="egglanguage.gui.presentation.GuiActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated egglanguage -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="egglanguage.gameelements.presentation.GameelementsModelWizardID"
+            name="%_UI_GameelementsModelWizard_label"
+            class="egglanguage.gameelements.presentation.GameelementsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/GameelementsModelFile.gif">
+         <description>%_UI_GameelementsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated egglanguage -->
+      <editor
+            id="egglanguage.gameelements.presentation.GameelementsEditorID"
+            name="%_UI_GameelementsEditor_label"
+            icon="icons/full/obj16/GameelementsModelFile.gif"
+            extensions="gameelements"
+            class="egglanguage.gameelements.presentation.GameelementsEditor"
+            contributorClass="egglanguage.gameelements.presentation.GameelementsActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
