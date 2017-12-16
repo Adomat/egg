@@ -1,0 +1,41 @@
+DescriptionRoot:
+- descriptions: Description
+
+Description:
+- pictures
+- animationFrameRate
+- name
+
+Block:
+- destroyable
+- movable
+- hard / collisionable
+- respawn //? ka vlt wachsen büsche ja neu...!
+- coversItem: Item //evtl auch random Item? kommt dann zum Vorschein, wenn Block zerstört wird
+
+Item:
+- consumable
+	- lifeboost
+	- manaboost //ka...
+- usable //schließen sich gegenseitig aus, können aber beide false sein, zb bei "Goldmünzen"o.ä.
+	- destructivePower
+- scorePoints 	//für endscore
+
+Character:
+- jumpPower
+- speed
+- life
+- rawDescructivePower //ohne Waffe
+- weapon: Item
+
+Hero:
+- startItems
+- inventorySize //? wie dann mit "Goldmünzen" umgehen?
+- xPgainPerEnemy
+- xPgainPerLevel
+- destructivePowerGainPerXP //math function or:
+- successMileStones: [10|25|45|...]
+
+Enemy:
+- respawnTime //?
+- intelligenceLevel LOW/MEDIUM/HIGH //low: bewegt sich zb nicht, medium: läuft hin und her, high: verfolgt hero
