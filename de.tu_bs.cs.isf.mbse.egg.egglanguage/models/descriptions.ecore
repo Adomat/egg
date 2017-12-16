@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="descriptions" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions"
+    nsPrefix="descriptions">
+  <eClassifiers xsi:type="ecore:EClass" name="DescriptionRoot">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="descriptions" upperBound="-1"
+        eType="#//Description" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Description" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eSubpackages name="gui" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gui"
+      nsPrefix="gui">
+    <eClassifiers xsi:type="ecore:EClass" name="PageDescription" abstract="true" eSuperTypes="#//Description"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MenuPageDescription" eSuperTypes="#//gui/PageDescription">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="logo" eType="#//auxiliary/AnimationDescription"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="TextPageDescription" eSuperTypes="#//gui/PageDescription">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="nextPage" lowerBound="1"
+          eType="#//gui/PageDescription"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="gameelements" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gameelements"
+      nsPrefix="gameelements">
+    <eClassifiers xsi:type="ecore:EClass" name="BlockDescription" eSuperTypes="#//Description">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="destroyable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="movable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasCollision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ItemDescription" eSuperTypes="#//Description">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="consumable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="usable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="scorePoints" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CharacterDescription" eSuperTypes="#//Description">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inventoryItemsKind" upperBound="-1"
+          eType="#//gameelements/ItemDescription"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="inventoryItemsCount"
+          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="idleAnimation" lowerBound="1"
+          eType="#//auxiliary/AnimationDescription" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="runAnimation" lowerBound="1"
+          eType="#//auxiliary/AnimationDescription" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="jumpAnimation" lowerBound="1"
+          eType="#//auxiliary/AnimationDescription" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="speed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="jumpPower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLife" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="HeroDescription" eSuperTypes="#//gameelements/CharacterDescription">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="inventorySize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EnemyDescription" eSuperTypes="#//gameelements/CharacterDescription">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="intelligenceLevel" lowerBound="1"
+          eType="#//auxiliary/IntelligenceLevel"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="auxiliary" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/auxiliary"
+      nsPrefix="auxiliary">
+    <eClassifiers xsi:type="ecore:EClass" name="AnimationDescription">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="pictures" lowerBound="1"
+          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="duration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="TextPageAnimationDescription" eSuperTypes="#//auxiliary/AnimationDescription commons.ecore#//PositionedElement"/>
+    <eClassifiers xsi:type="ecore:EEnum" name="IntelligenceLevel">
+      <eLiterals name="LOW"/>
+      <eLiterals name="MEDIUM"/>
+      <eLiterals name="HIGH" literal=""/>
+    </eClassifiers>
+  </eSubpackages>
+</ecore:EPackage>

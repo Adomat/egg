@@ -1,41 +1,41 @@
 DescriptionRoot:
-- descriptions: Description
+- descriptions: Description [Y]
 
 Description:
-- pictures
-- animationFrameRate
-- name
+- pictures [in extra klassen verschoben]
+- animationFrameRate [in extra klassen verschoben]
+- name [Y]
 
 Block:
-- destroyable
-- movable
-- hard / collisionable
-- respawn //? ka vlt wachsen büsche ja neu...!
-- coversItem: Item //evtl auch random Item? kommt dann zum Vorschein, wenn Block zerstört wird
+- destroyable [Y]
+- movable [Y]
+- hard / collisionable [?/Y]
+- coversItem: Item //evtl auch random Item? kommt dann zum Vorschein, wenn Block zerstört wird [vllt später?]
+- respawn //? ka vlt wachsen büsche ja neu...! [komm klar]
 
 Item:
-- consumable
+- consumable [Y]
 	- lifeboost
 	- manaboost //ka...
-- usable //schließen sich gegenseitig aus, können aber beide false sein, zb bei "Goldmünzen"o.ä.
+- usable [Y] //schließen sich gegenseitig aus, können aber beide false sein, zb bei "Goldmünzen"o.ä.
 	- destructivePower
-- scorePoints 	//für endscore
+- scorePoints [Y] 	//für endscore
 
 Character:
-- jumpPower
-- speed
-- life
+- jumpPower [Y]
+- speed [Y]
+- life [Y]
 - rawDescructivePower //ohne Waffe
 - weapon: Item
 
 Hero:
-- startItems
-- inventorySize //? wie dann mit "Goldmünzen" umgehen?
-- xPgainPerEnemy
-- xPgainPerLevel
-- destructivePowerGainPerXP //math function or:
-- successMileStones: [10|25|45|...]
+- startItems [Y]
+- inventorySize //? wie dann mit "Goldmünzen" umgehen? [Y]
+- xPgainPerEnemy [N]
+- xPgainPerLevel [N]
+- destructivePowerGainPerXP //math function or: [N]
+- successMileStones: [10|25|45|...] [was!? ... N]
 
 Enemy:
-- respawnTime //?
-- intelligenceLevel LOW/MEDIUM/HIGH //low: bewegt sich zb nicht, medium: läuft hin und her, high: verfolgt hero
+- respawnTime //? [N]
+- intelligenceLevel LOW/MEDIUM/HIGH [Y] //low: bewegt sich zb nicht, medium: läuft hin und her, high: verfolgt hero

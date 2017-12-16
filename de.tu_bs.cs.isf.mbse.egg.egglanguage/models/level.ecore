@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="level" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/level" nsPrefix="level">
+  <eClassifiers xsi:type="ecore:EClass" name="Level">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gravity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlacedElement" abstract="true" eSuperTypes="commons.ecore#//PositionedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PlacedBlock" eSuperTypes="#//PlacedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+        eType="ecore:EClass descriptions.ecore#//gameelements/BlockDescription"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlacedHero" eSuperTypes="#//PlacedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+        eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlacedItem" eSuperTypes="#//PlacedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+        eType="ecore:EClass descriptions.ecore#//gameelements/ItemDescription"/>
+  </eClassifiers>
+</ecore:EPackage>
