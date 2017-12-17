@@ -7,7 +7,7 @@
     complianceLevel="8.0" copyrightFields="false" usedGenPackages="commons.genmodel#//commons"
     operationReflection="true" importOrganizing="true">
   <foreignModel>descriptions.ecore</foreignModel>
-  <genPackages prefix="Descriptions" basePackage="de.tu_bs.isf.cs.mbse.egg" disposableProviderFactory="true"
+  <genPackages prefix="Descriptions" basePackage="de.tu_bs.cs.isf.mbse.egg" disposableProviderFactory="true"
       ecorePackage="descriptions.ecore#/">
     <genClasses ecoreClass="descriptions.ecore#//DescriptionRoot">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//DescriptionRoot/descriptions"/>
@@ -31,7 +31,8 @@
       <genClasses ecoreClass="descriptions.ecore#//gameelements/BlockDescription">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/destroyable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/movable"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/hasCollision"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/noCollision"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/BlockDescription/animation"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/ItemDescription">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/consumable"/>

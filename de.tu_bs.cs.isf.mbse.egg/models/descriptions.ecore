@@ -26,9 +26,14 @@
   <eSubpackages name="gameelements" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gameelements"
       nsPrefix="gameelements">
     <eClassifiers xsi:type="ecore:EClass" name="BlockDescription" eSuperTypes="#//Description">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="destroyable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="movable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasCollision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="destroyable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="movable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="noCollision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="animation" lowerBound="1"
+          eType="#//auxiliary/AnimationDescription" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ItemDescription" eSuperTypes="#//Description">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="consumable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

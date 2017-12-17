@@ -50,12 +50,15 @@ TextPageDescription returns gui::TextPageDescription:
 ;
 
 //## GAME ELEMENTS #######################################################
-BlockDescription returns gameelements::BlockDescription:
+Block returns gameelements::BlockDescription:
 	{gameelements::BlockDescription}
-	'BlockDescription'
+	'Block'
 	name=EString
 	'{'
-		
+		(destroyable ?= 'destroyable')?
+		(movable ?= 'movable')?
+		(noCollision ?= 'noCollision')?
+		animation = AnimationDescription
 	'}'
 ;
 
@@ -90,6 +93,14 @@ EnemyDescription returns gameelements::EnemyDescription:
 	{gameelements::EnemyDescription}
 	'EnemyDescription'
 	name=EString
+	'{'
+		
+	'}'
+;
+
+AnimationDescription returns auxiliary::AnimationDescription:
+	{auxiliary::AnimationDescription}
+	'AnimationDescription'
 	'{'
 		
 	'}'
