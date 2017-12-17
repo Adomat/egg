@@ -38,7 +38,9 @@
     <eClassifiers xsi:type="ecore:EClass" name="ItemDescription" eSuperTypes="#//Description">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="consumable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="usable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="scorePoints" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="scorePoints" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="animation" lowerBound="1"
+          eType="#//auxiliary/AnimationDescription" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CharacterDescription" eSuperTypes="#//Description">
       <eStructuralFeatures xsi:type="ecore:EReference" name="inventoryItemsKind" upperBound="-1"
@@ -54,6 +56,8 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="speed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="jumpPower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLife" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="strength" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="HeroDescription" eSuperTypes="#//gameelements/CharacterDescription">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="inventorySize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -73,8 +77,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="TextPageAnimationDescription" eSuperTypes="#//auxiliary/AnimationDescription commons.ecore#//PositionedElement"/>
     <eClassifiers xsi:type="ecore:EEnum" name="IntelligenceLevel">
       <eLiterals name="LOW"/>
-      <eLiterals name="MEDIUM"/>
-      <eLiterals name="HIGH" literal=""/>
+      <eLiterals name="MEDIUM" value="1"/>
+      <eLiterals name="HIGH" value="2" literal=""/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

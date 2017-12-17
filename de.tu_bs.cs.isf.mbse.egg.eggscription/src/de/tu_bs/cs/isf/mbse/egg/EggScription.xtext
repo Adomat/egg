@@ -50,61 +50,87 @@ TextPageDescription returns gui::TextPageDescription:
 ;
 
 //## GAME ELEMENTS #######################################################
-Block returns gameelements::BlockDescription:
+BlockDescription returns gameelements::BlockDescription:
 	{gameelements::BlockDescription}
 	'Block'
 	name=EString
 	'{'
-		(destroyable ?= 'destroyable')?
-		(movable ?= 'movable')?
-		(noCollision ?= 'noCollision')?
+		(destroyable ?= 'destroyable')?		//if set, the block can be destroyed
+		(movable ?= 'movable')?				//if set, the block can be moved
+		(noCollision ?= 'noCollision')?		//if set, characters can pass through the block (mist or water for example)
 		animation = AnimationDescription
 	'}'
 ;
 
 ItemDescription returns gameelements::ItemDescription:
 	{gameelements::ItemDescription}
-	'ItemDescription'
+	'Item'
 	name=EString
 	'{'
-		
-	'}'
-;
-
-CharacterDescription returns gameelements::CharacterDescription:
-	{gameelements::CharacterDescription}
-	'CharacterDescription'
-	name=EString
-	'{'
-		
+		(consumable ?= 'consumable')?		//needs constraint! Can be either consumable or usable
+		(usable ?= 'usable')?				//also, effects of usage or consume must be declared somehow!!
+		'scorePoints' scorePoints = INT		//for end score
+		animation = AnimationDescription	
 	'}'
 ;
 
 HeroDescription returns gameelements::HeroDescription:
 	{gameelements::HeroDescription}
-	'HeroDescription'
+	'Hero'
 	name=EString
 	'{'
-		
+		('startInventory' '{' (inventoryItemsKind+=[gameelements::ItemDescription] "," inventoryItemsCount+=INT)+ '}')?	//item, number of this item
+		'inventorySize' inventorySize = INT		//size of the inventory for the hero
+		'speed' speed = FLOAT					//check types (int, float) for these
+		'jumpPower' jumpPower = INT	
+		'strength' strength = INT
+		'maxLife' maxLife = FLOAT
+		'idleAnimation' idleAnimation = AnimationDescription	
+		'runAnimation' runAnimation = AnimationDescription
+		'jumpAnimation' jumpAnimation = AnimationDescription
 	'}'
 ;
 
 EnemyDescription returns gameelements::EnemyDescription:
 	{gameelements::EnemyDescription}
-	'EnemyDescription'
+	'Enemy'
 	name=EString
 	'{'
-		
+		('startInventory' '{' (inventoryItemsKind+=[gameelements::ItemDescription] "," inventoryItemsCount+=INT)+ '}')?
+		'intelligenceLevel' intelligenceLevel = IQ
+		'speed' speed = FLOAT
+		'jumpPower' jumpPower = INT
+		'strength' strength = INT
+		'maxLife' maxLife = FLOAT
+		'idleAnimation' idleAnimation = AnimationDescription	
+		'runAnimation' runAnimation = AnimationDescription
+		'jumpAnimation' jumpAnimation = AnimationDescription
 	'}'
 ;
 
+//## AUXILIARY ###########################################################
 AnimationDescription returns auxiliary::AnimationDescription:
 	{auxiliary::AnimationDescription}
-	'AnimationDescription'
+	'Animation'
 	'{'
-		
+		'pictures' '{' pictures+=PICTURESTRING ("," pictures+=PICTURESTRING)* '}'
+		'duration' duration=INT
 	'}'
 ;
 
 EString returns ecore::EString:
 	STRING | ID;
+
+terminal INT returns ecore::EInt: 
+    ('0'..'9')+;
+    
+terminal FLOAT returns ecore::EFloat:
+	INT '.' INT;
+
+terminal PICTURESTRING returns ecore::EString:
+	(.)+('.jpg'|'.JPG'|'.JPEG'|'.png'|'.PNG')
+;
+
+enum IQ returns auxiliary::IntelligenceLevel:
+	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low'
+;

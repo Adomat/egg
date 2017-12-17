@@ -15,7 +15,8 @@
     <genClasses image="false" ecoreClass="descriptions.ecore#//Description">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//Description/name"/>
     </genClasses>
-    <nestedGenPackages prefix="Gui" disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gui">
+    <nestedGenPackages prefix="Gui" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
+        disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gui">
       <genClasses image="false" ecoreClass="descriptions.ecore#//gui/PageDescription"/>
       <genClasses ecoreClass="descriptions.ecore#//gui/MenuPageDescription">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/MenuPageDescription/logo"/>
@@ -27,7 +28,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gui/TextPageDescription/title"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Gameelements" disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gameelements">
+    <nestedGenPackages prefix="Gameelements" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
+        disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gameelements">
       <genClasses ecoreClass="descriptions.ecore#//gameelements/BlockDescription">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/destroyable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/movable"/>
@@ -38,6 +40,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/consumable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/usable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/scorePoints"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/ItemDescription/animation"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/CharacterDescription">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -49,6 +53,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/speed"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/jumpPower"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/maxLife"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/strength"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/HeroDescription">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/HeroDescription/inventorySize"/>
@@ -57,7 +62,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/EnemyDescription/intelligenceLevel"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Auxiliary" disposableProviderFactory="true" ecorePackage="descriptions.ecore#//auxiliary">
+    <nestedGenPackages prefix="Auxiliary" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
+        disposableProviderFactory="true" ecorePackage="descriptions.ecore#//auxiliary">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="descriptions.ecore#//auxiliary/IntelligenceLevel">
         <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//auxiliary/IntelligenceLevel/LOW"/>
         <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//auxiliary/IntelligenceLevel/MEDIUM"/>
