@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ © 2017 Yellow of the EGG Cooperation
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated egglanguage -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg"
+            class="egglanguage.EgglanguagePackage"
+            genModel="fcking%20model/egglanguage.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated egglanguage -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/gui"
+            class="egglanguage.gui.GuiPackage"
+            genModel="fcking%20model/egglanguage.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated egglanguage -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/gameelements"
+            class="egglanguage.gameelements.GameelementsPackage"
+            genModel="fcking%20model/egglanguage.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated commons -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/commons"
+            class="de.tu_bs.isf.cs.mbse.egg.commons.CommonsPackage"
+            genModel="models/commons.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions"
+            class="de.tu_bs.isf.cs.mbse.egg.descriptions.DescriptionsPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gui"
+            class="de.tu_bs.isf.cs.mbse.egg.descriptions.gui.GuiPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gameelements"
+            class="de.tu_bs.isf.cs.mbse.egg.descriptions.gameelements.GameelementsPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/auxiliary"
+            class="de.tu_bs.isf.cs.mbse.egg.descriptions.auxiliary.AuxiliaryPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated level -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level"
+            class="de.tu_bs.isf.cs.mbse.egg.level.LevelPackage"
+            genModel="models/level.genmodel"/>
+   </extension>
+
+</plugin>
