@@ -1,3 +1,4 @@
 #ignore all binary files
 */bin/*
 */src-gen/*
+*/xtend-gen/*
