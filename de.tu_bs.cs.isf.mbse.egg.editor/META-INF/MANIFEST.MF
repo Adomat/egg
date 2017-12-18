@@ -9,10 +9,6 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.tu_bs.isf.cs.mbse.egg.commons.presentation,
- de.tu_bs.isf.cs.mbse.egg.descriptions.auxiliary.presentation,
- de.tu_bs.isf.cs.mbse.egg.descriptions.gameelements.presentation,
- de.tu_bs.isf.cs.mbse.egg.descriptions.gui.presentation,
- de.tu_bs.isf.cs.mbse.egg.descriptions.presentation,
  de.tu_bs.isf.cs.mbse.egg.level.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.presentation,

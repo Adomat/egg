@@ -10,3 +10,6 @@ Require-Bundle: de.tu_bs.cs.isf.mbse.egg.eggscription,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.tu_bs.cs.isf.mbse.egg.ide.contentassist.antlr.internal,
+ de.tu_bs.cs.isf.mbse.egg.ide.contentassist.antlr
+
