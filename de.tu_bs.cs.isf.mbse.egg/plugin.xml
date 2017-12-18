@@ -78,4 +78,36 @@
             class="de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AuxiliaryPackage"
             genModel="models/descriptions.genmodel"/>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.AttributesPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/block"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/character"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CharacterPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated descriptions -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/item"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemPackage"
+            genModel="models/descriptions.genmodel"/>
+   </extension>
 </plugin>

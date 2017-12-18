@@ -172,4 +172,116 @@
             contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.presentation.AuxiliaryActionBarContributor">
       </editor>
    </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated descriptions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesModelWizardID"
+            name="%_UI_AttributesModelWizard_label"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/AttributesModelFile.gif">
+         <description>%_UI_AttributesModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated descriptions -->
+      <editor
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesEditorID"
+            name="%_UI_AttributesEditor_label"
+            icon="icons/full/obj16/AttributesModelFile.gif"
+            extensions="attributes"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesEditor"
+            contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated descriptions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockModelWizardID"
+            name="%_UI_BlockModelWizard_label"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/BlockModelFile.gif">
+         <description>%_UI_BlockModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated descriptions -->
+      <editor
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockEditorID"
+            name="%_UI_BlockEditor_label"
+            icon="icons/full/obj16/BlockModelFile.gif"
+            extensions="block"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockEditor"
+            contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated descriptions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation.CharacterModelWizardID"
+            name="%_UI_CharacterModelWizard_label"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation.CharacterModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CharacterModelFile.gif">
+         <description>%_UI_CharacterModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated descriptions -->
+      <editor
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation.CharacterEditorID"
+            name="%_UI_CharacterEditor_label"
+            icon="icons/full/obj16/CharacterModelFile.gif"
+            extensions="character"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation.CharacterEditor"
+            contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation.CharacterActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated descriptions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemModelWizardID"
+            name="%_UI_ItemModelWizard_label"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ItemModelFile.gif">
+         <description>%_UI_ItemModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated descriptions -->
+      <editor
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemEditorID"
+            name="%_UI_ItemEditor_label"
+            icon="icons/full/obj16/ItemModelFile.gif"
+            extensions="item"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemEditor"
+            contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemActionBarContributor">
+      </editor>
+   </extension>
 </plugin>

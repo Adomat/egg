@@ -31,35 +31,21 @@
     <nestedGenPackages prefix="Gameelements" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gameelements">
       <genClasses ecoreClass="descriptions.ecore#//gameelements/BlockDescription">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/destroyable"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/movable"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/BlockDescription/noCollision"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/BlockDescription/animation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/BlockDescription/property"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/ItemDescription">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/consumable"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/usable"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/ItemDescription/scorePoints"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/ItemDescription/animation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/ItemDescription/property"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/CharacterDescription">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/CharacterDescription/inventoryItemsKind"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/inventoryItemsCount"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/CharacterDescription/idleAnimation"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/CharacterDescription/runAnimation"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/CharacterDescription/jumpAnimation"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/speed"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/jumpPower"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/maxLife"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/strength"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/HeroDescription">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/HeroDescription/inventorySize"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/HeroDescription/property"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/EnemyDescription">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/EnemyDescription/intelligenceLevel"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/EnemyDescription/property"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Auxiliary" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
@@ -74,6 +60,60 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//auxiliary/AnimationDescription/duration"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//auxiliary/TextPageAnimationDescription"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Attributes" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
+        disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes">
+      <genClasses ecoreClass="descriptions.ecore#//attributes/StaticAnimation"/>
+      <nestedGenPackages prefix="Block" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
+          disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/block">
+        <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/block/BlockAttribute"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/block/Destroyable">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/block/Destroyable/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/block/Movable">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/block/Movable/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/block/NoCollision">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/block/NoCollision/value"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Character" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
+          disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/character">
+        <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/EnemyAttribute"/>
+        <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/HeroAttribute"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/Speed">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/Speed/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/jumpPower">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/jumpPower/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/MaxLife">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/MaxLife/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/Strength">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/Strength/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/IdleAnimation"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/RunAnimation"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/JumpAnimation"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/InventorySize">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/InventorySize/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/IntelligenceLevel"/>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Item" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
+          disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/item">
+        <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/item/ItemAttribute"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/item/Consumable">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/Consumable/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/item/Usable">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/Usable/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/item/ScorePoints">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/ScorePoints/value"/>
+        </genClasses>
+      </nestedGenPackages>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>
