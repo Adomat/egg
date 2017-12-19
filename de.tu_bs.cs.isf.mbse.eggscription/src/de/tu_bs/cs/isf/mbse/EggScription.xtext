@@ -4,6 +4,7 @@ grammar de.tu_bs.cs.isf.mbse.egg.EggScription with org.eclipse.xtext.common.Term
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//gui" as gui
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes" as attributes
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/block" as block
+import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/item" as item
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//auxiliary" as auxiliary
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore" as descriptions
@@ -11,14 +12,18 @@ import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//
 
 DescriptionRoot returns descriptions::DescriptionRoot:
 	{descriptions::DescriptionRoot}
-	descriptions+=Description*
-	;
-
-Description returns descriptions::Description:
-	MenuPageDescription | PageDescription | TextPageDescription | BlockDescription | ItemDescription | HeroDescription | EnemyDescription
+	(descriptions+=Description)*
 ;
 
-//## GUI #################################################################
+Description returns descriptions::Description:
+	MenuPageDescription 
+	//| TextPageDescription 
+	| BlockDescription 
+	| ItemDescription 
+	| HeroDescription | EnemyDescription
+;
+
+////## GUI #################################################################
 MenuPageDescription returns gui::MenuPageDescription:
 	{gui::MenuPageDescription}
 	'MenuPageDescription'
@@ -28,31 +33,22 @@ MenuPageDescription returns gui::MenuPageDescription:
 	'}'
 ;
 
-PageDescription returns gui::PageDescription:
-	{gui::PageDescription}
-	'PageDescription'
-	name=EString
-	'{'
-		
-	'}'
-;
+//TextPageDescription returns gui::TextPageDescription:
+//	{gui::TextPageDescription}
+//	'TextPageDescription'
+//	name=EString
+//	'{'
+//		'nextPage ' (nextPage = )
+//	'}'
+//;
 
-TextPageDescription returns gui::TextPageDescription:
-	{gui::TextPageDescription}
-	'TextPageDescription'
-	name=EString
-	'{'
-		
-	'}'
-;
-
-//## GAME ELEMENTS #######################################################
+////## GAME ELEMENTS #######################################################
 BlockDescription returns gameelements::BlockDescription:
 	{gameelements::BlockDescription}
 	'Block'
 	name=EString
 	'{'
-		(property += (BlockAttribute)?)*
+		(property += BlockAttribute ';')*
 	'}'
 ;
 
@@ -62,17 +58,17 @@ BlockAttribute returns block::BlockAttribute:
 
 Destroyable returns block::Destroyable:
 	{block::Destroyable}
-	(value ?= 'destroyable')?
+	(value ?= 'destroyable')
 ;
 
 NoCollision returns block::NoCollision:
 	{block::NoCollision}
-	(value ?= 'noCollision')?
+	(value ?= 'noCollision')
 ;
 
 Movable returns block::Movable:
 	{block::Movable}
-	(value ?= 'movable')?
+	(value ?= 'movable')
 ;
 
 StaticAnimation returns attributes::StaticAnimation:
@@ -85,8 +81,27 @@ ItemDescription returns gameelements::ItemDescription:
 	'Item'
 	name=EString
 	'{'
-		
+		(property += ItemAttribute ';')*
 	'}'
+;
+
+ItemAttribute returns item::ItemAttribute:
+	Consumable | Usable | ScorePoints
+;
+
+Consumable returns item::Consumable:
+	{item::Consumable}
+	(value ?= 'consumable')
+;
+
+Usable returns item::Usable:
+	{item::Usable}
+	(value ?= 'usable')
+;
+
+ScorePoints returns item::ScorePoints:
+	{item::ScorePoints}
+	('scorePoints' value = INT)
 ;
 
 HeroDescription returns gameelements::HeroDescription:
@@ -107,28 +122,27 @@ EnemyDescription returns gameelements::EnemyDescription:
 	'}'
 ;
 
-//## AUXILIARY ###########################################################
+////## AUXILIARY ###########################################################
 AnimationDescription returns auxiliary::AnimationDescription:
 	{auxiliary::AnimationDescription}
 	'Animation'
 	'{'
-		
+		('duration' duration = INT ';')?
+		'pictures' pictures+=PICTURESTRING (','pictures+=PICTURESTRING)* ';'
 	'}'
 ;
 
 EString returns ecore::EString:
 	STRING | ID;
-
-terminal INT returns ecore::EInt: 
-    ('0'..'9')+;
-    
-terminal FLOAT returns ecore::EFloat:
-	INT '.' INT;
+   
+//terminal FLOAT returns ecore::EFloat:
+//	INT '.' INT;
+//
 
 terminal PICTURESTRING returns ecore::EString:
-	(.)+('.jpg'|'.JPG'|'.JPEG'|'.png'|'.PNG')
+	'<'(.)+('.jpg'|'.JPG'|'.JPEG'|'.png'|'.PNG')'>'
 ;
 
-enum IQ returns auxiliary::IntelligenceLevel:
-	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low'
-;
+//enum IQ returns auxiliary::IntelligenceLevel:
+//	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low'
+//;

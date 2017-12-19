@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tu_bs.cs.isf.mbse.egg.editor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: de.tu_bs.cs.isf.mbse.egg.descriptions.presentation.DescriptionsEditorPlugin$Implementation
+Bundle-Activator: de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

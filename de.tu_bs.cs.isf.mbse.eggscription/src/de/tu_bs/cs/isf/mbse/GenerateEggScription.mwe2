@@ -1,4 +1,4 @@
-module de.tu_bs.cs.isf.mbse.egg.GenerateEggScription
+module de.tu_bs.cs.isf.mbse.GenerateEggScription
 
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
@@ -10,9 +10,15 @@ Workflow {
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
-				baseName = "de.tu_bs.cs.isf.mbse.egg.eggscription"
+				baseName = "de.tu_bs.cs.isf.mbse.eggscription"
 				rootPath = rootPath
+				runtimeTest = {
+					enabled = true
+				}
 				eclipsePlugin = {
+					enabled = true
+				}
+				eclipsePluginTest = {
 					enabled = true
 				}
 				createEclipseMetaData = true
@@ -23,7 +29,7 @@ Workflow {
 			}
 		}
 		language = StandardLanguage {
-			name = "de.tu_bs.cs.isf.mbse.egg.EggScription"
+			name = "de.tu_bs.cs.isf.mbse.EggScription"
 			fileExtensions = "egg"
 			referencedResource = "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.genmodel"
 			
