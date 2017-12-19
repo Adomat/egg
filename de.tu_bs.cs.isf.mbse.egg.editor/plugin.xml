@@ -7,61 +7,6 @@
 <plugin>
 
    <extension point="org.eclipse.ui.newWizards">
-      <!-- @generated commons -->
-      <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
-            name="%_UI_Wizard_category"/>
-      <wizard
-            id="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsModelWizardID"
-            name="%_UI_CommonsModelWizard_label"
-            class="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/CommonsModelFile.gif">
-         <description>%_UI_CommonsModelWizard_description</description>
-         <selection class="org.eclipse.core.resources.IResource"/>
-      </wizard>
-   </extension>
-
-   <extension point="org.eclipse.ui.editors">
-      <!-- @generated commons -->
-      <editor
-            id="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsEditorID"
-            name="%_UI_CommonsEditor_label"
-            icon="icons/full/obj16/CommonsModelFile.gif"
-            extensions="commons"
-            class="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsEditor"
-            contributorClass="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsActionBarContributor">
-      </editor>
-   </extension>
-
-   <extension point="org.eclipse.ui.newWizards">
-      <!-- @generated level -->
-      <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
-            name="%_UI_Wizard_category"/>
-      <wizard
-            id="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelModelWizardID"
-            name="%_UI_LevelModelWizard_label"
-            class="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/LevelModelFile.gif">
-         <description>%_UI_LevelModelWizard_description</description>
-         <selection class="org.eclipse.core.resources.IResource"/>
-      </wizard>
-   </extension>
-
-   <extension point="org.eclipse.ui.editors">
-      <!-- @generated level -->
-      <editor
-            id="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelEditorID"
-            name="%_UI_LevelEditor_label"
-            icon="icons/full/obj16/LevelModelFile.gif"
-            extensions="level"
-            class="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelEditor"
-            contributorClass="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelActionBarContributor">
-      </editor>
-   </extension>
-   <extension point="org.eclipse.ui.newWizards">
       <!-- @generated descriptions -->
       <category
             id="org.eclipse.emf.ecore.Wizard.category.ID"
@@ -282,6 +227,61 @@
             extensions="item"
             class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemEditor"
             contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation.ItemActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated commons -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsModelWizardID"
+            name="%_UI_CommonsModelWizard_label"
+            class="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CommonsModelFile.gif">
+         <description>%_UI_CommonsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated commons -->
+      <editor
+            id="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsEditorID"
+            name="%_UI_CommonsEditor_label"
+            icon="icons/full/obj16/CommonsModelFile.gif"
+            extensions="commons"
+            class="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsEditor"
+            contributorClass="de.tu_bs.isf.cs.mbse.egg.commons.presentation.CommonsActionBarContributor">
+      </editor>
+   </extension>
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated level -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelModelWizardID"
+            name="%_UI_LevelModelWizard_label"
+            class="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/LevelModelFile.gif">
+         <description>%_UI_LevelModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated level -->
+      <editor
+            id="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelEditorID"
+            name="%_UI_LevelEditor_label"
+            icon="icons/full/obj16/LevelModelFile.gif"
+            extensions="level"
+            class="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelEditor"
+            contributorClass="de.tu_bs.isf.cs.mbse.egg.level.presentation.LevelActionBarContributor">
       </editor>
    </extension>
 </plugin>

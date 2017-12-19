@@ -2,6 +2,8 @@
 grammar de.tu_bs.cs.isf.mbse.egg.EggScription with org.eclipse.xtext.common.Terminals
 
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//gui" as gui
+import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes" as attributes
+import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/block" as block
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//auxiliary" as auxiliary
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore" as descriptions
@@ -50,11 +52,32 @@ BlockDescription returns gameelements::BlockDescription:
 	'Block'
 	name=EString
 	'{'
-		(destroyable ?= 'destroyable')?		//if set, the block can be destroyed
-		(movable ?= 'movable')?				//if set, the block can be moved
-		(noCollision ?= 'noCollision')?		//if set, characters can pass through the block (mist or water for example)
-		animation = AnimationDescription
+		(property += (BlockAttribute)?)*
 	'}'
+;
+
+BlockAttribute returns block::BlockAttribute:
+	Destroyable | Movable | NoCollision | StaticAnimation
+;
+
+Destroyable returns block::Destroyable:
+	{block::Destroyable}
+	(value ?= 'destroyable')?
+;
+
+NoCollision returns block::NoCollision:
+	{block::NoCollision}
+	(value ?= 'noCollision')?
+;
+
+Movable returns block::Movable:
+	{block::Movable}
+	(value ?= 'movable')?
+;
+
+StaticAnimation returns attributes::StaticAnimation:
+	{attributes::StaticAnimation}
+	(animation = AnimationDescription)?
 ;
 
 ItemDescription returns gameelements::ItemDescription:
@@ -62,10 +85,7 @@ ItemDescription returns gameelements::ItemDescription:
 	'Item'
 	name=EString
 	'{'
-		(consumable ?= 'consumable')?		//needs constraint! Can be either consumable or usable
-		(usable ?= 'usable')?				//also, effects of usage or consume must be declared somehow!!
-		'scorePoints' scorePoints = INT		//for end score
-		animation = AnimationDescription	
+		
 	'}'
 ;
 
@@ -74,15 +94,7 @@ HeroDescription returns gameelements::HeroDescription:
 	'Hero'
 	name=EString
 	'{'
-		('startInventory' '{' (inventoryItemsKind+=[gameelements::ItemDescription] "," inventoryItemsCount+=INT)+ '}')?	//item, number of this item
-		'inventorySize' inventorySize = INT		//size of the inventory for the hero
-		'speed' speed = FLOAT					//check types (int, float) for these
-		'jumpPower' jumpPower = INT	
-		'strength' strength = INT
-		'maxLife' maxLife = FLOAT
-		'idleAnimation' idleAnimation = AnimationDescription	
-		'runAnimation' runAnimation = AnimationDescription
-		'jumpAnimation' jumpAnimation = AnimationDescription
+		
 	'}'
 ;
 
@@ -91,15 +103,7 @@ EnemyDescription returns gameelements::EnemyDescription:
 	'Enemy'
 	name=EString
 	'{'
-		('startInventory' '{' (inventoryItemsKind+=[gameelements::ItemDescription] "," inventoryItemsCount+=INT)+ '}')?
-		'intelligenceLevel' intelligenceLevel = IQ
-		'speed' speed = FLOAT
-		'jumpPower' jumpPower = INT
-		'strength' strength = INT
-		'maxLife' maxLife = FLOAT
-		'idleAnimation' idleAnimation = AnimationDescription	
-		'runAnimation' runAnimation = AnimationDescription
-		'jumpAnimation' jumpAnimation = AnimationDescription
+		
 	'}'
 ;
 
@@ -108,8 +112,7 @@ AnimationDescription returns auxiliary::AnimationDescription:
 	{auxiliary::AnimationDescription}
 	'Animation'
 	'{'
-		'pictures' '{' pictures+=PICTURESTRING ("," pictures+=PICTURESTRING)* '}'
-		'duration' duration=INT
+		
 	'}'
 ;
 

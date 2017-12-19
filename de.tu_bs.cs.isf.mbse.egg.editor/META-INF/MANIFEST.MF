@@ -8,16 +8,16 @@ Bundle-Activator: de.tu_bs.cs.isf.mbse.egg.descriptions.presentation.Description
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.tu_bs.isf.cs.mbse.egg.commons.presentation,
- de.tu_bs.isf.cs.mbse.egg.level.presentation,
- de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation,
+Export-Package: de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.gui.presentation,
- de.tu_bs.cs.isf.mbse.egg.descriptions.presentation
+ de.tu_bs.cs.isf.mbse.egg.descriptions.presentation,
+ de.tu_bs.isf.cs.mbse.egg.commons.presentation,
+ de.tu_bs.isf.cs.mbse.egg.level.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  de.tu_bs.cs.isf.mbse.egg.edit;visibility:=reexport,

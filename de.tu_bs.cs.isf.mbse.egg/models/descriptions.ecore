@@ -64,7 +64,10 @@
   </eSubpackages>
   <eSubpackages name="attributes" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes"
       nsPrefix="attributes">
-    <eClassifiers xsi:type="ecore:EClass" name="StaticAnimation" eSuperTypes="#//attributes/block/BlockAttribute #//auxiliary/AnimationDescription"/>
+    <eClassifiers xsi:type="ecore:EClass" name="StaticAnimation" eSuperTypes="#//attributes/block/BlockAttribute">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="animation" eType="#//auxiliary/AnimationDescription"
+          containment="true"/>
+    </eClassifiers>
     <eSubpackages name="block" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/block"
         nsPrefix="block">
       <eClassifiers xsi:type="ecore:EClass" name="BlockAttribute" abstract="true"/>

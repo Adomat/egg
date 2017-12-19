@@ -14,13 +14,5 @@ Require-Bundle: de.tu_bs.cs.isf.mbse.egg,
  org.eclipse.xtext.util,
  org.eclipse.xtend.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.tu_bs.cs.isf.mbse.egg.formatting,
- de.tu_bs.cs.isf.mbse.egg,
- de.tu_bs.cs.isf.mbse.egg.services,
- de.tu_bs.cs.isf.mbse.egg.parser.antlr,
- de.tu_bs.cs.isf.mbse.egg.scoping,
- de.tu_bs.cs.isf.mbse.egg.validation,
- de.tu_bs.cs.isf.mbse.egg.generator,
- de.tu_bs.cs.isf.mbse.egg.serializer,
- de.tu_bs.cs.isf.mbse.egg.parser.antlr.internal
+Export-Package: de.tu_bs.cs.isf.mbse.egg
 Import-Package: org.apache.log4j
