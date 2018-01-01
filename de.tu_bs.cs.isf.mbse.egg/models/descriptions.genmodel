@@ -79,6 +79,13 @@
           <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/Intelligence/MEDIUM"/>
           <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/Intelligence/HIGH"/>
         </genEnums>
+        <genEnums typeSafeEnumCompatible="false" ecoreEnum="descriptions.ecore#//attributes/character/DynamicOCProperties">
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/STRENGTH"/>
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/SPEED"/>
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/JUMPPOWER"/>
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/MAXLIFE"/>
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/INVENTORYSIZE"/>
+        </genEnums>
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/EnemyAttribute"/>
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/HeroAttribute"/>
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/Speed">
@@ -114,6 +121,15 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/InventoryItemsCounts">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/InventoryItemsCounts/value"/>
         </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/CloseAttackAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/CloseAttackAnimation/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/DistanceAttackAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/DistanceAttackAnimation/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/CanKillInDistance">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/CanKillInDistance/value"/>
+        </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Item" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
           disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/item">
@@ -126,6 +142,11 @@
         </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/item/ScorePoints">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/ScorePoints/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/item/Effect">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/Effect/value"/>
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/Effect/type"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Gui" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"

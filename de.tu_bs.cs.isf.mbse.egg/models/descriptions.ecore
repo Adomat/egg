@@ -122,6 +122,24 @@
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="CloseAttackAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//auxiliary/AnimationDescription"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="DistanceAttackAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//auxiliary/AnimationDescription"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="CanKillInDistance" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EEnum" name="DynamicOCProperties">
+        <eLiterals name="STRENGTH" literal="STRENGTH"/>
+        <eLiterals name="SPEED" value="1" literal="SPEED"/>
+        <eLiterals name="JUMPPOWER" value="2" literal="JUMPPOWER"/>
+        <eLiterals name="MAXLIFE" value="3" literal="MAXLIFE"/>
+        <eLiterals name="INVENTORYSIZE" value="4" literal="INVENTORYSIZE"/>
+      </eClassifiers>
     </eSubpackages>
     <eSubpackages name="item" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/item"
         nsPrefix="item">
@@ -134,6 +152,10 @@
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ScorePoints" eSuperTypes="#//attributes/item/ItemAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="Effect" eSuperTypes="#//attributes/item/ItemAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//attributes/character/DynamicOCProperties"/>
       </eClassifiers>
     </eSubpackages>
     <eSubpackages name="gui" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/gui"

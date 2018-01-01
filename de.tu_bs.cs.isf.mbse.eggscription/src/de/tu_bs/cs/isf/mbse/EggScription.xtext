@@ -120,7 +120,12 @@ ItemDescription returns gameelements::ItemDescription:
 ;
 
 ItemAttribute returns item::ItemAttribute:
-	Consumable | Usable | ScorePoints | StaticAnimation
+	Consumable | Usable | ScorePoints | StaticAnimation | Effect
+;
+
+Effect returns item::Effect:
+	{item::Effect}
+	('effect' type = OCPROPS ':' value = WHOLEINT)
 ;
 
 Consumable returns item::Consumable:
@@ -152,8 +157,8 @@ HeroDescription returns gameelements::HeroDescription:
 ;
 
 HeroAttribute returns character::HeroAttribute:
-	Speed | JumpPower | MaxLife | Strength | InventorySize
-	| IdleAnimation | RunAnimation | JumpAnimation 
+	Speed | JumpPower | MaxLife | Strength | InventorySize | CanKillInDistance
+	| IdleAnimation | RunAnimation | JumpAnimation | CloseAttackAnimation | DistanceAttackAnimation 
 	| InventoryItemsTypes | InventoryItemsCounts
 ;
 
@@ -167,8 +172,8 @@ EnemyDescription returns gameelements::EnemyDescription:
 ;
 
 EnemyAttribute returns character::EnemyAttribute:
-	Speed | JumpPower | MaxLife | Strength | IntelligenceLevel
-	| IdleAnimation | RunAnimation | JumpAnimation 	
+	Speed | JumpPower | MaxLife | Strength | IntelligenceLevel | CanKillInDistance
+	| IdleAnimation | RunAnimation | JumpAnimation | CloseAttackAnimation | DistanceAttackAnimation 
 ;
 
 IntelligenceLevel returns character::IntelligenceLevel:
@@ -216,6 +221,16 @@ JumpAnimation returns character::JumpAnimation:
 	('jump' value = AnimationDescription)
 ;
 
+CloseAttackAnimation returns character::CloseAttackAnimation:
+	{character::CloseAttackAnimation}
+	('closeAttack' value = AnimationDescription)
+;
+
+DistanceAttackAnimation returns character::DistanceAttackAnimation:
+	{character::DistanceAttackAnimation}
+	('distanceAttack' value = AnimationDescription)
+;
+
 InventoryItemsTypes returns character::InventoryItemsTypes:
 	{character::InventoryItemsTypes}
 	'inventoryItemTypes' value += [gameelements::ItemDescription|EString] (',' value += [gameelements::ItemDescription|EString])*
@@ -224,6 +239,11 @@ InventoryItemsTypes returns character::InventoryItemsTypes:
 InventoryItemsCounts returns character::InventoryItemsCounts:
 	{character::InventoryItemsCounts}
 	'inventoryItemCounts' value += INT (',' value += INT)*
+;
+
+CanKillInDistance returns character::CanKillInDistance:
+	{character::CanKillInDistance}
+	(value ?= 'distanceKiller')
 ;
 
 //#######################################################################################################
@@ -263,6 +283,10 @@ EString returns ecore::EString:
 //	INT '.' INT;
 //
 
+WHOLEINT returns ecore::EInt:
+	'-'?INT
+;
+
 terminal PICTURESTRING returns ecore::EString:
 	'<'(.)+('.jpg'|'.JPG'|'.JPEG'|'.png'|'.PNG')'>'
 ;
@@ -273,3 +297,9 @@ enum IQ returns character::Intelligence:
 	HIGH = 'H' | MEDIUM = 'M' | LOW = 'L' |
 	HIGH = 'h' | MEDIUM = 'm' | LOW = 'l'
 ;
+
+enum OCPROPS returns character::DynamicOCProperties:
+	STRENGTH = 'strength' | SPEED = 'speed' | JUMPPOWER = 'jumpPower' | MAXLIFE = 'maxLife' | INVENTORYSIZE = 'inventorySize' |
+	STRENGTH = 'STRENGTH' | SPEED = 'SPEED' | JUMPPOWER = 'JUMPPOWER' | MAXLIFE = 'MAXLIFE' | INVENTORYSIZE = 'INVENTORYSIZE' 
+;
+
