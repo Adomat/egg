@@ -111,6 +111,19 @@
    </extension>
 
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated descriptions -->
+      <factory
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/gui"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.provider.GuiItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated commons -->
       <factory
             uri="https://www.tu-bs.de/cs/isf/mbse/egg/commons"

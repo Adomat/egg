@@ -10,6 +10,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.provider,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.provider,
+ de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.provider,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.provider,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.provider,
  de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.provider,

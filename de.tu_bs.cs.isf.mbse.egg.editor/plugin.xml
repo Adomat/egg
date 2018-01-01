@@ -231,6 +231,34 @@
    </extension>
 
    <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated descriptions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.presentation.GuiModelWizardID"
+            name="%_UI_GuiModelWizard_label"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.presentation.GuiModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/GuiModelFile.gif">
+         <description>%_UI_GuiModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated descriptions -->
+      <editor
+            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.presentation.GuiEditorID"
+            name="%_UI_GuiEditor_label"
+            icon="icons/full/obj16/GuiModelFile.gif"
+            extensions="gui"
+            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.presentation.GuiEditor"
+            contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.presentation.GuiActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
       <!-- @generated commons -->
       <category
             id="org.eclipse.emf.ecore.Wizard.category.ID"

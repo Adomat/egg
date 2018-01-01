@@ -19,13 +19,10 @@
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gui">
       <genClasses image="false" ecoreClass="descriptions.ecore#//gui/PageDescription"/>
       <genClasses ecoreClass="descriptions.ecore#//gui/MenuPageDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/MenuPageDescription/logo"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gui/MenuPageDescription/title"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/MenuPageDescription/property"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gui/TextPageDescription">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference descriptions.ecore#//gui/TextPageDescription/nextPage"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gui/TextPageDescription/title"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/TextPageDescription/property"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Gameelements" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
@@ -35,11 +32,6 @@
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/ItemDescription">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/ItemDescription/property"/>
-      </genClasses>
-      <genClasses ecoreClass="descriptions.ecore#//gameelements/CharacterDescription">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/CharacterDescription/inventoryItemsKind"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//gameelements/CharacterDescription/inventoryItemsCount"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/HeroDescription">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/HeroDescription/property"/>
@@ -116,6 +108,12 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/IntelligenceLevel">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/IntelligenceLevel/value"/>
         </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/InventoryItemsTypes">
+          <genFeatures createChild="false" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/InventoryItemsTypes/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/InventoryItemsCounts">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/InventoryItemsCounts/value"/>
+        </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Item" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
           disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/item">
@@ -128,6 +126,21 @@
         </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/item/ScorePoints">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/item/ScorePoints/value"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Gui" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
+          disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/gui">
+        <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/gui/MenuPageAttribute"/>
+        <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/gui/TextPageAttribute"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Logo">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/gui/Logo/animation"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Title">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Title/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/NextPage">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference descriptions.ecore#//attributes/gui/NextPage/value"/>
         </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>

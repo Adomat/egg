@@ -13,14 +13,12 @@
       nsPrefix="gui">
     <eClassifiers xsi:type="ecore:EClass" name="PageDescription" abstract="true" eSuperTypes="#//Description"/>
     <eClassifiers xsi:type="ecore:EClass" name="MenuPageDescription" eSuperTypes="#//gui/PageDescription">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="logo" eType="#//auxiliary/AnimationDescription"
-          containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
+          eType="#//attributes/gui/MenuPageAttribute" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TextPageDescription" eSuperTypes="#//gui/PageDescription">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="nextPage" lowerBound="1"
-          eType="#//gui/PageDescription"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
+          eType="#//attributes/gui/TextPageAttribute" containment="true"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="gameelements" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gameelements"
@@ -33,18 +31,11 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
           eType="#//attributes/item/ItemAttribute" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="CharacterDescription" abstract="true"
-        eSuperTypes="#//Description">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="inventoryItemsKind" upperBound="-1"
-          eType="#//gameelements/ItemDescription"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="inventoryItemsCount"
-          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="HeroDescription" eSuperTypes="#//gameelements/CharacterDescription">
+    <eClassifiers xsi:type="ecore:EClass" name="HeroDescription" eSuperTypes="#//Description">
       <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
           eType="#//attributes/character/HeroAttribute" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="EnemyDescription" eSuperTypes="#//gameelements/CharacterDescription">
+    <eClassifiers xsi:type="ecore:EClass" name="EnemyDescription" eSuperTypes="#//Description">
       <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
           eType="#//attributes/character/EnemyAttribute" containment="true"/>
     </eClassifiers>
@@ -67,7 +58,7 @@
   </eSubpackages>
   <eSubpackages name="attributes" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes"
       nsPrefix="attributes">
-    <eClassifiers xsi:type="ecore:EClass" name="StaticAnimation" eSuperTypes="#//attributes/block/BlockAttribute">
+    <eClassifiers xsi:type="ecore:EClass" name="StaticAnimation" eSuperTypes="#//attributes/block/BlockAttribute #//attributes/item/ItemAttribute">
       <eStructuralFeatures xsi:type="ecore:EReference" name="animation" eType="#//auxiliary/AnimationDescription"
           containment="true"/>
     </eClassifiers>
@@ -123,6 +114,14 @@
         <eLiterals name="MEDIUM" value="1"/>
         <eLiterals name="HIGH" value="2" literal=""/>
       </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InventoryItemsTypes" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" upperBound="-1"
+            eType="#//gameelements/ItemDescription"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InventoryItemsCounts" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      </eClassifiers>
     </eSubpackages>
     <eSubpackages name="item" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/item"
         nsPrefix="item">
@@ -135,6 +134,22 @@
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ScorePoints" eSuperTypes="#//attributes/item/ItemAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="gui" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/gui"
+        nsPrefix="gui">
+      <eClassifiers xsi:type="ecore:EClass" name="MenuPageAttribute" abstract="true"/>
+      <eClassifiers xsi:type="ecore:EClass" name="TextPageAttribute" abstract="true"/>
+      <eClassifiers xsi:type="ecore:EClass" name="Logo" eSuperTypes="#//attributes/gui/MenuPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="animation" eType="#//auxiliary/AnimationDescription"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="Title" eSuperTypes="#//attributes/gui/MenuPageAttribute #//attributes/gui/TextPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="NextPage" eSuperTypes="#//attributes/gui/TextPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1"
+            eType="#//gui/PageDescription"/>
       </eClassifiers>
     </eSubpackages>
   </eSubpackages>

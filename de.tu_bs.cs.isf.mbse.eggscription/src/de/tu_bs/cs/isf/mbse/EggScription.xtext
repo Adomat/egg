@@ -6,6 +6,7 @@ import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/block" as block
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/item" as item
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/character" as character
+import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/gui" as guiattr
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//auxiliary" as auxiliary
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore" as descriptions
@@ -18,32 +19,60 @@ DescriptionRoot returns descriptions::DescriptionRoot:
 
 Description returns descriptions::Description:
 	MenuPageDescription 
-	//| TextPageDescription 
+	| TextPageDescription 
 	| BlockDescription 
 	| ItemDescription 
 	| HeroDescription | EnemyDescription
 ;
 
-////## GUI #################################################################
+//#######################################################################################################
+//## MENUS ##############################################################################################
+//#######################################################################################################
 MenuPageDescription returns gui::MenuPageDescription:
 	{gui::MenuPageDescription}
 	'MenuPageDescription'
 	name=EString
 	'{'
-		
+		(property += MenuPageAttribute ';')*
 	'}'
 ;
 
-//TextPageDescription returns gui::TextPageDescription:
-//	{gui::TextPageDescription}
-//	'TextPageDescription'
-//	name=EString
-//	'{'
-//		'nextPage ' (nextPage = )
-//	'}'
-//;
+TextPageDescription returns gui::TextPageDescription:
+	{gui::TextPageDescription}
+	'TextPageDescription'
+	name=EString
+	'{'
+		(property += TextPageAttribute ';')*
+	'}'
+;
 
-////## GAME ELEMENTS #######################################################
+MenuPageAttribute returns guiattr::MenuPageAttribute:
+	Logo | Title
+;
+
+TextPageAttribute returns guiattr::TextPageAttribute:
+	NextPage | Title
+;
+
+Logo returns guiattr::Logo:
+	{guiattr::Logo}
+	('logo' animation = AnimationDescription)
+;
+
+Title returns guiattr::Title:
+	{guiattr::Title}
+	('title' value = EString)
+;
+
+NextPage returns guiattr::NextPage:
+	{guiattr::NextPage}
+	('next' value = [gui::PageDescription|EString])
+;
+
+//#######################################################################################################
+//## BLOCKS #############################################################################################
+//#######################################################################################################
+
 BlockDescription returns gameelements::BlockDescription:
 	{gameelements::BlockDescription}
 	'Block'
@@ -77,6 +106,10 @@ StaticAnimation returns attributes::StaticAnimation:
 	(animation = AnimationDescription)?
 ;
 
+//#######################################################################################################
+//## ITEMS ##############################################################################################
+//#######################################################################################################
+
 ItemDescription returns gameelements::ItemDescription:
 	{gameelements::ItemDescription}
 	'Item'
@@ -87,7 +120,7 @@ ItemDescription returns gameelements::ItemDescription:
 ;
 
 ItemAttribute returns item::ItemAttribute:
-	Consumable | Usable | ScorePoints
+	Consumable | Usable | ScorePoints | StaticAnimation
 ;
 
 Consumable returns item::Consumable:
@@ -120,7 +153,8 @@ HeroDescription returns gameelements::HeroDescription:
 
 HeroAttribute returns character::HeroAttribute:
 	Speed | JumpPower | MaxLife | Strength | InventorySize
-	| IdleAnimation | RunAnimation | JumpAnimation 	
+	| IdleAnimation | RunAnimation | JumpAnimation 
+	| InventoryItemsTypes | InventoryItemsCounts
 ;
 
 EnemyDescription returns gameelements::EnemyDescription:
@@ -141,7 +175,6 @@ IntelligenceLevel returns character::IntelligenceLevel:
 	{character::IntelligenceLevel}
 	('iq' value = IQ)
 ;
-
 
 Speed returns character::Speed:
 	{character::Speed}
@@ -183,6 +216,15 @@ JumpAnimation returns character::JumpAnimation:
 	('jump' value = AnimationDescription)
 ;
 
+InventoryItemsTypes returns character::InventoryItemsTypes:
+	{character::InventoryItemsTypes}
+	'inventoryItemTypes' value += [gameelements::ItemDescription|EString] (',' value += [gameelements::ItemDescription|EString])*
+;
+
+InventoryItemsCounts returns character::InventoryItemsCounts:
+	{character::InventoryItemsCounts}
+	'inventoryItemCounts' value += INT (',' value += INT)*
+;
 
 //#######################################################################################################
 //## AUXILIARY ##########################################################################################
@@ -210,6 +252,9 @@ Pictures returns auxiliary::Pictures:
 	('pictures' value += PICTURESTRING (','value += PICTURESTRING)*)
 ;
 
+//#######################################################################################################
+//## TERMINALS ETC ######################################################################################
+//#######################################################################################################
 
 EString returns ecore::EString:
 	STRING | ID;
