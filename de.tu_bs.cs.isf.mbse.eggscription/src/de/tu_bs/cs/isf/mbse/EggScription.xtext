@@ -5,6 +5,7 @@ import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes" as attributes
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/block" as block
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/item" as item
+import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/character" as character
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//auxiliary" as auxiliary
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore" as descriptions
@@ -104,13 +105,22 @@ ScorePoints returns item::ScorePoints:
 	('scorePoints' value = INT)
 ;
 
+//#######################################################################################################
+//## CHARACTERS #########################################################################################
+//#######################################################################################################
+
 HeroDescription returns gameelements::HeroDescription:
 	{gameelements::HeroDescription}
 	'Hero'
 	name=EString
 	'{'
-		
+		(property += HeroAttribute ';')*
 	'}'
+;
+
+HeroAttribute returns character::HeroAttribute:
+	Speed | JumpPower | MaxLife | Strength | InventorySize
+	| IdleAnimation | RunAnimation | JumpAnimation 	
 ;
 
 EnemyDescription returns gameelements::EnemyDescription:
@@ -118,19 +128,88 @@ EnemyDescription returns gameelements::EnemyDescription:
 	'Enemy'
 	name=EString
 	'{'
-		
+		(property += EnemyAttribute ';')*
 	'}'
 ;
 
-////## AUXILIARY ###########################################################
+EnemyAttribute returns character::EnemyAttribute:
+	Speed | JumpPower | MaxLife | Strength | IntelligenceLevel
+	| IdleAnimation | RunAnimation | JumpAnimation 	
+;
+
+IntelligenceLevel returns character::IntelligenceLevel:
+	{character::IntelligenceLevel}
+	('iq' value = IQ)
+;
+
+
+Speed returns character::Speed:
+	{character::Speed}
+	('speed' value = INT)
+;
+
+JumpPower returns character::JumpPower:
+	{character::JumpPower}
+	('jumpPower' value = INT)
+;
+
+MaxLife returns character::MaxLife:
+	{character::MaxLife}
+	('maxLife' value = INT)
+;
+
+Strength returns character::Strength:
+	{character::Strength}
+	('strength' value = INT)
+;
+
+InventorySize returns character::InventorySize:
+	{character::InventorySize}
+	('inventorySize' value = INT)
+;
+
+IdleAnimation returns character::IdleAnimation:
+	{character::IdleAnimation}
+	('idle' value = AnimationDescription)
+;
+
+RunAnimation returns character::RunAnimation:
+	{character::RunAnimation}
+	('run' value = AnimationDescription)
+;
+
+JumpAnimation returns character::JumpAnimation:
+	{character::JumpAnimation}
+	('jump' value = AnimationDescription)
+;
+
+
+//#######################################################################################################
+//## AUXILIARY ##########################################################################################
+//#######################################################################################################
+
 AnimationDescription returns auxiliary::AnimationDescription:
 	{auxiliary::AnimationDescription}
 	'Animation'
 	'{'
-		('duration' duration = INT ';')?
-		'pictures' pictures+=PICTURESTRING (','pictures+=PICTURESTRING)* ';'
+		(property += AnimationAttribute ';')*
 	'}'
 ;
+
+AnimationAttribute returns auxiliary::AnimationAttribute:
+	Pictures | Duration
+;
+
+Duration returns auxiliary::Duration:
+	{auxiliary::Duration}
+	('duration' value = INT)
+;
+
+Pictures returns auxiliary::Pictures:
+	{auxiliary::Pictures}
+	('pictures' value += PICTURESTRING (','value += PICTURESTRING)*)
+;
+
 
 EString returns ecore::EString:
 	STRING | ID;
@@ -143,6 +222,9 @@ terminal PICTURESTRING returns ecore::EString:
 	'<'(.)+('.jpg'|'.JPG'|'.JPEG'|'.png'|'.PNG')'>'
 ;
 
-//enum IQ returns auxiliary::IntelligenceLevel:
-//	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low'
-//;
+enum IQ returns character::Intelligence:
+	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low' |
+	HIGH = 'HIGH' | MEDIUM = 'MEDIUM' | LOW = 'LOW' |
+	HIGH = 'H' | MEDIUM = 'M' | LOW = 'L' |
+	HIGH = 'h' | MEDIUM = 'm' | LOW = 'l'
+;

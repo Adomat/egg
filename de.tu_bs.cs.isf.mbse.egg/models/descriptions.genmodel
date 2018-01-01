@@ -50,16 +50,17 @@
     </nestedGenPackages>
     <nestedGenPackages prefix="Auxiliary" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//auxiliary">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="descriptions.ecore#//auxiliary/IntelligenceLevel">
-        <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//auxiliary/IntelligenceLevel/LOW"/>
-        <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//auxiliary/IntelligenceLevel/MEDIUM"/>
-        <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//auxiliary/IntelligenceLevel/HIGH"/>
-      </genEnums>
       <genClasses ecoreClass="descriptions.ecore#//auxiliary/AnimationDescription">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//auxiliary/AnimationDescription/pictures"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//auxiliary/AnimationDescription/duration"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//auxiliary/AnimationDescription/property"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//auxiliary/TextPageAnimationDescription"/>
+      <genClasses image="false" ecoreClass="descriptions.ecore#//auxiliary/AnimationAttribute"/>
+      <genClasses ecoreClass="descriptions.ecore#//auxiliary/Pictures">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//auxiliary/Pictures/value"/>
+      </genClasses>
+      <genClasses ecoreClass="descriptions.ecore#//auxiliary/Duration">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//auxiliary/Duration/value"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Attributes" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes">
@@ -81,13 +82,18 @@
       </nestedGenPackages>
       <nestedGenPackages prefix="Character" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
           disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/character">
+        <genEnums typeSafeEnumCompatible="false" ecoreEnum="descriptions.ecore#//attributes/character/Intelligence">
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/Intelligence/LOW"/>
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/Intelligence/MEDIUM"/>
+          <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/Intelligence/HIGH"/>
+        </genEnums>
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/EnemyAttribute"/>
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/HeroAttribute"/>
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/Speed">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/Speed/value"/>
         </genClasses>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/jumpPower">
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/jumpPower/value"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/JumpPower">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/JumpPower/value"/>
         </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/MaxLife">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/MaxLife/value"/>
@@ -95,13 +101,21 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/Strength">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/Strength/value"/>
         </genClasses>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/IdleAnimation"/>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/RunAnimation"/>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/JumpAnimation"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/IdleAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/IdleAnimation/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/RunAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/RunAnimation/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/JumpAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/JumpAnimation/value"/>
+        </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/InventorySize">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/InventorySize/value"/>
         </genClasses>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/IntelligenceLevel"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/IntelligenceLevel">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/IntelligenceLevel/value"/>
+        </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Item" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
           disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/item">

@@ -33,7 +33,8 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
           eType="#//attributes/item/ItemAttribute" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="CharacterDescription" eSuperTypes="#//Description">
+    <eClassifiers xsi:type="ecore:EClass" name="CharacterDescription" abstract="true"
+        eSuperTypes="#//Description">
       <eStructuralFeatures xsi:type="ecore:EReference" name="inventoryItemsKind" upperBound="-1"
           eType="#//gameelements/ItemDescription"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="inventoryItemsCount"
@@ -51,15 +52,17 @@
   <eSubpackages name="auxiliary" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/auxiliary"
       nsPrefix="auxiliary">
     <eClassifiers xsi:type="ecore:EClass" name="AnimationDescription">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="pictures" lowerBound="1"
-          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="duration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
+          eType="#//auxiliary/AnimationAttribute" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TextPageAnimationDescription" eSuperTypes="#//auxiliary/AnimationDescription commons.ecore#//PositionedElement"/>
-    <eClassifiers xsi:type="ecore:EEnum" name="IntelligenceLevel">
-      <eLiterals name="LOW"/>
-      <eLiterals name="MEDIUM" value="1"/>
-      <eLiterals name="HIGH" value="2" literal=""/>
+    <eClassifiers xsi:type="ecore:EClass" name="AnimationAttribute" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Pictures" eSuperTypes="#//auxiliary/AnimationAttribute">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Duration" eSuperTypes="#//auxiliary/AnimationAttribute">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="attributes" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes"
@@ -88,7 +91,7 @@
       <eClassifiers xsi:type="ecore:EClass" name="Speed" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="jumpPower" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="JumpPower" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="MaxLife" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
@@ -97,13 +100,29 @@
       <eClassifiers xsi:type="ecore:EClass" name="Strength" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="IdleAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute #//auxiliary/AnimationDescription"/>
-      <eClassifiers xsi:type="ecore:EClass" name="RunAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute #//auxiliary/AnimationDescription"/>
-      <eClassifiers xsi:type="ecore:EClass" name="JumpAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute #//auxiliary/AnimationDescription"/>
+      <eClassifiers xsi:type="ecore:EClass" name="IdleAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//auxiliary/AnimationDescription"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="RunAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//auxiliary/AnimationDescription"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="JumpAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//auxiliary/AnimationDescription"
+            containment="true"/>
+      </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="InventorySize" eSuperTypes="#//attributes/character/HeroAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="IntelligenceLevel" eSuperTypes="#//attributes/character/EnemyAttribute"/>
+      <eClassifiers xsi:type="ecore:EClass" name="IntelligenceLevel" eSuperTypes="#//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//attributes/character/Intelligence"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EEnum" name="Intelligence">
+        <eLiterals name="LOW"/>
+        <eLiterals name="MEDIUM" value="1"/>
+        <eLiterals name="HIGH" value="2" literal=""/>
+      </eClassifiers>
     </eSubpackages>
     <eSubpackages name="item" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/item"
         nsPrefix="item">

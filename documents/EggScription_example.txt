@@ -1,0 +1,6 @@
+Block 'earth01' {
+	destroyable: true
+	movable: true
+	hasCollision: true
+	animation: 
+}
