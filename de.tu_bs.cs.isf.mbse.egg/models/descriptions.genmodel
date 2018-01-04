@@ -19,31 +19,31 @@
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gui">
       <genClasses image="false" ecoreClass="descriptions.ecore#//gui/PageDescription"/>
       <genClasses ecoreClass="descriptions.ecore#//gui/MenuPageDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/MenuPageDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/MenuPageDescription/properties"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gui/TextPageDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/TextPageDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gui/TextPageDescription/properties"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Gameelements" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//gameelements">
       <genClasses ecoreClass="descriptions.ecore#//gameelements/BlockDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/BlockDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/BlockDescription/properties"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/ItemDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/ItemDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/ItemDescription/properties"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/HeroDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/HeroDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/HeroDescription/properties"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//gameelements/EnemyDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/EnemyDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//gameelements/EnemyDescription/properties"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Auxiliary" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//auxiliary">
       <genClasses ecoreClass="descriptions.ecore#//auxiliary/AnimationDescription">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//auxiliary/AnimationDescription/property"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//auxiliary/AnimationDescription/properties"/>
       </genClasses>
       <genClasses ecoreClass="descriptions.ecore#//auxiliary/TextPageAnimationDescription"/>
       <genClasses image="false" ecoreClass="descriptions.ecore#//auxiliary/AnimationAttribute"/>

@@ -35,7 +35,7 @@ MenuPageDescription returns gui::MenuPageDescription:
 	'MenuPageDescription'
 	name=EString
 	'{'
-		(property += MenuPageAttribute ';')*
+		(properties += MenuPageAttribute ';')*
 	'}'
 ;
 
@@ -44,7 +44,7 @@ TextPageDescription returns gui::TextPageDescription:
 	'TextPageDescription'
 	name=EString
 	'{'
-		(property += TextPageAttribute ';')*
+		(properties += TextPageAttribute ';')*
 	'}'
 ;
 
@@ -85,7 +85,7 @@ BlockDescription returns gameelements::BlockDescription:
 	'Block'
 	name=EString
 	'{'
-		(property += BlockAttribute ';')*
+		(properties += BlockAttribute ';')*
 	'}'
 ;
 
@@ -122,7 +122,7 @@ ItemDescription returns gameelements::ItemDescription:
 	'Item'
 	name=EString
 	'{'
-		(property += ItemAttribute ';')*
+		(properties += ItemAttribute ';')*
 	'}'
 ;
 
@@ -159,7 +159,7 @@ HeroDescription returns gameelements::HeroDescription:
 	'Hero'
 	name=EString
 	'{'
-		(property += HeroAttribute ';')*
+		(properties += HeroAttribute ';')*
 	'}'
 ;
 
@@ -174,7 +174,7 @@ EnemyDescription returns gameelements::EnemyDescription:
 	'Enemy'
 	name=EString
 	'{'
-		(property += EnemyAttribute ';')*
+		(properties += EnemyAttribute ';')*
 	'}'
 ;
 
@@ -261,7 +261,7 @@ AnimationDescription returns auxiliary::AnimationDescription:
 	{auxiliary::AnimationDescription}
 	'Animation'
 	'{'
-		(property += AnimationAttribute ';')*
+		(properties += AnimationAttribute ';')*
 	'}'
 ;
 
