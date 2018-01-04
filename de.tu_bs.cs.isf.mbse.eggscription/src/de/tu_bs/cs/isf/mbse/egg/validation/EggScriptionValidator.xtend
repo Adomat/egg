@@ -3,6 +3,13 @@
  */
 package de.tu_bs.cs.isf.mbse.egg.validation
 
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MaxLife
+import org.eclipse.xtext.validation.Check
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CharacterPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Speed
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Strength
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpPower
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventorySize
 
 /**
  * This class contains custom validation rules. 
@@ -10,16 +17,44 @@ package de.tu_bs.cs.isf.mbse.egg.validation
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class EggScriptionValidator extends AbstractEggScriptionValidator {
+
+	@Check
+	def checkMinimumMaxLife(MaxLife object) {
+		if(object.value <= 0) {
+			error('MaxLife should be larger than 0',
+				CharacterPackage.Literals.MAX_LIFE__VALUE)
+		}
+	}
 	
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					EggScriptionPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	@Check
+	def checkSpeed(Speed object) {
+		if(object.value <= 0) {
+			error('Speed should be larger than 0',
+				CharacterPackage.Literals.SPEED__VALUE)
+		}
+	}
 	
+	@Check
+	def checkStrength(Strength object) {
+		if(object.value <= 0) {
+			error('Strength should be larger than 0',
+				CharacterPackage.Literals.STRENGTH__VALUE)
+		}
+	}
+	
+	@Check
+	def checkJump(JumpPower object) {
+		if(object.value <= 0) {
+			error('Jump power should be larger than 0',
+				CharacterPackage.Literals.JUMP_POWER__VALUE)
+		}
+	}
+	
+	@Check
+	def checkInventorySize(InventorySize object) {
+		if(object.value < 0) {
+			error('Inventory cannot be smaller than 0',
+				CharacterPackage.Literals.INVENTORY_SIZE__VALUE)
+		}
+	}
 }

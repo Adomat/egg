@@ -1,15 +1,15 @@
 # constraints
 ItemAttribute:
-- usable und consumable schließen sich gegenseitig aus
+- usable und consumable schlieï¿½en sich gegenseitig aus
 
 hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
 
 von allen properties sollte je genau einmal das schlagwort pro objekt vorhanden sein
-(außer effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
+(auï¿½er effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
 
-constraints auf hero properties
-- strength, speed, jumppower, maxlife > 0
-- inventorysize >= 0
+#DONE 	constraints auf hero properties
+#DONE	strength, speed, jumppower, maxlife > 0
+#DONE	inventorysize >= 0
 
 duration von animationen > 0
 Animation hat 1x duration und 1x pictures
@@ -21,9 +21,9 @@ Hero 1..1
 
 Enemies 0..*
 
-Blöcke:
-movable und noCollision schließen sich gegenseitig aus
-destroyable und no collision schließen sich gegenseitig aus
+Blï¿½cke:
+movable und noCollision schlieï¿½en sich gegenseitig aus
+destroyable und no collision schlieï¿½en sich gegenseitig aus
 
 inventoryItemsTypes : jedes Item nur 1x?
 
