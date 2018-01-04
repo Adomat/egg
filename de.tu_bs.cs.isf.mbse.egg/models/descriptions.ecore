@@ -163,15 +163,20 @@
       <eClassifiers xsi:type="ecore:EClass" name="MenuPageAttribute" abstract="true"/>
       <eClassifiers xsi:type="ecore:EClass" name="TextPageAttribute" abstract="true"/>
       <eClassifiers xsi:type="ecore:EClass" name="Logo" eSuperTypes="#//attributes/gui/MenuPageAttribute">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="animation" eType="#//auxiliary/AnimationDescription"
-            containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="animation" lowerBound="1"
+            eType="#//auxiliary/AnimationDescription" containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="Title" eSuperTypes="#//attributes/gui/MenuPageAttribute #//attributes/gui/TextPageAttribute">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="NextPage" eSuperTypes="#//attributes/gui/TextPageAttribute">
         <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1"
             eType="#//gui/PageDescription"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="Text" eSuperTypes="#//attributes/gui/TextPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eClassifiers>
     </eSubpackages>
   </eSubpackages>

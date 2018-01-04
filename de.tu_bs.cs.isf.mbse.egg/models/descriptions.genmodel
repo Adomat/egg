@@ -163,6 +163,9 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference descriptions.ecore#//attributes/gui/NextPage/value"/>
         </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Text">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Text/value"/>
+        </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
   </genPackages>

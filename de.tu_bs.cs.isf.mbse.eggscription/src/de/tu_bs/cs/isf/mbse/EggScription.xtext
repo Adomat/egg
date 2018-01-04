@@ -22,7 +22,8 @@ Description returns descriptions::Description:
 	| TextPageDescription 
 	| BlockDescription 
 	| ItemDescription 
-	| HeroDescription | EnemyDescription
+	| HeroDescription 
+	| EnemyDescription
 ;
 
 //#######################################################################################################
@@ -52,7 +53,7 @@ MenuPageAttribute returns guiattr::MenuPageAttribute:
 ;
 
 TextPageAttribute returns guiattr::TextPageAttribute:
-	NextPage | Title
+	NextPage | Title | Text
 ;
 
 Logo returns guiattr::Logo:
@@ -63,6 +64,11 @@ Logo returns guiattr::Logo:
 Title returns guiattr::Title:
 	{guiattr::Title}
 	('title' value = EString)
+;
+
+Text returns guiattr::Text:
+	{guiattr::Text}
+	('paragraph' value += EString)
 ;
 
 NextPage returns guiattr::NextPage:
@@ -285,7 +291,7 @@ EString returns ecore::EString:
 //
 
 WHOLEINT returns ecore::EInt:
-	'-'?INT
+	('-'|'+') INT
 ;
 
 terminal PICTURESTRING returns ecore::EString:
