@@ -1,32 +1,21 @@
 # constraints
-ItemAttribute:
-- usable und consumable schlie�en sich gegenseitig aus
 
+#DONE 		usable und consumable schliessen sich gegenseitig aus
 hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
-
 von allen properties sollte je genau einmal das schlagwort pro objekt vorhanden sein
-(au�er effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
-
-#DONE 	constraints auf hero properties
-#DONE	strength, speed, jumppower, maxlife > 0
-#DONE	inventorysize >= 0
-
-duration von animationen > 0
+(ausser effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
+#DONE 		constraints auf hero properties
+#DONE		strength, speed, jumppower, maxlife > 0
+#DONE		inventorysize >= 0
+#DONE		duration von animationen > 0
 Animation hat 1x duration und 1x pictures
-
 hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
 andere animationen 1..1
-
 Hero 1..1
-
-Enemies 0..*
-
 Bl�cke:
 movable und noCollision schlie�en sich gegenseitig aus
 destroyable und no collision schlie�en sich gegenseitig aus
-
 inventoryItemsTypes : jedes Item nur 1x?
-
 
 # reference resolver
 pictures

@@ -46,7 +46,7 @@
   </eSubpackages>
   <eSubpackages name="auxiliary" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/auxiliary"
       nsPrefix="auxiliary">
-    <eClassifiers xsi:type="ecore:EClass" name="AnimationDescription">
+    <eClassifiers xsi:type="ecore:EClass" name="AnimationDescription" eSuperTypes="#//attributes/block/BlockAttribute #//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute #//attributes/item/ItemAttribute #//attributes/gui/TextPageAttribute">
       <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
           eType="#//auxiliary/AnimationAttribute" containment="true"/>
     </eClassifiers>

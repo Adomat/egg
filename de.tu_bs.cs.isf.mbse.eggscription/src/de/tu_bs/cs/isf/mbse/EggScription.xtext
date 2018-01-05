@@ -7,10 +7,10 @@ import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/item" as item
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/character" as character
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/gui" as guiattr
-import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//auxiliary" as auxiliary
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore" as descriptions
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//gameelements" as gameelements
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 DescriptionRoot returns descriptions::DescriptionRoot:
 	{descriptions::DescriptionRoot}
@@ -90,7 +90,7 @@ BlockDescription returns gameelements::BlockDescription:
 ;
 
 BlockAttribute returns block::BlockAttribute:
-	Destroyable | Movable | NoCollision | StaticAnimation
+	Destroyable | Movable | NoCollision | AnimationDescription
 ;
 
 Destroyable returns block::Destroyable:
@@ -108,11 +108,6 @@ Movable returns block::Movable:
 	(value ?= 'movable')
 ;
 
-StaticAnimation returns attributes::StaticAnimation:
-	{attributes::StaticAnimation}
-	(animation = AnimationDescription)?
-;
-
 //#######################################################################################################
 //## ITEMS ##############################################################################################
 //#######################################################################################################
@@ -127,12 +122,12 @@ ItemDescription returns gameelements::ItemDescription:
 ;
 
 ItemAttribute returns item::ItemAttribute:
-	Consumable | Usable | ScorePoints | StaticAnimation | Effect
+	Consumable | Usable | ScorePoints | AnimationDescription | Effect
 ;
 
 Effect returns item::Effect:
 	{item::Effect}
-	('effect' type = OCPROPS ':' value = WHOLEINT)
+	('effect' type = OCPROPS value = WHOLEINT)
 ;
 
 Consumable returns item::Consumable:

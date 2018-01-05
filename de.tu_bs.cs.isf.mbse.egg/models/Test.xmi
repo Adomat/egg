@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptions:DescriptionRoot
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:character="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/character"
+    xmlns:descriptions="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions"
+    xmlns:gameelements="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gameelements"
+    xsi:schemaLocation="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/character descriptions.ecore#//attributes/character https://www.tu-bs.de/cs/isf/mbse/egg/descriptions descriptions.ecore https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/gameelements descriptions.ecore#//gameelements">
+  <descriptions
+      xsi:type="gameelements:HeroDescription"
+      name="lala">
+    <properties
+        xsi:type="character:MaxLife"/>
+  </descriptions>
+</descriptions:DescriptionRoot>
