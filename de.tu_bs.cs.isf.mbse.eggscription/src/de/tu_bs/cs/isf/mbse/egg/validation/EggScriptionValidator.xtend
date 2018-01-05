@@ -20,7 +20,6 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.GameelementsPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ScorePoints
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.AttributesPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription
 

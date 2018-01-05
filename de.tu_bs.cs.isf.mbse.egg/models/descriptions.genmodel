@@ -56,9 +56,7 @@
     </nestedGenPackages>
     <nestedGenPackages prefix="Attributes" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions"
         disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes">
-      <genClasses ecoreClass="descriptions.ecore#//attributes/StaticAnimation">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/StaticAnimation/animation"/>
-      </genClasses>
+      <genClasses ecoreClass="descriptions.ecore#//attributes/AttributeDummy"/>
       <nestedGenPackages prefix="Block" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
           disposableProviderFactory="true" ecorePackage="descriptions.ecore#//attributes/block">
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/block/BlockAttribute"/>

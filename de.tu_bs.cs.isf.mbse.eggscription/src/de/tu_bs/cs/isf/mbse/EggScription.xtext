@@ -2,7 +2,6 @@
 grammar de.tu_bs.cs.isf.mbse.egg.EggScription with org.eclipse.xtext.common.Terminals
 
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//gui" as gui
-import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes" as attributes
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/block" as block
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/item" as item
 import "platform:/resource/de.tu_bs.cs.isf.mbse.egg/models/descriptions.ecore#//attributes/character" as character
