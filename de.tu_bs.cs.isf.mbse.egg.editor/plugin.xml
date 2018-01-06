@@ -124,34 +124,6 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesModelWizardID"
-            name="%_UI_AttributesModelWizard_label"
-            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/AttributesModelFile.gif">
-         <description>%_UI_AttributesModelWizard_description</description>
-         <selection class="org.eclipse.core.resources.IResource"/>
-      </wizard>
-   </extension>
-
-   <extension point="org.eclipse.ui.editors">
-      <!-- @generated descriptions -->
-      <editor
-            id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesEditorID"
-            name="%_UI_AttributesEditor_label"
-            icon="icons/full/obj16/AttributesModelFile.gif"
-            extensions="attributes"
-            class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesEditor"
-            contributorClass="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation.AttributesActionBarContributor">
-      </editor>
-   </extension>
-
-   <extension point="org.eclipse.ui.newWizards">
-      <!-- @generated descriptions -->
-      <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
-            name="%_UI_Wizard_category"/>
-      <wizard
             id="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockModelWizardID"
             name="%_UI_BlockModelWizard_label"
             class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentation.BlockModelWizard"

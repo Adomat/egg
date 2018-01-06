@@ -12,7 +12,6 @@ Export-Package: de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.presentat
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.presentation,
- de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.presentation,
  de.tu_bs.cs.isf.mbse.egg.descriptions.gui.presentation,
