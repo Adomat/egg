@@ -11,12 +11,11 @@
 #DONE		Hero 1..1
 #DONE		unique identifiers!!
 #DONE		hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
+#DONE		unique attributes max. one time existing items, heros, enemys, blocks, animation
 
-von allen properties sollte je genau einmal das schlagwort pro objekt vorhanden sein (ausser effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
+unique attributes min one time existing in items, heros, enemies, blocks, animation
 hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
-andere animationen 1..1
-
-inventoryItemsTypes : jedes Item nur 1x?
+inventoryItemsTypes : jedes Item nur 1x
 
 # reference resolver
 pictures

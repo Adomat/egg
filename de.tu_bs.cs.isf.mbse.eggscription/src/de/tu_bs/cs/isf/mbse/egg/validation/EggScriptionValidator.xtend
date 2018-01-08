@@ -23,7 +23,6 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItemsTypes
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.Movable
@@ -34,8 +33,11 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.Destroyable
 import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionRoot
 import de.tu_bs.cs.isf.mbse.egg.descriptions.Description
 import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionsPackage
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.GameelementsPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItemsCounts
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.UniqueAttribute
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.AttributesPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute
 
 /**
  * This class contains custom validation rules. 
@@ -44,6 +46,9 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItems
  */
 class EggScriptionValidator extends AbstractEggScriptionValidator {
 	
+	/**
+	 * Max Life must be larger than 0
+	 */
 	@Check
 	def checkMinimumMaxLife(MaxLife object) {
 		if(object.value <= 0) {
@@ -52,6 +57,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * Speed must be larger than 0
+	 */
 	@Check
 	def checkSpeed(Speed object) {
 		if(object.value <= 0) {
@@ -60,6 +68,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * Strength must be larger than 0
+	 */
 	@Check
 	def checkStrength(Strength object) {
 		if(object.value <= 0) {
@@ -68,14 +79,20 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * JumpPower must be larger than or equal to 0
+	 */
 	@Check
 	def checkJump(JumpPower object) {
-		if(object.value <= 0) {
-			error('Jump power should be larger than 0',
+		if(object.value < 0) {
+			error('Jump power should be larger than or equal to 0',
 				CharacterPackage.Literals.JUMP_POWER__VALUE)
 		}
 	}
 	
+	/**
+	 * Inventory size must be 0 or larger
+	 */
 	@Check
 	def checkInventorySize(InventorySize object) {
 		if(object.value < 0) {
@@ -84,6 +101,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * Animation duration must be longer than 0
+	 */
 	@Check
 	def checkAnimationDuration(Duration object) {
 		if(object.value <= 0) {
@@ -92,6 +112,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * Items cannot be usable and consumable at the same time
+	 */
 	@Check
 	def checkUsableVsConsumable(ItemAttribute object) {
 		if(object instanceof Usable || object instanceof Consumable) {
@@ -112,6 +135,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * Blocks can not be movable and have no collision at the same time
+	 */
 	@Check
 	def checkMovableVsNoCollision(BlockAttribute object) {
 		if(object instanceof Movable || object instanceof NoCollision) {
@@ -132,6 +158,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * Blocks cannot be destroyable and have no collision at the same time
+	 */
 	@Check
 	def checkDestoryableVsNoCollision(BlockAttribute object) {
 		if(object instanceof Destroyable || object instanceof NoCollision) {
@@ -152,39 +181,145 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+//	/**
+//	 * Items should have only one keyword consumable, usable and scorepoints
+//	 */
+//	@Check
+//	def checkNumberOfItemAttributes(ItemAttribute object) {
+//		if(object.eContainer instanceof ItemDescription) {
+//			for(ItemAttribute other : (object.eContainer as ItemDescription).properties) {
+//				if(other != object) {
+//					if(other.eClass == object.eClass) {
+//						var errortext = 'Attribute ' 
+//						var errortext2 = ''
+//						var errortext3 = ' should appear only once per Item object'
+//						var literal = ItemPackage.Literals.CONSUMABLE__VALUE
+//						var founderror = false
+//						if(object instanceof Consumable) {
+//							literal = ItemPackage.Literals.CONSUMABLE__VALUE
+//							errortext2 = 'consumable'
+//							founderror = true
+//						} else if (object instanceof Usable) {
+//							literal = ItemPackage.Literals.USABLE__VALUE
+//							errortext2 = 'usable'
+//							founderror = true
+//						} else if (object instanceof ScorePoints) {
+//							literal = ItemPackage.Literals.SCORE_POINTS__VALUE
+//							errortext2 = 'scorePoints'
+//							founderror = true
+//						} 
+//						if(founderror){
+//							error(errortext+errortext2+errortext3, object, literal)
+//						}				
+//					}
+//				}
+//			}
+//		}
+//	}
+
+//	/**
+//	 * 
+//	 */
+//	@Check
+//	def checkNumberOfBlockAttributes(BlockAttribute object) {
+//		if(object.eContainer instanceof BlockDescription) {
+//			for(BlockAttribute other : (object.eContainer as BlockDescription).properties) {
+//				if(other != object) {
+//					if(other.eClass == object.eClass) {
+//						var errortext = 'Attribute ' 
+//						var errortext2 = ''
+//						var errortext3 = ' should appear only once per Block object'
+//						var literal = BlockPackage.Literals.DESTROYABLE__VALUE
+//						var founderror = false
+//						if(object instanceof Destroyable) {
+//							literal = BlockPackage.Literals.DESTROYABLE__VALUE
+//							errortext2 = 'destroyable'
+//							founderror = true
+//						} else if (object instanceof Movable) {
+//							literal = BlockPackage.Literals.MOVABLE__VALUE
+//							errortext2 = 'movable'
+//							founderror = true
+//						} else if (object instanceof NoCollision) {
+//							literal = BlockPackage.Literals.NO_COLLISION__VALUE
+//							errortext2 = 'noCollision'
+//							founderror = true
+//						} 
+//						if(founderror){
+//							error(errortext+errortext2+errortext3, object, literal)
+//						}				
+//					}
+//				}
+//			}
+//		}
+//	}
+	
+	/**
+	 * Unique attributes must be existing exactly once
+	 */
 	@Check
-	def checkNumberOfItemAttributes(ItemAttribute object) {
-		if(object.eContainer instanceof ItemDescription) {
-			for(ItemAttribute other : (object.eContainer as ItemDescription).properties) {
-				if(other != object) {
-					if(other.eClass == object.eClass) {
-						var errortext = 'Attribute ' 
-						var errortext2 = ''
-						var errortext3 = ' should appear only once per Item object'
-						var literal = ItemPackage.Literals.CONSUMABLE__VALUE
-						var founderror = false
-						if(object instanceof Consumable) {
-							literal = ItemPackage.Literals.CONSUMABLE__VALUE
-							errortext2 = 'consumable'
-							founderror = true
-						} else if (object instanceof Usable) {
-							literal = ItemPackage.Literals.USABLE__VALUE
-							errortext2 = 'usable'
-							founderror = true
-						} else if (object instanceof ScorePoints) {
-							literal = ItemPackage.Literals.SCORE_POINTS__VALUE
-							errortext2 = 'scorePoints'
-							founderror = true
-						} 
-						if(founderror){
-							error(errortext+errortext2+errortext3, object, literal)
-						}				
-					}
+	def checkUniquenessOfAttributes(UniqueAttribute inspectedAttribute) {
+		var errorstr = 'Attribute ' + inspectedAttribute.eClass.name.toString + ' should appear only once.'
+		if(inspectedAttribute.eContainer instanceof ItemDescription) {
+			for(ItemAttribute compareAttribute : (inspectedAttribute.eContainer as ItemDescription).properties) {
+				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
+					if(inspectedAttribute.eClass == ItemPackage.Literals.CONSUMABLE) error(errorstr, ItemPackage.Literals.CONSUMABLE__VALUE)
+					if(inspectedAttribute.eClass == ItemPackage.Literals.USABLE) error(errorstr, ItemPackage.Literals.USABLE__VALUE)
+					if(inspectedAttribute.eClass == ItemPackage.Literals.SCORE_POINTS) error(errorstr, ItemPackage.Literals.SCORE_POINTS__VALUE)
+				}
+			}
+		}
+		if(inspectedAttribute.eContainer instanceof BlockDescription) {
+			for(BlockAttribute compareAttribute : (inspectedAttribute.eContainer as BlockDescription).properties) {
+				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
+					if(inspectedAttribute.eClass == BlockPackage.Literals.DESTROYABLE) error(errorstr, BlockPackage.Literals.DESTROYABLE__VALUE)
+					if(inspectedAttribute.eClass == BlockPackage.Literals.MOVABLE) error(errorstr, BlockPackage.Literals.MOVABLE__VALUE)
+					if(inspectedAttribute.eClass == BlockPackage.Literals.NO_COLLISION) error(errorstr, BlockPackage.Literals.NO_COLLISION__VALUE)
+				}
+			}
+		}
+		if(inspectedAttribute.eContainer instanceof HeroDescription) {
+			for(HeroAttribute compareAttribute : (inspectedAttribute.eContainer as HeroDescription).properties) {
+				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.CAN_KILL_IN_DISTANCE) error(errorstr, CharacterPackage.Literals.CAN_KILL_IN_DISTANCE__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.IDLE_ANIMATION) error(errorstr, CharacterPackage.Literals.IDLE_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_SIZE) error(errorstr, CharacterPackage.Literals.INVENTORY_SIZE__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_TYPES) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_TYPES__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_ANIMATION) error(errorstr, CharacterPackage.Literals.JUMP_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_POWER) error(errorstr, CharacterPackage.Literals.JUMP_POWER__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.MAX_LIFE) error(errorstr, CharacterPackage.Literals.MAX_LIFE__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.RUN_ANIMATION) error(errorstr, CharacterPackage.Literals.RUN_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.SPEED) error(errorstr, CharacterPackage.Literals.SPEED__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.STRENGTH) error(errorstr, CharacterPackage.Literals.STRENGTH__VALUE)
+				}
+			}
+		}
+		if(inspectedAttribute.eContainer instanceof EnemyDescription) {
+			for(EnemyAttribute compareAttribute : (inspectedAttribute.eContainer as EnemyDescription).properties) {
+				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.CAN_KILL_IN_DISTANCE) error(errorstr, CharacterPackage.Literals.CAN_KILL_IN_DISTANCE__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.IDLE_ANIMATION) error(errorstr, CharacterPackage.Literals.IDLE_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_TYPES) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_TYPES__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_ANIMATION) error(errorstr, CharacterPackage.Literals.JUMP_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_POWER) error(errorstr, CharacterPackage.Literals.JUMP_POWER__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.MAX_LIFE) error(errorstr, CharacterPackage.Literals.MAX_LIFE__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.RUN_ANIMATION) error(errorstr, CharacterPackage.Literals.RUN_ANIMATION__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.SPEED) error(errorstr, CharacterPackage.Literals.SPEED__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.STRENGTH) error(errorstr, CharacterPackage.Literals.STRENGTH__VALUE)
+					if(inspectedAttribute.eClass == CharacterPackage.Literals.INTELLIGENCE_LEVEL) error(errorstr, CharacterPackage.Literals.INTELLIGENCE_LEVEL__VALUE)
 				}
 			}
 		}
 	}
-	
+		
+	/**
+	 * Animations should have only one keyword duration and pictures
+	 */
 	@Check
 	def checkNumberOfAnimationAttributes(AnimationAttribute object) {
 		if(object.eContainer instanceof AnimationDescription) {
@@ -212,6 +347,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}	
 	}
 
+	/**
+	 * There must be one hero per game
+	 */
 	@Check
 	def checkNumberOfHerosMin(DescriptionRoot root) {
 		var count = 0
@@ -225,6 +363,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * There must be only one hero per game
+	 */
 	@Check
 	def checkNumberOfHerosMax(HeroDescription object) {
 		var root = (object.eContainer as DescriptionRoot)
@@ -239,6 +380,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 
+	/**
+	 * Identifiers of the descriptions should be unique
+	 */
 	@Check
 	def checkUniqueIdentifiers(Description object) {
 		var root = (object.eContainer as DescriptionRoot)
@@ -249,6 +393,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * There must be as many types in the inventory as there are counts
+	 */
 	@Check
 	def checkInventorySizesHero(InventoryItemsTypes object) {
 		if(!(object.eContainer instanceof HeroDescription)) return
@@ -276,6 +423,9 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
+	/**
+	 * There must be as many types in the inventory as there are counts
+	 */
 	@Check
 	def checkInventorySizesHero(InventoryItemsCounts object) {
 		if(!(object.eContainer instanceof HeroDescription)) return
@@ -302,4 +452,5 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			}
 		}
 	}
+	
 }

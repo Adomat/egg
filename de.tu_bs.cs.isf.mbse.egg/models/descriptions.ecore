@@ -63,10 +63,11 @@
   </eSubpackages>
   <eSubpackages name="attributes" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes"
       nsPrefix="attributes">
-    <eClassifiers xsi:type="ecore:EClass" name="AttributeDummy" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="UniqueAttribute" abstract="true"/>
     <eSubpackages name="block" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/block"
         nsPrefix="block">
-      <eClassifiers xsi:type="ecore:EClass" name="BlockAttribute" abstract="true"/>
+      <eClassifiers xsi:type="ecore:EClass" name="BlockAttribute" abstract="true"
+          eSuperTypes="#//attributes/UniqueAttribute"/>
       <eClassifiers xsi:type="ecore:EClass" name="Destroyable" eSuperTypes="#//attributes/block/BlockAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -82,8 +83,9 @@
     </eSubpackages>
     <eSubpackages name="character" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/character"
         nsPrefix="character">
-      <eClassifiers xsi:type="ecore:EClass" name="EnemyAttribute" abstract="true"/>
-      <eClassifiers xsi:type="ecore:EClass" name="HeroAttribute" abstract="true"/>
+      <eClassifiers xsi:type="ecore:EClass" name="EnemyAttribute" abstract="true"
+          eSuperTypes="#//attributes/UniqueAttribute"/>
+      <eClassifiers xsi:type="ecore:EClass" name="HeroAttribute" abstract="true" eSuperTypes="#//attributes/UniqueAttribute"/>
       <eClassifiers xsi:type="ecore:EClass" name="Speed" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -156,15 +158,15 @@
     <eSubpackages name="item" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/item"
         nsPrefix="item">
       <eClassifiers xsi:type="ecore:EClass" name="ItemAttribute" abstract="true"/>
-      <eClassifiers xsi:type="ecore:EClass" name="Consumable" eSuperTypes="#//attributes/item/ItemAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="Consumable" eSuperTypes="#//attributes/item/ItemAttribute #//attributes/UniqueAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="Usable" eSuperTypes="#//attributes/item/ItemAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="Usable" eSuperTypes="#//attributes/item/ItemAttribute #//attributes/UniqueAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="ScorePoints" eSuperTypes="#//attributes/item/ItemAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="ScorePoints" eSuperTypes="#//attributes/item/ItemAttribute #//attributes/UniqueAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
