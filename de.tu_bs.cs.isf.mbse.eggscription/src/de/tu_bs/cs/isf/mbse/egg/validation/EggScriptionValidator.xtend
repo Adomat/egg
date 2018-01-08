@@ -31,6 +31,10 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.NoCollision
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.Destroyable
+import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionRoot
+import de.tu_bs.cs.isf.mbse.egg.descriptions.Description
+import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionsPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.GameelementsPackage
 
 /**
  * This class contains custom validation rules. 
@@ -205,5 +209,42 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 				}
 			}
 		}	
+	}
+
+	@Check
+	def checkNumberOfHerosMin(DescriptionRoot root) {
+		var count = 0
+		for(Description object : root.descriptions) {
+			if(object instanceof HeroDescription) {
+				count++
+			}
+		}
+		if(count < 1) {
+			error('There must be exactly one hero per game', DescriptionsPackage.Literals.DESCRIPTION_ROOT__DESCRIPTIONS)
+		}
+	}
+	
+	@Check
+	def checkNumberOfHerosMax(HeroDescription object) {
+		var root = (object.eContainer as DescriptionRoot)
+		var count = 0
+		for(Description other : root.descriptions) {
+			if(other instanceof HeroDescription) {
+				count++
+			}
+		}
+		if(count > 1) {
+			error('There must not be more than one hero', GameelementsPackage.Literals.HERO_DESCRIPTION__PROPERTIES, 1)
+		}
+	}
+
+	@Check
+	def checkUniqueIdentifiers(Description object) {
+		var root = (object.eContainer as DescriptionRoot)
+		for(Description other : root.descriptions) {
+			if(other.name == object.name && object != other) {
+				error('There are multiple objects named '+ object.name, DescriptionsPackage.Literals.DESCRIPTION__NAME)
+			}
+		}
 	}
 }

@@ -8,12 +8,14 @@
 #DONE		Animation hat 1x duration und 1x pictures
 #DONE 		movable und noCollision schlie�en sich gegenseitig aus
 #DONE 		destroyable und no collision schlie�en sich gegenseitig aus
+#DONE		Hero 1..1
+#DONE		unique identifiers!!
 
 hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
 von allen properties sollte je genau einmal das schlagwort pro objekt vorhanden sein (ausser effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
 hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
 andere animationen 1..1
-Hero 1..1
+
 inventoryItemsTypes : jedes Item nur 1x?
 
 # reference resolver
