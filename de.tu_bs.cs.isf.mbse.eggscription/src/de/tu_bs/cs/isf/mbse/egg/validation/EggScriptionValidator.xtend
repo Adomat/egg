@@ -25,6 +25,12 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItems
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.Movable
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.NoCollision
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.Destroyable
 
 /**
  * This class contains custom validation rules. 
@@ -94,6 +100,46 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 						} else {
 							error('Items cannot be usable and consumable at the same time',
 								ItemPackage.Literals.USABLE__VALUE)
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Check
+	def checkMovableVsNoCollision(BlockAttribute object) {
+		if(object instanceof Movable || object instanceof NoCollision) {
+			for(BlockAttribute other : (object.eContainer as BlockDescription).properties) {
+				if(other != object) {
+					if((other instanceof Movable && object instanceof NoCollision)
+						|| (object instanceof Movable && other instanceof NoCollision)) {
+						if(object instanceof Movable) {
+							error('Blocks cannot be movable and have no collision at the same time',
+								BlockPackage.Literals.MOVABLE__VALUE)							
+						} else {
+							error('Blocks cannot be movable and have no collision at the same time',
+								BlockPackage.Literals.NO_COLLISION__VALUE)
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Check
+	def checkDestoryableVsNoCollision(BlockAttribute object) {
+		if(object instanceof Destroyable || object instanceof NoCollision) {
+			for(BlockAttribute other : (object.eContainer as BlockDescription).properties) {
+				if(other != object) {
+					if((other instanceof Destroyable && object instanceof NoCollision)
+						|| (object instanceof Destroyable && other instanceof NoCollision)) {
+						if(object instanceof Destroyable) {
+							error('Blocks cannot be destroyable and have no collision at the same time',
+								BlockPackage.Literals.DESTROYABLE__VALUE)							
+						} else {
+							error('Blocks cannot be destroyable and have no collision at the same time',
+								BlockPackage.Literals.NO_COLLISION__VALUE)
 						}
 					}
 				}
