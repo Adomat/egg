@@ -35,6 +35,7 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionRoot
 import de.tu_bs.cs.isf.mbse.egg.descriptions.Description
 import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionsPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.GameelementsPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItemsCounts
 
 /**
  * This class contains custom validation rules. 
@@ -234,7 +235,7 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			}
 		}
 		if(count > 1) {
-			error('There must not be more than one hero', GameelementsPackage.Literals.HERO_DESCRIPTION__PROPERTIES, 1)
+			error('There must not be more than one hero', DescriptionsPackage.Literals.DESCRIPTION__NAME, 1)
 		}
 	}
 
@@ -244,6 +245,60 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		for(Description other : root.descriptions) {
 			if(other.name == object.name && object != other) {
 				error('There are multiple objects named '+ object.name, DescriptionsPackage.Literals.DESCRIPTION__NAME)
+			}
+		}
+	}
+	
+	@Check
+	def checkInventorySizesHero(InventoryItemsTypes object) {
+		if(!(object.eContainer instanceof HeroDescription)) return
+		
+		var character = object.eContainer as HeroDescription
+		
+		var foundTypes = false
+		var foundCounts = false
+		var attribute_types = character.properties.get(0);
+		var attribute_counts = character.properties.get(0);
+		for(HeroAttribute attribute : character.properties) {
+			if(attribute instanceof InventoryItemsTypes) {
+				foundTypes = true;
+				attribute_types = attribute
+			}
+			if(attribute instanceof InventoryItemsCounts) {
+				foundCounts = true;
+				attribute_counts = attribute
+			}
+		}
+		if(foundTypes && foundCounts) {
+			if((attribute_types as InventoryItemsTypes).value.size() != (attribute_counts as InventoryItemsCounts).value.size()) {
+				error('There must be the same number of types and counts', CharacterPackage.Literals.INVENTORY_ITEMS_TYPES__VALUE)
+			}
+		}
+	}
+	
+	@Check
+	def checkInventorySizesHero(InventoryItemsCounts object) {
+		if(!(object.eContainer instanceof HeroDescription)) return
+		
+		var character = object.eContainer as HeroDescription
+		
+		var foundTypes = false
+		var foundCounts = false
+		var attribute_types = character.properties.get(0);
+		var attribute_counts = character.properties.get(0);
+		for(HeroAttribute attribute : character.properties) {
+			if(attribute instanceof InventoryItemsTypes) {
+				foundTypes = true;
+				attribute_types = attribute
+			}
+			if(attribute instanceof InventoryItemsCounts) {
+				foundCounts = true;
+				attribute_counts = attribute
+			}
+		}
+		if(foundTypes && foundCounts) {
+			if((attribute_types as InventoryItemsTypes).value.size() != (attribute_counts as InventoryItemsCounts).value.size()) {
+				error('There must be the same number of types and counts', CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS__VALUE)
 			}
 		}
 	}

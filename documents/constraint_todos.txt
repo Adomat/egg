@@ -10,8 +10,8 @@
 #DONE 		destroyable und no collision schlie�en sich gegenseitig aus
 #DONE		Hero 1..1
 #DONE		unique identifiers!!
+#DONE		hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
 
-hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
 von allen properties sollte je genau einmal das schlagwort pro objekt vorhanden sein (ausser effekte, da sollte jeder typ nur maximal einmal vorhanden sein)
 hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
 andere animationen 1..1
