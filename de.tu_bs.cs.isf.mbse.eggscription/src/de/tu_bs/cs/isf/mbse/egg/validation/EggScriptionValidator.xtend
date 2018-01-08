@@ -3,25 +3,28 @@
  */
 package de.tu_bs.cs.isf.mbse.egg.validation
 
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MaxLife
-import org.eclipse.xtext.validation.Check
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CharacterPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventorySize
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpPower
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MaxLife
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Speed
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Strength
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpPower
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventorySize
-import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Duration
-import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AuxiliaryPackage
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.Consumable
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.Usable
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.GameelementsPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ScorePoints
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.Usable
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AuxiliaryPackage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Duration
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription
+import org.eclipse.xtext.validation.Check
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItemsTypes
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute
 
 /**
  * This class contains custom validation rules. 
@@ -106,7 +109,7 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 					if(other.eClass == object.eClass) {
 						var errortext = 'Attribute ' 
 						var errortext2 = ''
-						var errortext3 = ' should appear only once per object'
+						var errortext3 = ' should appear only once per Item object'
 						var literal = ItemPackage.Literals.CONSUMABLE__VALUE
 						var founderror = false
 						if(object instanceof Consumable) {
@@ -131,37 +134,30 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
-//	@Check
-//	def checkNumberOfHeroAttributes(HeroAttribute object) {
-//		if(object.eContainer instanceof HeroDescription) {
-//			for(HeroAttribute other : (object.eContainer as HeroDescription).properties) {
-//				if(other != object) {
-//					if(other.eClass == object.eClass) {
-//						var errortext = 'Attribute ' 
-//						var errortext2 = ''
-//						var errortext3 = ' should appear only once per object'
-//						var literal = ItemPackage.Literals.CONSUMABLE__VALUE
-//						var founderror = false
-//						if(object instanceof Consumable) {
-//							literal = ItemPackage.Literals.CONSUMABLE__VALUE
-//							errortext2 = 'consumable'
-//							founderror = true
-//						} else if (object instanceof Usable) {
-//							literal = ItemPackage.Literals.USABLE__VALUE
-//							errortext2 = 'usable'
-//							founderror = true
-//						} else if (object instanceof ScorePoints) {
-//							literal = ItemPackage.Literals.SCORE_POINTS__VALUE
-//							errortext2 = 'scorePoints'
-//							founderror = true
-//						} 
-//						if(founderror){
-//							error(errortext+errortext2+errortext3, object, literal)
-//						}				
-//					}
-//				}
-//			}
-//		}
-//	}
-
+	@Check
+	def checkNumberOfAnimationAttributes(AnimationAttribute object) {
+		if(object.eContainer instanceof AnimationDescription) {
+			for(AnimationAttribute other : (object.eContainer as AnimationDescription).properties) {
+				if(other != object && other.eClass == object.eClass) {
+					var errortext = 'Attribute ' 
+					var errortext2 = ''
+					var errortext3 = ' should appear only once per Animation object'
+					var literal = AuxiliaryPackage.Literals.DURATION__VALUE
+					var founderror = false
+					if(object instanceof Duration) {
+						literal = AuxiliaryPackage.Literals.DURATION__VALUE
+						errortext2 = 'duration'
+						founderror = true
+					} else if (object instanceof Pictures) {
+						literal = AuxiliaryPackage.Literals.PICTURES__VALUE
+						errortext2 = 'pictures'
+						founderror = true
+					}
+					if(founderror){
+							error(errortext+errortext2+errortext3, object, literal)
+					}	
+				}
+			}
+		}	
+	}
 }

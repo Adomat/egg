@@ -8,7 +8,7 @@ von allen properties sollte je genau einmal das schlagwort pro objekt vorhanden 
 #DONE		strength, speed, jumppower, maxlife > 0
 #DONE		inventorysize >= 0
 #DONE		duration von animationen > 0
-Animation hat 1x duration und 1x pictures
+#DONE		Animation hat 1x duration und 1x pictures
 hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
 andere animationen 1..1
 Hero 1..1
