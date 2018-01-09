@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.graphiti.ui.imageProviders">
+      <imageProvider
+            class="de.tu_bs.cs.isf.mbse.eggcubator.EggImageProvider"
+            id="de.tu_bs.cs.isf.mbse.eggcubator.eggImageProvider">
+      </imageProvider>
+   </extension>
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypes">
+      <diagramType
+            id="de.tu_bs.cs.isf.mbse.eggcubator.levelDiagram"
+            name="Level Diagram"
+            type="levelDiagram">
+      </diagramType>
+   </extension>
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypeProviders">
+      <diagramTypeProvider
+            class="de.tu_bs.cs.isf.mbse.eggcubator.LevelDiagramProvider"
+            id="de.tu_bs.cs.isf.mbse.eggcubator.levelDiagramProvider"
+            name="Level Diagram Provider">
+         <imageProvider
+               id="de.tu_bs.cs.isf.mbse.eggcubator.eggImageProvider">
+         </imageProvider>
+         <diagramType
+               id="de.tu_bs.cs.isf.mbse.eggcubator.levelDiagram">
+         </diagramType>
+      </diagramTypeProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.tu_bs.cs.isf.mbse.eggcubator.LevelEditor"
+            extensions="level"
+            id="de.tu_bs.cs.isf.mbse.eggcubator.levelEditor"
+            name="Level Editor">
+      </editor>
+   </extension>
+
+</plugin>
