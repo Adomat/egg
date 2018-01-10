@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.platform.AbstractPropertySectionFilter;
 
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
 
 public class LevelFilter extends AbstractPropertySectionFilter {
 

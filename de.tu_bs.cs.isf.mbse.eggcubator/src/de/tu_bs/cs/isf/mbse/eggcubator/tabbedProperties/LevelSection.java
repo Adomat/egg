@@ -24,7 +24,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
 
 public class LevelSection extends GFPropertySection implements ITabbedPropertyConstants, VerifyListener, Listener {
 	

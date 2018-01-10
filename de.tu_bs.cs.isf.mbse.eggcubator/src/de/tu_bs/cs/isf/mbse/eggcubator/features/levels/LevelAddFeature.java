@@ -14,7 +14,7 @@ import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.tu_bs.cs.isf.mbse.eggcubator.features.ILevelFeature;
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
 
 public class LevelAddFeature extends AbstractAddFeature implements ILevelFeature {
 	static final int DEFAULT_BLOCK_SIZE = 75; // TODO model: level.blockSize

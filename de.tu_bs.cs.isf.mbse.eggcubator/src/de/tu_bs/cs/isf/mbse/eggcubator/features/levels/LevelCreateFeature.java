@@ -7,8 +7,8 @@ import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 
 import de.tu_bs.cs.isf.mbse.eggcubator.features.ILevelFeature;
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
-import de.tu_bs.isf.cs.mbse.egg.level.LevelFactory;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.LevelFactory;
 
 // TODO this should be done on diagram creation instead, but I have no idea how. Wizards seem to complex...
 public class LevelCreateFeature extends AbstractCreateFeature implements ILevelFeature {

@@ -22,7 +22,7 @@ import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelLayoutFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelResizeFeature;
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
 
 public class LevelFeatureProvider extends AbstractFeatureProvider {
 

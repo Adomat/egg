@@ -9,7 +9,7 @@ import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.services.Graphiti;
 
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
 
 public class LevelResizeFeature extends DefaultResizeShapeFeature {
 	static final int DEFAULT_BLOCK_SIZE = 75; // TODO model

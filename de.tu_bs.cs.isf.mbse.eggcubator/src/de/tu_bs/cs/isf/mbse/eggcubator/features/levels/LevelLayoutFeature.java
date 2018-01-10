@@ -17,8 +17,8 @@ import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.util.IColorConstant;
 
-import de.tu_bs.isf.cs.mbse.egg.level.Level;
-import de.tu_bs.isf.cs.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 
 public class LevelLayoutFeature extends AbstractLayoutFeature {
 	static final int DEFAULT_BLOCK_SIZE = 75; // TODO model

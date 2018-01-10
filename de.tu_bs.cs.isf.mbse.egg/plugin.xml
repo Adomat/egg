@@ -8,22 +8,6 @@
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated commons -->
-      <package
-            uri="https://www.tu-bs.de/cs/isf/mbse/egg/commons"
-            class="de.tu_bs.isf.cs.mbse.egg.commons.CommonsPackage"
-            genModel="models/commons.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated level -->
-      <package
-            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level"
-            class="de.tu_bs.isf.cs.mbse.egg.level.LevelPackage"
-            genModel="models/level.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated descriptions -->
       <package
             uri="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions"
@@ -94,4 +78,27 @@
             class="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.GuiPackage"
             genModel="models/descriptions.genmodel"/>
    </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated commons -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/commons"
+            class="de.tu_bs.cs.isf.mbse.egg.commons.CommonsPackage"
+            genModel="models/commons.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated level -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level"
+            class="de.tu_bs.cs.isf.mbse.egg.level.LevelPackage"
+            genModel="models/level.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="de.tu_bs.cs.isf.mbse.egg.level.impl.custom.LevelFactoryImplCustom"
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level/impl/custom/LevelFactoryImplCustom">
+      </factory>
+   </extension>
+
 </plugin>
