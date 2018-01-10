@@ -45,7 +45,8 @@ public class GenerateAction implements IObjectActionDelegate {
 				JavaScriptGenerator.generateCode(selectedFile);
 			} catch (Exception e) {
 				e.printStackTrace();
-				MessageDialog.openError(shell, "Generating went wrong!", "Something went wrong while generating your Code:\n\n"+e.getCause());
+				MessageDialog.openError(shell, "Generating went wrong!", "Something went wrong while generating your Code:\n\n"
+						+ e.getMessage().substring(0, 1000) + " ...");
 			}
 		}
 	}

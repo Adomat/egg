@@ -16,7 +16,7 @@ public class JavaScriptGenerator {
 			return;
 
 		Bundle bundle = Platform.getBundle("de.tu_bs.cs.isf.mbse.egg.modeltranformation");
-		URL fileURL = bundle.getEntry("JavaScriptTransformation.egl");
+		URL fileURL = bundle.getEntry("JavaScriptTransformation.egx");
 		File egxFile = new File(FileLocator.resolve(fileURL).toURI());
 		
 		System.out.println(egxFile);
@@ -28,9 +28,10 @@ public class JavaScriptGenerator {
 		// File("JavaScriptTransformation.egx").getAbsoluteFile());
 
 		if (!module.getParseProblems().isEmpty()) {
-			throw new Exception("Syntax errors found.");
+			throw new Exception("Syntax errors found in EGX File.");
 		}
 
+		// TODO WE SHOULD LOAD AN ECORE MODEL HERE, RIGHT?
 		// Load the XML document
 		PlainXmlModel model = new PlainXmlModel();
 		model.setFile(selectedFile);
