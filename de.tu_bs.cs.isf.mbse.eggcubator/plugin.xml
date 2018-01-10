@@ -39,5 +39,36 @@
             name="Level Editor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor
+            contributorId="levelDiagram.PropertyContributor">
+         <propertyCategory
+               category="LevelCategory"></propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="levelDiagram.PropertyContributor">
+         <propertyTab
+               category="LevelCategory"
+               id="de.tu_bs.cs.isf.mbse.eggcubator.levelTab"
+               label="Level">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="levelDiagram.PropertyContributor">
+         <propertySection
+               class="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.LevelSection"
+               filter="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.LevelFilter"
+               id="de.tu_bs.cs.isf.mbse.eggcubator.levelTab.level"
+               tab="de.tu_bs.cs.isf.mbse.eggcubator.levelTab">
+         </propertySection>
+      </propertySections>
+   </extension>
 
 </plugin>
