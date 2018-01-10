@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="de.tu_bs.cs.isf.mbse.egg.modeltranformation.contribution1"
+            nameFilter="*.egg"
+            objectClass="org.eclipse.core.resources.IFile">
+            
+         <!--
+         <menu
+               label="Egg SubMenu"
+               path="additions"
+               id="de.tu_bs.cs.isf.mbse.egg.modeltranformation.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         
+         menubarPath="de.tu_bs.cs.isf.mbse.egg.modeltranformation.menu1/group1"
+         -->
+         
+         <action
+               class="de.tu_bs.cs.isf.mbse.egg.modeltranformation.actions.GenerateAction"
+               enablesFor="1"
+               icon="icon/icon.png"
+               id="de.tu_bs.cs.isf.mbse.egg.modeltranformation.newAction"
+               label="Generate EGG Game (JavaScript)">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

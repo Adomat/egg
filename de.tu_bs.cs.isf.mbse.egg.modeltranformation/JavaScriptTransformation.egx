@@ -1,0 +1,8 @@
+rule Library2Page 
+	transform library : t_library {
+	
+		template : "JavaScriptTransformation.egl"
+		
+		target : "html-gen/index.html"
+		
+	}
