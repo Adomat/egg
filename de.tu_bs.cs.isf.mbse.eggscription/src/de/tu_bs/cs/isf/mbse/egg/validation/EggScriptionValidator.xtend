@@ -20,7 +20,6 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription
 import org.eclipse.xtext.validation.Check
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription
-import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItemsTypes
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute
@@ -35,11 +34,16 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.Description
 import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionsPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.InventoryItemsCounts
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.UniqueAttribute
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.AttributesPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.ecore.EStructuralFeature
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IdleAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RunAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CloseAttackAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.DistanceAttackAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CanKillInDistance
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IntelligenceLevel
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures
 
 /**
  * This class contains custom validation rules. 
@@ -183,14 +187,239 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
-//	error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
+	/**
+	 * Check required attributes in ItemDescription (scorePoints, consumable/usable, Animation)
+	 */
+	@Check
+	def checkExistenceOfItemAttributes(ItemDescription desc) {
+		var foundConsumable = false;
+		var foundUsable = false;
+		var foundScorePoints = false;
+		var foundAnimation = false;
+		for(ItemAttribute attribute : desc.properties) {
+			if(attribute instanceof Consumable) foundConsumable = true;
+			if(attribute instanceof Usable) foundUsable = true;
+			if(attribute instanceof ScorePoints) foundScorePoints = true;
+			if(attribute instanceof AnimationDescription) foundAnimation = true;
+		}
+		if(!foundAnimation) {
+			warning('Could not find attribute Animation in item  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundUsable && !foundConsumable) {
+			warning('Could neither find attribute usable not consumable in item  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundScorePoints) {
+			warning('Could not find attribute scorePoints in item  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+	}
 	
+	/**
+	 * Check required attributes in ItemDescription (scorePoints, consumable/usable, Animation)
+	 */
+	@Check
+	def checkExistenceOfBlockAttributes(BlockDescription desc) {
+		var foundAnimation = false;
+		for(BlockAttribute attribute : desc.properties) {
+			if(attribute instanceof AnimationDescription) foundAnimation = true;
+		}
+		if(!foundAnimation) {
+			warning('Could not find attribute Animation in block  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+	}
+	
+	/**
+	 * Check required attributes in ItemDescription (scorePoints, consumable/usable, Animation)
+	 */
+	@Check
+	def checkExistenceOfAnimationAttributes(AnimationDescription desc) {
+		var foundDuration = false;
+		var foundPictures = false;
+		for(AnimationAttribute attribute : desc.properties) {
+			if(attribute instanceof Duration) foundDuration = true;
+			if(attribute instanceof Pictures) foundPictures = true;
+		}
+		if(!foundDuration) {
+			warning('Could not find attribute duration in  of the Animation', 
+				desc.eClass.getEStructuralFeature(desc.toString));
+		}
+		if(!foundPictures) {
+			warning('Could not find attribute pictures in  of the Animation', 
+				desc.eClass.getEStructuralFeature(desc.toString));
+		}
+	}
+	
+	/**
+	 * Check required attributes in HeroDescription (speed, jumpPower, maxLife, strength, idle-, run-, jumpAnimation,
+	 * inventorySize, inventoryItemsTypes, inventoryItemsCounts, CloseAttackAnimation, canKillInDistance => DistanceAttackAnimation)
+	 */
+	@Check
+	def checkExistenceOfHeroAttributes(HeroDescription desc) {
+		var foundSpeed = false;
+		var foundJumpPower = false;
+		var foundMaxLife = false;
+		var foundStrength = false;
+		var foundIdleAni = false;
+		var foundRunAni = false;
+		var foundJumpAni = false;
+		var foundCloseAni = false;
+		var foundDisAni = false;
+		var foundInvSize = false;
+		var foundInvTypes = false;
+		var foundInvCounts = false;
+		var foundDistanceKiller = false;
+		
+		for(HeroAttribute attribute : desc.properties) {
+			if(attribute instanceof Speed) foundSpeed = true;
+			if(attribute instanceof JumpPower) foundJumpPower = true;
+			if(attribute instanceof MaxLife) foundMaxLife = true;
+			if(attribute instanceof Strength) foundStrength = true;
+			if(attribute instanceof IdleAnimation) foundIdleAni = true;
+			if(attribute instanceof RunAnimation) foundRunAni = true;
+			if(attribute instanceof JumpAnimation) foundJumpAni = true;
+			if(attribute instanceof CloseAttackAnimation) foundCloseAni = true;
+			if(attribute instanceof DistanceAttackAnimation) foundDisAni = true;
+			if(attribute instanceof InventorySize) foundInvSize = true;
+			if(attribute instanceof InventoryItemsTypes) foundInvTypes = true;
+			if(attribute instanceof InventoryItemsCounts) foundInvCounts = true;
+			if(attribute instanceof CanKillInDistance) foundDistanceKiller = true;
+		}
+		if(!foundInvSize) {
+			warning('Could not find attribute inventorySize in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if((foundInvTypes && !foundInvCounts) ||(!foundInvTypes && foundInvCounts)) {
+			error('Found incomplete specification of inventory (types and counts) in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundSpeed) {
+			warning('Could not find attribute speed in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundJumpPower) {
+			warning('Could not find attribute jumpPower in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundMaxLife) {
+			warning('Could not find attribute maxLife in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundStrength) {
+			warning('Could not find attribute strength in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundIdleAni) {
+			warning('Could not find attribute idle (Animation) in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundRunAni) {
+			warning('Could not find attribute run (Animation) in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundJumpAni) {
+			warning('Could not find attribute jump (Animation) in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundCloseAni) {
+			warning('Could not find attribute closeAttack (Animation) in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if((foundDisAni && !foundDistanceKiller) || (!foundDisAni && foundDistanceKiller)) {
+			error('Distance killer attributes incomplete in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+	}
+	
+	/**
+	 * Check required attributes in HeroDescription (speed, jumpPower, maxLife, strength, idle-, run-, jumpAnimation,
+	 * inventorySize, inventoryItemsTypes, inventoryItemsCounts, CloseAttackAnimation, canKillInDistance => DistanceAttackAnimation)
+	 */
+	@Check
+	def checkExistenceOfEnemyAttributes(EnemyDescription desc) {
+		var foundSpeed = false;
+		var foundJumpPower = false;
+		var foundMaxLife = false;
+		var foundStrength = false;
+		var foundIdleAni = false;
+		var foundRunAni = false;
+		var foundJumpAni = false;
+		var foundCloseAni = false;
+		var foundDisAni = false;
+		var foundIQ = false;
+		var foundInvTypes = false;
+		var foundInvCounts = false;
+		var foundDistanceKiller = false;
+		
+		for(EnemyAttribute attribute : desc.properties) {
+			if(attribute instanceof Speed) foundSpeed = true;
+			if(attribute instanceof JumpPower) foundJumpPower = true;
+			if(attribute instanceof MaxLife) foundMaxLife = true;
+			if(attribute instanceof Strength) foundStrength = true;
+			if(attribute instanceof IdleAnimation) foundIdleAni = true;
+			if(attribute instanceof RunAnimation) foundRunAni = true;
+			if(attribute instanceof JumpAnimation) foundJumpAni = true;
+			if(attribute instanceof CloseAttackAnimation) foundCloseAni = true;
+			if(attribute instanceof DistanceAttackAnimation) foundDisAni = true;
+			if(attribute instanceof IntelligenceLevel) foundIQ = true;
+			if(attribute instanceof InventoryItemsTypes) foundInvTypes = true;
+			if(attribute instanceof InventoryItemsCounts) foundInvCounts = true;
+			if(attribute instanceof CanKillInDistance) foundDistanceKiller = true;
+		}
+		if(!foundIQ) {
+			warning('Could not find attribute iq in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if((foundInvTypes && !foundInvCounts) ||(!foundInvTypes && foundInvCounts)) {
+			error('Found incomplete specification of inventory (types and counts) in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundSpeed) {
+			warning('Could not find attribute speed in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundJumpPower) {
+			warning('Could not find attribute jumpPower in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundMaxLife) {
+			warning('Could not find attribute maxLife in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundStrength) {
+			warning('Could not find attribute strength in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundIdleAni) {
+			warning('Could not find attribute idle (Animation) in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundRunAni) {
+			warning('Could not find attribute run (Animation) in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundJumpAni) {
+			warning('Could not find attribute jump (Animation) in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundCloseAni) {
+			warning('Could not find attribute closeAttack (Animation) in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if((foundDisAni && !foundDistanceKiller) || (!foundDisAni && foundDistanceKiller)) {
+			error('Distance killer attributes incomplete in enemy  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+	}
+		
 	/**
 	 * Unique attributes must be existing exactly once
 	 */
 	@Check
 	def checkUniquenessOfAttributes(UniqueAttribute inspectedAttribute) {
-		var errorstr = 'Attribute ' + inspectedAttribute.eClass.name.toString + ' should appear only once.'
+		var errorstr = 'Attribute ' + inspectedAttribute.eClass.name.toString + ' should appear only once per description.'
 		if(inspectedAttribute.eContainer instanceof ItemDescription) {
 			for(ItemAttribute compareAttribute : (inspectedAttribute.eContainer as ItemDescription).properties) {
 				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
@@ -219,36 +448,13 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 				}
 			}
 		}
-	}
-		
-	/**
-	 * Animations should have only one keyword duration and pictures
-	 */
-	@Check
-	def checkNumberOfAnimationAttributes(AnimationAttribute object) {
-		if(object.eContainer instanceof AnimationDescription) {
-			for(AnimationAttribute other : (object.eContainer as AnimationDescription).properties) {
-				if(other != object && other.eClass == object.eClass) {
-					var errortext = 'Attribute ' 
-					var errortext2 = ''
-					var errortext3 = ' should appear only once per Animation object'
-					var literal = AuxiliaryPackage.Literals.DURATION__VALUE
-					var founderror = false
-					if(object instanceof Duration) {
-						literal = AuxiliaryPackage.Literals.DURATION__VALUE
-						errortext2 = 'duration'
-						founderror = true
-					} else if (object instanceof Pictures) {
-						literal = AuxiliaryPackage.Literals.PICTURES__VALUE
-						errortext2 = 'pictures'
-						founderror = true
-					}
-					if(founderror){
-							error(errortext+errortext2+errortext3, object, literal)
-					}	
+		if(inspectedAttribute.eContainer instanceof AnimationDescription) {
+			for(AnimationAttribute compareAttribute : (inspectedAttribute.eContainer as AnimationDescription).properties) {
+				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
+					error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
 				}
 			}
-		}	
+		}
 	}
 
 	/**
@@ -356,5 +562,4 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			}
 		}
 	}
-	
 }

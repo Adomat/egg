@@ -51,7 +51,8 @@
           eType="#//auxiliary/AnimationAttribute" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TextPageAnimationDescription" eSuperTypes="#//auxiliary/AnimationDescription commons.ecore#//PositionedElement"/>
-    <eClassifiers xsi:type="ecore:EClass" name="AnimationAttribute" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AnimationAttribute" abstract="true"
+        eSuperTypes="#//attributes/UniqueAttribute"/>
     <eClassifiers xsi:type="ecore:EClass" name="Pictures" eSuperTypes="#//auxiliary/AnimationAttribute">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
