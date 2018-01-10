@@ -38,6 +38,8 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.UniqueAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.AttributesPackage
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EStructuralFeature
 
 /**
  * This class contains custom validation rules. 
@@ -181,77 +183,7 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 	}
 	
-//	/**
-//	 * Items should have only one keyword consumable, usable and scorepoints
-//	 */
-//	@Check
-//	def checkNumberOfItemAttributes(ItemAttribute object) {
-//		if(object.eContainer instanceof ItemDescription) {
-//			for(ItemAttribute other : (object.eContainer as ItemDescription).properties) {
-//				if(other != object) {
-//					if(other.eClass == object.eClass) {
-//						var errortext = 'Attribute ' 
-//						var errortext2 = ''
-//						var errortext3 = ' should appear only once per Item object'
-//						var literal = ItemPackage.Literals.CONSUMABLE__VALUE
-//						var founderror = false
-//						if(object instanceof Consumable) {
-//							literal = ItemPackage.Literals.CONSUMABLE__VALUE
-//							errortext2 = 'consumable'
-//							founderror = true
-//						} else if (object instanceof Usable) {
-//							literal = ItemPackage.Literals.USABLE__VALUE
-//							errortext2 = 'usable'
-//							founderror = true
-//						} else if (object instanceof ScorePoints) {
-//							literal = ItemPackage.Literals.SCORE_POINTS__VALUE
-//							errortext2 = 'scorePoints'
-//							founderror = true
-//						} 
-//						if(founderror){
-//							error(errortext+errortext2+errortext3, object, literal)
-//						}				
-//					}
-//				}
-//			}
-//		}
-//	}
-
-//	/**
-//	 * 
-//	 */
-//	@Check
-//	def checkNumberOfBlockAttributes(BlockAttribute object) {
-//		if(object.eContainer instanceof BlockDescription) {
-//			for(BlockAttribute other : (object.eContainer as BlockDescription).properties) {
-//				if(other != object) {
-//					if(other.eClass == object.eClass) {
-//						var errortext = 'Attribute ' 
-//						var errortext2 = ''
-//						var errortext3 = ' should appear only once per Block object'
-//						var literal = BlockPackage.Literals.DESTROYABLE__VALUE
-//						var founderror = false
-//						if(object instanceof Destroyable) {
-//							literal = BlockPackage.Literals.DESTROYABLE__VALUE
-//							errortext2 = 'destroyable'
-//							founderror = true
-//						} else if (object instanceof Movable) {
-//							literal = BlockPackage.Literals.MOVABLE__VALUE
-//							errortext2 = 'movable'
-//							founderror = true
-//						} else if (object instanceof NoCollision) {
-//							literal = BlockPackage.Literals.NO_COLLISION__VALUE
-//							errortext2 = 'noCollision'
-//							founderror = true
-//						} 
-//						if(founderror){
-//							error(errortext+errortext2+errortext3, object, literal)
-//						}				
-//					}
-//				}
-//			}
-//		}
-//	}
+//	error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
 	
 	/**
 	 * Unique attributes must be existing exactly once
@@ -262,56 +194,28 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		if(inspectedAttribute.eContainer instanceof ItemDescription) {
 			for(ItemAttribute compareAttribute : (inspectedAttribute.eContainer as ItemDescription).properties) {
 				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
-					if(inspectedAttribute.eClass == ItemPackage.Literals.CONSUMABLE) error(errorstr, ItemPackage.Literals.CONSUMABLE__VALUE)
-					if(inspectedAttribute.eClass == ItemPackage.Literals.USABLE) error(errorstr, ItemPackage.Literals.USABLE__VALUE)
-					if(inspectedAttribute.eClass == ItemPackage.Literals.SCORE_POINTS) error(errorstr, ItemPackage.Literals.SCORE_POINTS__VALUE)
+					error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
 				}
 			}
 		}
 		if(inspectedAttribute.eContainer instanceof BlockDescription) {
 			for(BlockAttribute compareAttribute : (inspectedAttribute.eContainer as BlockDescription).properties) {
 				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
-					if(inspectedAttribute.eClass == BlockPackage.Literals.DESTROYABLE) error(errorstr, BlockPackage.Literals.DESTROYABLE__VALUE)
-					if(inspectedAttribute.eClass == BlockPackage.Literals.MOVABLE) error(errorstr, BlockPackage.Literals.MOVABLE__VALUE)
-					if(inspectedAttribute.eClass == BlockPackage.Literals.NO_COLLISION) error(errorstr, BlockPackage.Literals.NO_COLLISION__VALUE)
+					error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
 				}
 			}
 		}
 		if(inspectedAttribute.eContainer instanceof HeroDescription) {
 			for(HeroAttribute compareAttribute : (inspectedAttribute.eContainer as HeroDescription).properties) {
 				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.CAN_KILL_IN_DISTANCE) error(errorstr, CharacterPackage.Literals.CAN_KILL_IN_DISTANCE__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.IDLE_ANIMATION) error(errorstr, CharacterPackage.Literals.IDLE_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_SIZE) error(errorstr, CharacterPackage.Literals.INVENTORY_SIZE__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_TYPES) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_TYPES__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_ANIMATION) error(errorstr, CharacterPackage.Literals.JUMP_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_POWER) error(errorstr, CharacterPackage.Literals.JUMP_POWER__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.MAX_LIFE) error(errorstr, CharacterPackage.Literals.MAX_LIFE__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.RUN_ANIMATION) error(errorstr, CharacterPackage.Literals.RUN_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.SPEED) error(errorstr, CharacterPackage.Literals.SPEED__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.STRENGTH) error(errorstr, CharacterPackage.Literals.STRENGTH__VALUE)
+					error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
 				}
 			}
 		}
 		if(inspectedAttribute.eContainer instanceof EnemyDescription) {
 			for(EnemyAttribute compareAttribute : (inspectedAttribute.eContainer as EnemyDescription).properties) {
 				if(compareAttribute.eClass.equals(inspectedAttribute.eClass) && compareAttribute != inspectedAttribute) {
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.CAN_KILL_IN_DISTANCE) error(errorstr, CharacterPackage.Literals.CAN_KILL_IN_DISTANCE__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.CLOSE_ATTACK_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION) error(errorstr, CharacterPackage.Literals.DISTANCE_ATTACK_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.IDLE_ANIMATION) error(errorstr, CharacterPackage.Literals.IDLE_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_COUNTS__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.INVENTORY_ITEMS_TYPES) error(errorstr, CharacterPackage.Literals.INVENTORY_ITEMS_TYPES__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_ANIMATION) error(errorstr, CharacterPackage.Literals.JUMP_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.JUMP_POWER) error(errorstr, CharacterPackage.Literals.JUMP_POWER__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.MAX_LIFE) error(errorstr, CharacterPackage.Literals.MAX_LIFE__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.RUN_ANIMATION) error(errorstr, CharacterPackage.Literals.RUN_ANIMATION__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.SPEED) error(errorstr, CharacterPackage.Literals.SPEED__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.STRENGTH) error(errorstr, CharacterPackage.Literals.STRENGTH__VALUE)
-					if(inspectedAttribute.eClass == CharacterPackage.Literals.INTELLIGENCE_LEVEL) error(errorstr, CharacterPackage.Literals.INTELLIGENCE_LEVEL__VALUE)
+					error(errorstr, inspectedAttribute.eClass.getEStructuralFeature(inspectedAttribute.toString));
 				}
 			}
 		}
