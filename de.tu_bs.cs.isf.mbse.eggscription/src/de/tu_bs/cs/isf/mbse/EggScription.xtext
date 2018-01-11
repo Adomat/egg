@@ -222,14 +222,14 @@ JumpAnimation returns character::JumpAnimation:
 	('jump' value = AnimationDescription)
 ;
 
-CloseAttackAnimation returns character::CloseAttackAnimation:
-	{character::CloseAttackAnimation}
-	('closeAttack' value = AnimationDescription)
+CloseAttackAnimation returns character::MeleeAttackAnimation:
+	{character::MeleeAttackAnimation}
+	('melee' value = AnimationDescription)
 ;
 
-DistanceAttackAnimation returns character::DistanceAttackAnimation:
-	{character::DistanceAttackAnimation}
-	('distanceAttack' value = AnimationDescription)
+DistanceAttackAnimation returns character::RangeAttackAnimation:
+	{character::RangeAttackAnimation}
+	('range' value = AnimationDescription)
 ;
 
 InventoryItemsTypes returns character::InventoryItemsTypes:
@@ -242,9 +242,9 @@ InventoryItemsCounts returns character::InventoryItemsCounts:
 	'inventoryItemCounts' value += INT (',' value += INT)*
 ;
 
-CanKillInDistance returns character::CanKillInDistance:
-	{character::CanKillInDistance}
-	(value ?= 'distanceKiller')
+CanKillInDistance returns character::RangeAttackEnabled:
+	{character::RangeAttackEnabled}
+	(value ?= 'rangeAttackEnabled')
 ;
 
 //#######################################################################################################

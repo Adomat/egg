@@ -39,9 +39,9 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IdleAnimation
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RunAnimation
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpAnimation
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CloseAttackAnimation
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.DistanceAttackAnimation
-import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CanKillInDistance
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MeleeAttackAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RangeAttackAnimation
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RangeAttackEnabled
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IntelligenceLevel
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures
 
@@ -280,12 +280,12 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof IdleAnimation) foundIdleAni = true;
 			if(attribute instanceof RunAnimation) foundRunAni = true;
 			if(attribute instanceof JumpAnimation) foundJumpAni = true;
-			if(attribute instanceof CloseAttackAnimation) foundCloseAni = true;
-			if(attribute instanceof DistanceAttackAnimation) foundDisAni = true;
+			if(attribute instanceof MeleeAttackAnimation) foundCloseAni = true;
+			if(attribute instanceof RangeAttackAnimation) foundDisAni = true;
 			if(attribute instanceof InventorySize) foundInvSize = true;
 			if(attribute instanceof InventoryItemsTypes) foundInvTypes = true;
 			if(attribute instanceof InventoryItemsCounts) foundInvCounts = true;
-			if(attribute instanceof CanKillInDistance) foundDistanceKiller = true;
+			if(attribute instanceof RangeAttackEnabled) foundDistanceKiller = true;
 		}
 		if(!foundInvSize) {
 			warning('Could not find attribute inventorySize in hero  \"' + desc.name.toString + '\"', 
@@ -324,18 +324,18 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundCloseAni) {
-			warning('Could not find attribute closeAttack (Animation) in hero  \"' + desc.name.toString + '\"', 
+			warning('Could not find attribute melee (Animation) in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if((foundDisAni && !foundDistanceKiller) || (!foundDisAni && foundDistanceKiller)) {
-			error('Distance killer attributes incomplete in hero  \"' + desc.name.toString + '\"', 
+			error('Range attack attributes incomplete in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 	}
 	
 	/**
 	 * Check required attributes in HeroDescription (speed, jumpPower, maxLife, strength, idle-, run-, jumpAnimation,
-	 * inventorySize, inventoryItemsTypes, inventoryItemsCounts, CloseAttackAnimation, canKillInDistance => DistanceAttackAnimation)
+	 * inventorySize, inventoryItemsTypes, inventoryItemsCounts, CloseAttackAnimation, canKillInDistance => RangeAttackAnimation)
 	 */
 	@Check
 	def checkExistenceOfEnemyAttributes(EnemyDescription desc) {
@@ -361,12 +361,12 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof IdleAnimation) foundIdleAni = true;
 			if(attribute instanceof RunAnimation) foundRunAni = true;
 			if(attribute instanceof JumpAnimation) foundJumpAni = true;
-			if(attribute instanceof CloseAttackAnimation) foundCloseAni = true;
-			if(attribute instanceof DistanceAttackAnimation) foundDisAni = true;
+			if(attribute instanceof MeleeAttackAnimation) foundCloseAni = true;
+			if(attribute instanceof RangeAttackAnimation) foundDisAni = true;
 			if(attribute instanceof IntelligenceLevel) foundIQ = true;
 			if(attribute instanceof InventoryItemsTypes) foundInvTypes = true;
 			if(attribute instanceof InventoryItemsCounts) foundInvCounts = true;
-			if(attribute instanceof CanKillInDistance) foundDistanceKiller = true;
+			if(attribute instanceof RangeAttackEnabled) foundDistanceKiller = true;
 		}
 		if(!foundIQ) {
 			warning('Could not find attribute iq in enemy  \"' + desc.name.toString + '\"', 
@@ -405,11 +405,11 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundCloseAni) {
-			warning('Could not find attribute closeAttack (Animation) in enemy  \"' + desc.name.toString + '\"', 
+			warning('Could not find attribute melee (Animation) in enemy  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if((foundDisAni && !foundDistanceKiller) || (!foundDisAni && foundDistanceKiller)) {
-			error('Distance killer attributes incomplete in enemy  \"' + desc.name.toString + '\"', 
+			error('Range attack attributes incomplete in enemy  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 	}

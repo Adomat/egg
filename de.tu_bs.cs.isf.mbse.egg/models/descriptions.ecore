@@ -136,15 +136,15 @@
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CloseAttackAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="MeleeAttackAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1"
             eType="#//auxiliary/AnimationDescription" containment="true"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="DistanceAttackAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="RangeAttackAnimation" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1"
             eType="#//auxiliary/AnimationDescription" containment="true"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CanKillInDistance" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+      <eClassifiers xsi:type="ecore:EClass" name="RangeAttackEnabled" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       </eClassifiers>

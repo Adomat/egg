@@ -119,14 +119,14 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/InventoryItemsCounts">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/InventoryItemsCounts/value"/>
         </genClasses>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/CloseAttackAnimation">
-          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/CloseAttackAnimation/value"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/MeleeAttackAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/MeleeAttackAnimation/value"/>
         </genClasses>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/DistanceAttackAnimation">
-          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/DistanceAttackAnimation/value"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/RangeAttackAnimation">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference descriptions.ecore#//attributes/character/RangeAttackAnimation/value"/>
         </genClasses>
-        <genClasses ecoreClass="descriptions.ecore#//attributes/character/CanKillInDistance">
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/CanKillInDistance/value"/>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/RangeAttackEnabled">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/RangeAttackEnabled/value"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Item" basePackage="de.tu_bs.cs.isf.mbse.egg.descriptions.attributes"
