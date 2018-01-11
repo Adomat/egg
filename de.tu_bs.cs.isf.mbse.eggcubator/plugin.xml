@@ -34,9 +34,14 @@
          point="org.eclipse.ui.editors">
       <editor
             class="de.tu_bs.cs.isf.mbse.eggcubator.LevelEditor"
+            contributorClass="org.eclipse.graphiti.ui.editor.DiagramEditorActionBarContributor"
             extensions="level"
             id="de.tu_bs.cs.isf.mbse.eggcubator.levelEditor"
+            matchingStrategy="org.eclipse.graphiti.ui.editor.DiagramEditorMatchingStrategy"
             name="Level Editor">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.graphiti.content.diagram">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension

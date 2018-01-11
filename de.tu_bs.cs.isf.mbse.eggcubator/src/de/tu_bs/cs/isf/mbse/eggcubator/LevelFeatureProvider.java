@@ -11,18 +11,21 @@ import org.eclipse.graphiti.features.IPasteFeature;
 import org.eclipse.graphiti.features.IPrintFeature;
 import org.eclipse.graphiti.features.IResizeShapeFeature;
 import org.eclipse.graphiti.features.ISaveImageFeature;
+import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.ICopyContext;
 import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.features.context.IPasteContext;
 import org.eclipse.graphiti.features.context.IResizeShapeContext;
+import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractFeatureProvider;
 
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelLayoutFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelResizeFeature;
-import de.tu_bs.cs.isf.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelUpdateFeature;
 
 public class LevelFeatureProvider extends AbstractFeatureProvider {
 
@@ -30,6 +33,7 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	private LevelAddFeature levelAddFeature = new LevelAddFeature(this);
 	private LevelResizeFeature levelResizeFeature = new LevelResizeFeature(this);
 	private LevelLayoutFeature levelLayoutFeature = new LevelLayoutFeature(this);
+	private LevelUpdateFeature levelUpdateFeature = new LevelUpdateFeature(this);
 	
 	public LevelFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
@@ -60,6 +64,16 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 		EList<EObject> bos = context.getPictogramElement().getLink().getBusinessObjects();
 		if (bos.size() == 1 && bos.get(0) instanceof Level)
 			return levelLayoutFeature;
+		return null;
+	}
+	
+	@Override
+	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
+		if (context.getPictogramElement() == null || context.getPictogramElement().getLink() == null)
+			return null;
+		EList<EObject> bos = context.getPictogramElement().getLink().getBusinessObjects();
+		if (bos.size() == 1 && bos.get(0) instanceof Level)
+			return levelUpdateFeature;
 		return null;
 	}
 	

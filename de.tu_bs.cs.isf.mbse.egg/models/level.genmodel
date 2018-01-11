@@ -16,7 +16,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/width"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/height"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/gravity"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/blockSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/elementSize"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference level.ecore#//Level/elements"/>
       <genOperations ecoreOperation="level.ecore#//Level/getElement">
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionX"/>

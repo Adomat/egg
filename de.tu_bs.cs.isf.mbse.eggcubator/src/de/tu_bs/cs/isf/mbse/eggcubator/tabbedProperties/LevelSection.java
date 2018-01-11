@@ -1,17 +1,15 @@
 package de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.graphiti.features.IUpdateFeature;
+import org.eclipse.graphiti.features.context.IUpdateContext;
+import org.eclipse.graphiti.features.context.impl.UpdateContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.custom.TextChangeListener;
-import org.eclipse.swt.custom.TextChangedEvent;
-import org.eclipse.swt.custom.TextChangingEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FormAttachment;
@@ -31,11 +29,11 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 	private Text nameText;
 	private Text widthText;
 	private Text heightText;
+	private Text elementSizeText;
 	
 	private boolean listenerStopped = false;
 
-	public LevelSection() {
-	}
+	public LevelSection() { }
 	
 	@Override
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
@@ -43,7 +41,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 		TabbedPropertySheetWidgetFactory factory = getWidgetFactory();
         Composite composite = factory.createFlatFormComposite(parent);
         FormData data;
- 
+        
         // name
         nameText = factory.createText(composite, "");
         data = new FormData();
@@ -96,30 +94,49 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.right = new FormAttachment(heightText, -HSPACE);
         data.top = new FormAttachment(heightText, 0, SWT.CENTER);
         heightLabel.setLayoutData(data);
+        
+        // element size
+        elementSizeText = factory.createText(composite, "");
+        data = new FormData();
+        data.left = new FormAttachment(heightText, 0, SWT.LEFT);
+        data.right = new FormAttachment(heightText, 0, SWT.RIGHT);
+        data.top = new FormAttachment(heightText, VSPACE, SWT.BOTTOM);
+        elementSizeText.setLayoutData(data);
+        elementSizeText.addVerifyListener(this);
+        elementSizeText.addListener(SWT.FocusOut, this);
+        elementSizeText.addListener(SWT.KeyDown, this);
+ 
+        CLabel elementSizeLabel = factory.createCLabel(composite, "Element Size:");
+        data = new FormData();
+        data.left = new FormAttachment(0, 0);
+        data.right = new FormAttachment(elementSizeText, -HSPACE);
+        data.top = new FormAttachment(elementSizeText, 0, SWT.CENTER);
+        elementSizeLabel.setLayoutData(data);
 	}
 
 	@Override
 	public void refresh() {
+		// Level changed
 		PictogramElement pe = getSelectedPictogramElement();
         Level level = (Level) pe.getLink().getBusinessObjects().get(0); // Filter assured this is set
         
         listenerStopped = true;
         
         // name
-        // TODO model
-        //String name = level.getName();
-        //nameText.setText(name);
+        String name = level.getName();
+        nameText.setText(name);
         
-
         // width
-        // TODO model
-        //Integer width = level.getWidth();
-        //widthText.setText(width.toString());
+        Integer width = level.getWidth();
+        widthText.setText(width.toString());
 
         // height
-        // TODO model
-        //Integer height = level.getHeight();
-        //heightText.setText(height.toString());
+        Integer height = level.getHeight();
+        heightText.setText(height.toString());
+        
+        // element size
+        Integer elementSize = level.getElementSize();
+        elementSizeText.setText(elementSize.toString());
         
         listenerStopped = false;
 	}
@@ -134,26 +151,100 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 	public void handleEvent(Event event) {
 		if (listenerStopped)
 			return;
-		if (event.type == SWT.FocusOut || (event.type == SWT.KeyDown && event.character == SWT.LF)) {
-
+		if (event.type == SWT.FocusOut || (event.type == SWT.KeyDown && event.character == SWT.CR)) { // Focus left or enter
+			// Properties changed
 			PictogramElement pe = getSelectedPictogramElement();
 	        Level level = (Level) pe.getLink().getBusinessObjects().get(0); // Filter assured this is set
+	        TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(getDiagram());
 	        
-	        // name
-	        // TODO model
-	        //String name = nameText.getText();
-	        //level.setName(name);
-	        
-
-	        // width
-	        // TODO model
-	        //Integer width = Integer.parseInt(widthText.getText());
-	        //level.setWidth(width);
-
-	        // height
-	        // TODO model
-	        //Integer height = Integer.parseInt(heightText.getText());
-	        //level.setHeight(height);
+	        if (event.widget == nameText) {
+		        String name = nameText.getText();
+		        if (name.isEmpty()) {
+		            listenerStopped = true;
+		        	nameText.setText(level.getName());
+		            listenerStopped = false;
+		        }
+		        if (name.isEmpty() || name.equals(level.getName()))
+		        	return;
+		        final String cName = name;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level name changed: " + level.getName() + "->" + cName) {
+					@Override
+					protected void doExecute() {
+				        level.setName(cName);
+				        // trigger Update
+				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
+				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
+				        if (updateFeature.updateNeeded(context).toBoolean())
+				        	updateFeature.update(context);
+					}
+		        });
+	        } else if (event.widget == widthText) {
+		        Integer width = Integer.parseInt(widthText.getText());
+		        if (width < 3) {
+		            listenerStopped = true;
+		        	width = 3;
+		        	widthText.setText(String.valueOf(width));
+		            listenerStopped = false;
+		        }
+		        if (width == level.getWidth())
+		        	return;
+		        final Integer cWidth = width;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level width changed: " + level.getWidth() + "->" + cWidth.toString()) {
+					@Override
+					protected void doExecute() {
+				        level.setWidth(cWidth);
+				        // trigger Update
+				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
+				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
+				        if (updateFeature.updateNeeded(context).toBoolean())
+				        	updateFeature.update(context);
+					}
+		        });
+	        } else if (event.widget == heightText) {
+		        Integer height = Integer.parseInt(heightText.getText());
+		        if (height < 3) {
+		            listenerStopped = true;
+		        	height = 3;
+		        	heightText.setText(String.valueOf(height));
+		            listenerStopped = false;
+		        }
+		        if (height == level.getHeight())
+		        	return;
+		        final Integer cHeight = height;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level height changed: " + level.getHeight() + "->" + cHeight.toString()) {
+					@Override
+					protected void doExecute() {
+				        level.setHeight(cHeight);
+				        // trigger Update
+				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
+				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
+				        if (updateFeature.updateNeeded(context).toBoolean())
+				        	updateFeature.update(context);
+					}
+		        });
+	        } else if (event.widget == elementSizeText) {
+		        Integer elementSize = Integer.parseInt(elementSizeText.getText());
+		        if (elementSize < 15) {
+		            listenerStopped = true;
+		        	elementSize = 15;
+		        	elementSizeText.setText(String.valueOf(elementSize));
+		            listenerStopped = false;
+		        }
+		        if (elementSize == level.getElementSize())
+		        	return;
+		        final Integer cElementSize = elementSize;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level element size changed: " + String.valueOf(level.getElementSize()) + "->" + cElementSize.toString()) {
+					@Override
+					protected void doExecute() {
+				        level.setElementSize(cElementSize);
+				        // trigger Update
+				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
+				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
+				        if (updateFeature.updateNeeded(context).toBoolean())
+				        	updateFeature.update(context);
+					}
+		        });
+	        }
 		}
 	}
 	
