@@ -9,6 +9,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -17,7 +18,7 @@ import de.tu_bs.cs.isf.mbse.egg.modeltranformation.JavaScriptGenerator;
 public class GenerateAction implements IObjectActionDelegate {
 
 	private Shell shell;
-	private File selectedFile;
+	public static File selectedFile;
 	
 	/**
 	 * Constructor for Action1.
@@ -46,7 +47,7 @@ public class GenerateAction implements IObjectActionDelegate {
 			} catch (Exception e) {
 				e.printStackTrace();
 				MessageDialog.openError(shell, "Generating went wrong!", "Something went wrong while generating your Code:\n\n"
-						+ e.getMessage().substring(0, 1000) + " ...");
+						+ e.getMessage());
 			}
 		}
 	}

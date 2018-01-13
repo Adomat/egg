@@ -1,0 +1,9 @@
+ES DARF NUR EINE MENÜ SEITE GEBEN! Und zwar nicht pro page sondern pro projekt
+	> keine zeit für vernünftige implementierung von verschachtelten menüs imo
+
+for simplicity: alle .egg und level dateien in einem ordner!!
+	> bei der generierung würde ich am liebsten einfach nur den ordner der datei durchsuchen, auf die geklickt wurde, dateiendungen filtern, emf resourcen
+	  daraus basteln und ab dafür in die html datei
+
+es wird beim derzeitigen stand nur die hälfte funktionieren (keine destroyable blöcke, nicht mal ein inventory geschweige denn gegner.. OMG)
+	> das würde noch dauern, uns fehlt halt auch eine person ¯\_(ツ)_/¯
