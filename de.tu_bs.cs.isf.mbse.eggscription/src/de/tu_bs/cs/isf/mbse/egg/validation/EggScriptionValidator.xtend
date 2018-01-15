@@ -458,39 +458,6 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 	}
 
 	/**
-	 * There must be one hero per game
-	 */
-//	@Check
-//	def checkNumberOfHerosMin(DescriptionRoot root) {
-//		var count = 0
-//		for(Description object : root.descriptions) {
-//			if(object instanceof HeroDescription) {
-//				count++
-//			}
-//		}
-//		if(count < 1) {
-//			error('There must be exactly one hero per game', DescriptionsPackage.Literals.DESCRIPTION_ROOT__DESCRIPTIONS)
-//		}
-//	}
-	
-	/**
-	 * There must be only one hero per game
-	 */
-//	@Check
-//	def checkNumberOfHerosMax(HeroDescription object) {
-//		var root = (object.eContainer as DescriptionRoot)
-//		var count = 0
-//		for(Description other : root.descriptions) {
-//			if(other instanceof HeroDescription) {
-//				count++
-//			}
-//		}
-//		if(count > 1) {
-//			error('There must not be more than one hero', DescriptionsPackage.Literals.DESCRIPTION__NAME, 1)
-//		}
-//	}
-
-	/**
 	 * Identifiers of the descriptions should be unique
 	 */
 	@Check
