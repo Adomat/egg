@@ -12,3 +12,9 @@ es wird beim derzeitigen stand nur die hälfte funktionieren (keine destroyable 
 IRGENDWO MUSS SPEZIFIZIERT WERDEN MIT WELCHER PAGE DAS SPIEL STARTEN SOLL !!!!!!!!111einseinself
 
 Wie machen wir das setup der menü seite? grammatik nicht vollständig
+	> hintergrundbild?
+	> hintergrundfarbe?
+	> buttons (beschriftung, link auf andere page)
+	> das attribut "title" wird bisher nicht genutzt, ich dachte ein titelbild wäre sinnvoller? soll das rein? kleiner kommentar an dieser stelle wäre super o/
+
+Warum sind die Diamantklammern vom Picture Attribut ein Teil des Strings, der das Bild referenzieren soll? Find ich nicht so optimal, sollte doch eher Teil der Grammatikrule sein!

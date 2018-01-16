@@ -39,7 +39,7 @@ public class CodeGrabber {
 						String wholeContent = String.format(htmlContent, _JAVASCRIPT_CODE);
 						wholeContent = wholeContent.replaceAll("%;", "%%;");
 						
-						// ... I warned you!
+						// ... I warned you! I'm sorry for what you are about to witness ಠ_ಥ
 						String contentWithoutSetup = wholeContent.substring(0, wholeContent.indexOf("function setupPages() {")+23);
 						contentWithoutSetup += "%s}\n\n\n";
 						contentWithoutSetup += wholeContent.substring(wholeContent.indexOf("function drawCurrentPage() {")+0, wholeContent.length());
