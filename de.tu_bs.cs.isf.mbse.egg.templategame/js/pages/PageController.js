@@ -3,6 +3,9 @@ var pages;
 
 
 function setupPages() {
+    blockSize = 75;
+    startPageKey = "menu";
+    
 	pages = [];
 
 	// MENU PAGE
@@ -13,6 +16,8 @@ function setupPages() {
 	menuPage.addLogoImage("images/title/title1.png");
 	menuPage.addLogoImage("images/title/title2.png");
 	menuPage.logoAnimationSpeed = 500;
+    menuPage.addButton("Start Game", "level1");
+    menuPage.addButton("How does this work?", "tutorial");
 
 	pages.push(menuPage);
 
@@ -133,7 +138,7 @@ function setupPages() {
 
 function drawCurrentPage() {
 	if(currentPage == null) {
-		switchPage("menu");
+		switchPage(startPageKey);
 	}
 	
 	currentPage.draw();
@@ -141,12 +146,13 @@ function drawCurrentPage() {
 
 
 function passKeyEventToPages(event) {
-	if(currentPage.pageKey == "menu") {
+    currentPage.keyPressed(event);
+	/*if(currentPage.pageKey == "menu") {
 		currentPage.keyPressed(event);
 	}
 	else if(currentPage.pageKey == "tutorial") {
 		currentPage.keyPressed(event);
-	}
+	}*/
 }
 
 

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -40,7 +41,24 @@ public class JavaScriptGenerator {
 			// TODO Load all levels into resource set
 		}
 		
-		File templateFile = getFileFromBundle("de.tu_bs.cs.isf.mbse.egg.modeltranformation", "template.html");
+		File templateFile = getFileFromBundle("de.tu_bs.cs.isf.mbse.egg.modeltranformation", "PlaceHolder.eggtransformation");
+		String templateContent = new String(Files.readAllBytes(Paths.get(templateFile.toURI())));
+		
+		// TODO modify content
+		String modifiedContent = String.format(templateContent, "\n\t// TODO HIER MUSS HALT DER CONTENT REIN!\n");
+		
+		// Create / Override the target file
+		File targetFile = new File(selectedFile.getParentFile() + "/index.html");
+		
+		if(targetFile.exists()) {
+			targetFile.delete();
+		}
+		targetFile.createNewFile();
+		
+		// Write the target file
+		PrintWriter out = new PrintWriter(targetFile);
+		out.println(modifiedContent);
+		out.close();
 	}
 	
 	private static File getFileFromBundle(String bundleString, String filePath) throws URISyntaxException, IOException {

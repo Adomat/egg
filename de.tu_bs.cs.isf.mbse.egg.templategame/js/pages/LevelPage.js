@@ -10,6 +10,9 @@ function LevelPage() {
 	this.hero = null;
 	
 	this.showDeathScreen = false;
+    this.deathMessage = "GAME OVER";
+    this.deathMessageParagraph = "Press \'Enter\' to enter the main menu";
+    this.deathReturnPage = startPageKey;
 }
 
 LevelPage.prototype.addBlock = function(newBlock) {
@@ -84,14 +87,14 @@ LevelPage.prototype.drawDeathScreen = function() {
 	ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
 	ctx.font = '100pt Arial';
 	ctx.textAlign = "center";
-	ctx.fillText("Game Over", width/2, height/2+0);
+	ctx.fillText(this.deathMessage, width/2, height/2+0);
 
 	ctx.font = '20pt Arial';
-	ctx.fillText("Press \'Enter\' to enter the main menu", width/2, height/2+100);
+	ctx.fillText(this.deathMessageParagraph, width/2, height/2+100);
 	
 	if(keyDownArray.includes(13)) {
 		setupPages();
-		switchPage("menu");
+		switchPage(this.deathReturnPage);
 	}
 }
 

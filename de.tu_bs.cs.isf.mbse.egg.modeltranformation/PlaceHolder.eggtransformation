@@ -1,0 +1,1027 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>  
+        <title>Jump'n'Run Template Game</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+
+        <script>function getPixelOffsetFromScroll(scroll, mapSize) {
+	var returnVector = function () {  return {  x: null,  y: null  };  };
+	
+	var leftGap = Math.min(0, scroll.x * mapSize.x * blockSize - width/2 + blockSize/2);
+	var rightGap = (-1) * Math.min(0, mapSize.x * blockSize - scroll.x * mapSize.x * blockSize - width/2 + blockSize/2);
+
+	var lowerGap = Math.min(0, (1-scroll.y) * mapSize.y * blockSize - height/2 + blockSize);
+	var upperGap = (-1) * Math.min(0, mapSize.y * blockSize - (1-scroll.y) * mapSize.y * blockSize - height/2);
+
+	returnVector.x = leftGap;
+	returnVector.y = lowerGap;
+
+	if(rightGap != 0)
+		returnVector.x = rightGap;
+	if(upperGap != 0)
+		returnVector.y = upperGap;
+
+	if(leftGap != 0 && rightGap != 0)
+		returnVector.x = 0;
+	if(lowerGap != 0 && upperGap != 0)
+		returnVector.y = 0;
+
+	if(mapSize.y * blockSize < height) {
+		returnVector.y = lowerGap;
+	}
+	if(mapSize.x * blockSize < width) {
+		returnVector.x = width/2 - mapSize.x * blockSize / 2 + leftGap;
+	}
+	
+//	if(Math.round(Math.random() * 1000) == 1) {
+//		console.log("leftGap", leftGap);
+//		console.log("rightGap", rightGap);
+//		console.log("sum", leftGap+rightGap);
+//		console.log("--------------------");
+//	}
+	
+	return returnVector;
+}
+
+
+
+
+
+
+
+function Block(x, y) {
+	this.images = [];
+	this.position = function () {  return {  x: null,  y: null  };  }
+	this.position.x = x;
+	this.position.y = y;
+	
+	this.isSolid = true;
+}
+
+
+
+
+
+Block.prototype.addImage = function(imageURL) {
+	var image = new Image();
+	image.src = imageURL;
+	
+	this.images.push(image);
+}
+
+Block.prototype.draw = function(scroll, mapSize) {
+	var x = this.position.x * blockSize;
+	var y = height - this.position.y * blockSize;
+
+	x -= scroll.x * mapSize.x * blockSize - width/2 + blockSize/2;
+	y -= height/2 - (1-scroll.y) * mapSize.y * blockSize;
+	
+	var offSet = getPixelOffsetFromScroll(scroll, mapSize);
+	
+	x += offSet.x;
+	y -= offSet.y;
+	
+	ctx.drawImage(this.images[0], x, y, blockSize, blockSize);
+}
+
+Block.prototype.getCenter = function() {
+	var x = this.position.x * blockSize;
+	var y = height - blockSize - this.position.y * blockSize;
+
+	x += blockSize / 2;
+	y += blockSize / 2;
+	
+	var returnVector = function () {  return {  x: null,  y: null  };  }
+	returnVector.x = x;
+	returnVector.y = y;
+	
+	return returnVector;
+}
+
+
+
+
+
+
+
+ExitGate.prototype = new Block();
+
+function ExitGate(newPageKey, x, y) {
+	this.position.x = x;
+	this.position.y = y;
+	
+	this.newPageKey = newPageKey;
+}
+
+
+
+
+
+
+
+function HeroCharacter() {
+	this.position = function () {  return {  x: null,  y: null  };  };
+	this.collisionBox = function () {  return {  x: null,  y: null  };  };
+	
+	this.idleImages = [];
+	this.attackImages = [];
+	this.runImages = [];
+	this.jumpImages = [];
+	
+	this.currentImage = null;
+	this.currentImageIndex = 0;
+	this.lastAnimationChange = 0;
+	
+	this.animationSpeed;
+	this.life;
+	this.speed;
+	this.jumpPower;
+	
+	this.lookingright = true;
+	this.fallingState = 0;
+	this.jumpingState = 0;
+}
+
+
+
+HeroCharacter.prototype.addIdleImage = function(imageURL) {
+	var image = new Image();
+	image.src = imageURL;
+	
+	this.idleImages.push(image);
+}
+
+HeroCharacter.prototype.addAttackImage = function(imageURL) {
+	var image = new Image();
+	image.src = imageURL;
+	
+	this.attackImages.push(image);
+}
+
+HeroCharacter.prototype.addRunImage = function(imageURL) {
+	var image = new Image();
+	image.src = imageURL;
+	
+	this.runImages.push(image);
+}
+
+HeroCharacter.prototype.addJumpImage = function(imageURL) {
+	var image = new Image();
+	image.src = imageURL;
+	
+	this.jumpImages.push(image);
+}
+
+HeroCharacter.prototype.setPosition = function(x, y) {
+	this.position.x = x;
+	this.position.y = y;
+}
+
+HeroCharacter.prototype.setCollisionBox = function(x, y) {
+	this.collisionBox.x = x;
+	this.collisionBox.y = y;
+}
+
+
+HeroCharacter.prototype.getCenter = function() {
+	if(this.currentImage == null)
+		this.currentImage = this.idleImages[0];
+	
+	var x = this.position.x * blockSize;
+	var y = height - blockSize - this.position.y * blockSize;
+
+	x += (blockSize - this.currentImage.width) / 2;
+	y += blockSize - this.currentImage.height;
+
+	x += this.currentImage.width / 2;
+	y += this.currentImage.height / 2;
+	
+	var returnVector = function () {  return {  x: null,  y: null  };  };
+	returnVector.x = x;
+	returnVector.y = y;
+	
+	return returnVector;
+}
+
+HeroCharacter.prototype.displaceByPixels = function(x, y) {
+	this.position.x += x / blockSize;
+	this.position.y += y / blockSize;
+}
+
+
+
+
+
+
+
+
+
+
+
+// RENDERING
+
+HeroCharacter.prototype.draw = function(scroll, mapSize) {
+	if(this.currentImage == null)
+		this.currentImage = this.idleImages[0];
+	
+	this.switchAnimationIndex();
+
+	imageX = width/2 - this.currentImage.width / 2;
+	imageY = height/2 - this.currentImage.height / 2;
+
+	var offSet = getPixelOffsetFromScroll(scroll, mapSize);
+
+	imageX += offSet.x;
+	imageY -= offSet.y;
+
+	if(this.lookingright) {
+		ctx.drawImage(this.currentImage, imageX, imageY);
+	}
+	else {
+		for(var x = 0; x < this.currentImage.width; x++) {
+			ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
+		}
+	}
+}
+
+HeroCharacter.prototype.switchAnimationIndex = function() {
+	var timePassed = (new Date()).getTime() - this.lastAnimationChange;
+	
+	if(timePassed > this.animationSpeed) {
+		this.currentImageIndex ++;
+		
+		this.lastAnimationChange = (new Date()).getTime();
+	}
+}
+
+HeroCharacter.prototype.drawCollisionBox = function() {
+	ctx.fillStyle = "rgba(255,0,0, 0.5)";
+	var x = width/2 - this.collisionBox.x / 2;
+	var y = height/2 - this.collisionBox.y / 2;
+	var w = width/2 + this.collisionBox.x / 2 - x;
+	var h = height/2 + this.collisionBox.y / 2 - y;
+	ctx.fillRect(x, y, w, h);
+}
+
+
+
+
+
+
+
+
+
+// MOVEMENT
+
+HeroCharacter.prototype.move = function(blocks, gravity, exitGates) {
+	var intendedMove = function () {  return {  x: 0,  y: 0  };  };
+	intendedMove.x = 0;
+	intendedMove.y = 0;
+	
+	if(keyDownArray.includes(37))
+		intendedMove = this.moveLeft(intendedMove);
+	
+	if(keyDownArray.includes(39))
+		intendedMove = this.moveRight(intendedMove);
+	
+	if(keyDownArray.includes(38))
+		this.jump();
+	
+	intendedMove.y += Math.pow((gravity / 1000) * this.jumpingState, 2);
+	intendedMove.y -= Math.min(Math.pow((gravity / 1000) * this.fallingState, 2), 0.1);
+	
+	this.fallingState++;
+	this.jumpingState = Math.max(this.jumpingState-1, 0);
+	
+	var steps = this.speed;
+	var stopMovementX = false;
+	var stopMovementY = false;
+	
+	for(var i=0; i<steps; i++) {
+		if(!stopMovementY) {
+			this.position.y += (i/steps) * intendedMove.y;
+			
+			if(this.collisionWithBlocks(blocks)) {
+				if(intendedMove.y < 0) {
+					this.fallingState = 0;
+				}
+				this.jumpingState = 0;
+				this.position.y -= (i/steps) * intendedMove.y;
+				stopMovementY = true;
+			}
+		}
+
+		if(!stopMovementX) {
+			this.position.x += (i/steps) * intendedMove.x;
+			
+			if(this.collisionWithBlocks(blocks)) {
+				this.position.x -= (i/steps) * intendedMove.x;
+				stopMovementX = true;
+			}
+		}
+	}
+	
+	// Check whether the character entered an exit gate
+	var newPageKey = this.collisionWithExitGate(exitGates);
+	if(newPageKey != null) {
+		switchPage(newPageKey);
+	}
+	
+	// Check whether the character fell to death
+	if(this.position.y < -1)
+		this.health = 0;
+	
+	// Switch Images to characters current state
+	if(this.fallingState > 5) {
+		if(this.currentImageIndex >= this.jumpImages.length)
+			this.currentImageIndex = 0;
+		this.currentImage = this.jumpImages[this.currentImageIndex];
+	}
+	else if(!keyDownArray.includes(37) && !keyDownArray.includes(39) && !keyDownArray.includes(38)) {
+		if(this.currentImageIndex >= this.idleImages.length)
+			this.currentImageIndex = 0;
+		this.currentImage = this.idleImages[this.currentImageIndex];
+	}
+}
+
+
+
+HeroCharacter.prototype.moveLeft = function(intendedMove) {
+	if(this.currentImageIndex >= this.runImages.length)
+		this.currentImageIndex = 0;
+	this.currentImage = this.runImages[this.currentImageIndex];
+	
+	this.lookingright = false;
+	intendedMove.x -= this.speed / 100;
+	
+	return intendedMove;
+}
+
+HeroCharacter.prototype.moveRight = function(intendedMove) {
+	if(this.currentImageIndex >= this.runImages.length)
+		this.currentImageIndex = 0;
+	this.currentImage = this.runImages[this.currentImageIndex];
+	
+	this.lookingright = true;
+	intendedMove.x += this.speed / 100;
+	
+	return intendedMove;
+}
+
+HeroCharacter.prototype.jump = function() {
+	if(this.fallingState <= 5) {
+		this.jumpingState = this.jumpPower;
+	}
+}
+
+
+
+HeroCharacter.prototype.collisionWithBlocks = function(blocks) {
+	for(var i=0; i<blocks.length; i++) {
+		if(!blocks[i].isSolid)
+			continue;
+		
+		if(blocks[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBox.x/2) {
+			// hinter linker Kante
+			if(blocks[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBox.x/2) {
+				// vor rechter Kante
+				if(blocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
+					// unter oberer Kante
+					if(blocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
+						// über unterer Kante
+						
+						// COLLISION
+						return true;
+					}
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
+	for(var i=0; i<exitGates.length; i++) {
+		if(exitGates[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBox.x/2) {
+			// hinter linker Kante
+			if(exitGates[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBox.x/2) {
+				// vor rechter Kante
+				if(exitGates[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
+					// unter oberer Kante
+					if(exitGates[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
+						// über unterer Kante
+						
+						// COLLISION
+						return exitGates[i].newPageKey;
+					}
+				}
+			}
+		}
+	}
+	
+	return null;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var keyDownArray = [];
+
+
+function handleKeyDownEvent(event) {
+	if(!keyDownArray.includes(event.keyCode))
+		keyDownArray.push(event.keyCode);
+	
+	passKeyEventToPages(event);
+}
+
+function handleKeyUpEvent(event) {
+	var index = keyDownArray.indexOf(event.keyCode);
+
+	if (index > -1) {
+		keyDownArray.splice(index, 1);
+	}
+}
+
+
+
+
+
+
+
+var canvas;
+var ctx;
+
+var width;
+var height;
+
+var blockSize;
+var startPageKey;
+
+
+
+
+
+// Setup-Methode. Wird getriggert sobald html-Inhalt geladen ist.
+window.addEventListener('load', function(){
+	// ODER: document einen listener auf 'DOMContentLoaded' hinzufügen
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    window.addEventListener('keydown', handleKeyDownEvent, false);
+    window.addEventListener('keyup', handleKeyUpEvent, false);
+
+    setupPages();
+    
+    drawGame();
+    handleTicks();
+}, false);
+
+
+
+
+
+// Funktion zum Bild darstellen
+function drawGame() {
+//	blockSize = Math.sin((new Date()).getTime()/10000) * 25 + 75;
+	
+    if(width != window.innerWidth  ||  height != window.innerHeight) {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    
+	drawCurrentPage();
+	
+    setTimeout(drawGame, 0);
+}
+
+
+
+
+function handleTicks() {
+	var timeMessureStart = (new Date()).getTime();
+	
+	passTickToCurrentPage();
+	
+	var timeMessureEnd = (new Date()).getTime();
+	var timeMessureDifference = timeMessureEnd - timeMessureStart;
+	var tps = 1000 / 50;
+	var timeOut = Math.max(0, tps - timeMessureDifference);
+	
+    setTimeout(handleTicks, timeOut);
+}
+
+
+
+
+
+
+
+function DisplayPage() {
+	this.pageKey;
+	this.backgroundImage;
+	this.backgroundColor;
+}
+
+
+
+DisplayPage.prototype.setPageKey = function(pageKey) {
+	this.pageKey = pageKey;
+}
+
+DisplayPage.prototype.getPageKey = function(pageKey) {
+	return this.pageKey;
+}
+
+
+
+DisplayPage.prototype.setBackgroundImage = function(imageURL) {
+	this.backgroundImage = new Image();
+	this.backgroundImage.src = imageURL;
+}
+
+DisplayPage.prototype.setBackgroundColor = function(colorString) {
+	this.backgroundColor = colorString;
+}
+
+DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercent) {
+	xPercent = Math.max(Math.min(xPercent, 1), 0);
+	yPercent = Math.max(Math.min(yPercent, 1), 0);
+	
+	ctx.fillStyle = "rgb(95, 150, 255)";
+	ctx.fillRect(0, 0, width, height);
+	
+	var offset = function () {  return {  x: 0,  y: 0  };  }
+	offset.x = (this.backgroundImage.width - width) * xPercent;
+	offset.y = (this.backgroundImage.height - height) * yPercent;
+	
+	ctx.drawImage(this.backgroundImage, -offset.x, -offset.y);
+}
+
+DisplayPage.prototype.keyPressed = function(event) {
+    
+}
+
+
+
+
+
+
+
+LevelPage.prototype = new DisplayPage();
+
+function LevelPage() {
+	this.levelScroll = function () {  return {  x: null,  y: null  };  };
+	this.mapSize = function () {  return {  x: null,  y: null  };  };
+	this.gravity;
+
+	this.blocks = [];
+	this.exitGates = [];
+	this.hero = null;
+	
+	this.showDeathScreen = false;
+    this.deathMessage = "GAME OVER";
+    this.deathMessageParagraph = "Press \'Enter\' to enter the main menu";
+    this.deathReturnPage = startPageKey;
+}
+
+LevelPage.prototype.addBlock = function(newBlock) {
+	this.blocks.push(newBlock);
+}
+
+LevelPage.prototype.addHero = function(newHero) {
+	this.hero = newHero;
+}
+
+LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
+	var newExitGate = new ExitGate(newPageKey, x, y);
+	this.exitGates.push(newExitGate);
+}
+
+LevelPage.prototype.draw = function() {
+	var offSet = getPixelOffsetFromScroll(this.levelScroll, this.mapSize);
+
+	var newScrollX = offSet.x / (this.mapSize.x * blockSize);
+	var newScrollY = offSet.y / (this.mapSize.y * blockSize);
+	
+	this.drawBackground(this.levelScroll.x-newScrollX, this.levelScroll.y+newScrollY);
+	
+	for(var i=0; i<this.blocks.length; i++) {
+		this.blocks[i].draw(this.levelScroll, this.mapSize, this.hero.collisionBox);
+	}
+	
+	this.hero.draw(this.levelScroll, this.mapSize);
+	
+//	this.hero.drawCollisionBox();
+	
+	if(this.showDeathScreen) {
+		this.drawDeathScreen();
+	}
+}
+
+LevelPage.prototype.executeTick = function() {
+	this.calculateMapSize();
+	this.moveBackground();
+	
+	if(this.hero.health <= 0) {
+		this.showDeathScreen = true;
+	} else {
+		this.hero.move(this.blocks, this.gravity, this.exitGates);
+	}
+}
+
+LevelPage.prototype.calculateMapSize = function() {
+	if(this.mapSize.x == null) {
+		this.mapSize.x = 1;
+		this.mapSize.y = 1;
+		
+		for(var i=0; i<this.blocks.length; i++) {
+			if(this.blocks[i].position.x > this.mapSize.x)
+				this.mapSize.x = this.blocks[i].position.x;
+			
+			if(this.blocks[i].position.y > this.mapSize.y)
+				this.mapSize.y = this.blocks[i].position.y;
+		}
+	}
+}
+
+LevelPage.prototype.moveBackground = function() {
+	this.levelScroll.x = this.hero.position.x / this.mapSize.x;
+	this.levelScroll.y = 1 - this.hero.position.y / this.mapSize.y;
+}
+
+LevelPage.prototype.drawDeathScreen = function() {
+	ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+	ctx.fillRect(0, 0, width, height);
+
+	ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+	ctx.font = '100pt Arial';
+	ctx.textAlign = "center";
+	ctx.fillText(this.deathMessage, width/2, height/2+0);
+
+	ctx.font = '20pt Arial';
+	ctx.fillText(this.deathMessageParagraph, width/2, height/2+100);
+	
+	if(keyDownArray.includes(13)) {
+		setupPages();
+		switchPage(this.deathReturnPage);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MenuPage.prototype = new DisplayPage();
+
+function MenuPage() {
+	this.logoImages = [];
+	this.logoImageAnimationIndex = 0;
+	this.logoAnimationSpeed;
+	this.lastLogoAnimationChange = 0;
+	
+	this.buttons = [];
+	this.buttonIndex = 0;
+}
+
+MenuPage.prototype.addLogoImage = function(imageURL) {
+	var image = new Image();
+	image.src = imageURL;
+	
+	this.logoImages.push(image);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+MenuPage.prototype.draw = function() {
+	this.drawBackground(0.5, 1);
+	
+	this.switchLogoAnimationIndex();
+	
+	ctx.drawImage(this.logoImages[this.logoImageAnimationIndex], width/2 - this.logoImages[this.logoImageAnimationIndex].width/2, height/2 - this.logoImages[this.logoImageAnimationIndex].height);
+    
+    for(var i=0; i<this.buttons.length; i++) {
+        this.drawButton(this.buttons[i].text, 30, i);
+    }
+}
+
+MenuPage.prototype.switchLogoAnimationIndex = function() {
+	var timePassed = (new Date()).getTime() - this.lastLogoAnimationChange;
+	
+	if(timePassed > this.logoAnimationSpeed) {
+		this.logoImageAnimationIndex ++;
+		if(this.logoImageAnimationIndex >= this.logoImages.length)
+			this.logoImageAnimationIndex = 0;
+		
+		this.lastLogoAnimationChange = (new Date()).getTime();
+	}
+}
+
+MenuPage.prototype.addButton = function(text, pageKey) {
+    var newButton = function () {  return {  text: null,  pageKey: null  };  }
+    newButton.text = text;
+    newButton.pageKey = pageKey;
+    
+    this.buttons.push(newButton);
+}
+
+MenuPage.prototype.drawButton = function(text, textSize, index) {
+	ctx.textAlign = "center";
+	ctx.font = textSize+'pt Arial';
+	var textWidth = ctx.measureText(text).width + textSize;
+	var textHeight = textSize*2;
+	
+	ctx.fillStyle = "rgba(40,40,40, 0.5)";
+	if(this.buttonIndex == index)
+		ctx.fillStyle = "rgba(60,60,60, 0.9)";
+	
+	ctx.strokeStyle = "rgba(40,40,40, 1)";
+	
+	var x = width/2 - textWidth/ 2;
+	var y = 50 + height/2 + index * (textSize * 2 + 10);
+	
+	ctx.fillRect(x, y, textWidth, textHeight);
+	ctx.strokeRect(x, y, textWidth, textHeight);
+
+	ctx.fillStyle = "rgba(255, 255, 255, 1)";
+	ctx.fillText(text, width/2, y+textSize*1.5);
+}
+
+
+
+
+
+
+
+
+
+
+
+MenuPage.prototype.executeTick = function() {
+}
+
+MenuPage.prototype.keyPressed = function(event) {
+	if(event.keyCode == 13)
+        switchPage(this.buttons[this.buttonIndex].pageKey);
+	
+	if(event.keyCode == 38)
+		this.buttonIndex --;
+	if(event.keyCode == 40)
+		this.buttonIndex ++;
+
+	if(this.buttonIndex < 0)
+		this.buttonIndex = this.buttons.length-1;
+	if(this.buttonIndex >= this.buttons.length)
+		this.buttonIndex = 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var currentPage = null;
+var pages; 
+
+
+function setupPages() {%s}
+
+
+function drawCurrentPage() {
+	if(currentPage == null) {
+		switchPage(startPageKey);
+	}
+	
+	currentPage.draw();
+}
+
+
+function passKeyEventToPages(event) {
+    currentPage.keyPressed(event);
+	/*if(currentPage.pageKey == "menu") {
+		currentPage.keyPressed(event);
+	}
+	else if(currentPage.pageKey == "tutorial") {
+		currentPage.keyPressed(event);
+	}*/
+}
+
+
+function passTickToCurrentPage() {
+	currentPage.executeTick();
+}
+
+
+
+function switchPage(pageKey) {
+	for(var i=0; i<pages.length; i++) {
+		if(pages[i].getPageKey() == pageKey) {
+			currentPage = pages[i];
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+TextPage.prototype = new DisplayPage();
+
+function TextPage(title) {
+	this.title = title;
+	this.paragraphs = [];
+	
+	this.textSize = 15;
+	this.textStyle = "rgba(255, 255, 255, 1)";
+	this.newPageKey;
+	
+	this.scroll = 0;
+	this.lastLineCount = 0;
+}
+
+TextPage.prototype.addParagraph = function(text) {
+	this.paragraphs.push(text);
+}
+
+
+
+TextPage.prototype.draw = function() {
+	this.drawBackground(0.5, 1);
+
+	ctx.fillStyle = this.textStyle;
+
+	ctx.textAlign = "center";
+	ctx.font = this.textSize*2+'pt Arial';
+	ctx.fillText(this.title, width/2, this.textSize*2 + 50 + this.scroll);
+	
+	ctx.font = this.textSize+'pt Arial';
+	var textBlockSize = Math.min(width-40, 800);
+	var currentLineIndex = 0;
+	
+	for(var i=0; i<this.paragraphs.length; i++) {
+		var paragraphWords = this.paragraphs[i].split(" ");
+		
+		var paragraphWordIndex = 0;
+		while(paragraphWordIndex < paragraphWords.length) {
+			var textLine = "";
+			while(true) {
+				var newTextLine = textLine + " " + paragraphWords[paragraphWordIndex];
+				
+				if(ctx.measureText(newTextLine).width > textBlockSize)
+					break;
+				
+				textLine = newTextLine;
+				paragraphWordIndex++;
+				if(paragraphWordIndex >= paragraphWords.length)
+					break;
+			}
+			
+			ctx.fillText(textLine, width/2, 150 + this.textSize * 1.5 * currentLineIndex + this.scroll);
+			currentLineIndex++;
+		}
+	}
+	
+	currentLineIndex +=4;
+	ctx.font = this.textSize*2+'pt Arial';
+	
+	ctx.fillText("Press Enter to Continue", width/2, 150 + this.textSize * 1.5 * currentLineIndex + this.scroll);
+	
+	this.lastLineCount = currentLineIndex;
+}
+
+TextPage.prototype.keyPressed = function(event) {
+	if(event.keyCode == 13)
+		switchPage(this.newPageKey);
+	
+	if(150 + this.textSize * 1.5 * this.lastLineCount > height) {
+		if(event.keyCode == 38)
+			this.scroll += 10;
+		if(event.keyCode == 40)
+			this.scroll -= 10;
+		
+		if(this.scroll > 0)
+			this.scroll = 0;
+		if(this.scroll < (-1) * (200 + this.textSize * 1.5 * this.lastLineCount - height))
+			this.scroll = (-1) * (200 + this.textSize * 1.5 * this.lastLineCount - height);
+		
+		if(this.lastLineCount == 0)
+			this.scroll = 0;
+	}
+}
+
+TextPage.prototype.executeTick = function() {
+	
+}
+
+
+
+
+
+
+
+</script>
+
+        <style type="text/css">  
+            html, body {
+                width: 100%%;
+                height: 100%%;
+                padding: 0px;
+                margin: 0px;
+                background-color: rgb(0, 0, 0);
+            }
+            #canvas {
+                padding: 0px;
+                margin: 0px;
+                top:0;
+                left:0;
+                z-index: 30;
+                position: absolute;
+                width: 100%%;
+                height: 100%%;
+                background-color: rgb(0, 0, 0);
+            }
+         </style>  
+    </head>  
+
+    <body>
+        <canvas id="canvas" oncontextmenu="return false;">
+            Um diese Seite korrekt sehen zu koennen wird ein halbwegs aktueller Browser benoetigt. Du hast so etwas leider nicht.
+        </canvas>
+    </body>
+</html>

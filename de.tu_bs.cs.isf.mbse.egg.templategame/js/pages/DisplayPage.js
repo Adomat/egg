@@ -38,3 +38,7 @@ DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercen
 	
 	ctx.drawImage(this.backgroundImage, -offset.x, -offset.y);
 }
+
+DisplayPage.prototype.keyPressed = function(event) {
+    
+}

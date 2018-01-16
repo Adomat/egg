@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/*
+ * Please don't look at this code. Please don't! PLEASE
+ */
 public class CodeGrabber {
-	private static String _JAVASCRIPT_CODE;
+	private static String _JAVASCRIPT_CODE = "";
 
 	public static void main(String[] args) throws IOException {
 		File classFile = new File(CodeGrabber.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -15,6 +18,7 @@ public class CodeGrabber {
 			if(project.toString().endsWith("de.tu_bs.cs.isf.mbse.egg.templategame")) {
 				for(File rootFile : project.listFiles()) {
 					if(rootFile.toString().endsWith("index.html")) {
+						// Nothing to see here anyway
 						String htmlContent = readFile(rootFile);
 
 						int firstScript = htmlContent.indexOf("script");
@@ -29,7 +33,18 @@ public class CodeGrabber {
 							}
 						}
 						
-						System.out.println(_JAVASCRIPT_CODE);
+						// Stop looking at it!
+						htmlContent = htmlContent.replaceAll("%;", "%%;");
+						
+						String wholeContent = String.format(htmlContent, _JAVASCRIPT_CODE);
+						wholeContent = wholeContent.replaceAll("%;", "%%;");
+						
+						// ... I warned you!
+						String contentWithoutSetup = wholeContent.substring(0, wholeContent.indexOf("function setupPages() {")+23);
+						contentWithoutSetup += "%s}\n\n\n";
+						contentWithoutSetup += wholeContent.substring(wholeContent.indexOf("function drawCurrentPage() {")+0, wholeContent.length());
+						
+						System.out.println(contentWithoutSetup);
 						
 						break;
 					}
@@ -46,11 +61,12 @@ public class CodeGrabber {
 				getJavaScriptCodeFromFolders(child);
 			}
 		} else if(anotherRootFile.toString().endsWith("js")) {
-			_JAVASCRIPT_CODE += "\n===============================================\n"
-								+ anotherRootFile.toString()
-								+ "\n===============================================\n\n\n"
-								+ readFile(anotherRootFile)
-								+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+//			_JAVASCRIPT_CODE += "\n===============================================\n"
+//					+ anotherRootFile.toString()
+//					+ "\n===============================================\n\n\n"
+//					+ readFile(anotherRootFile)
+//					+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+			_JAVASCRIPT_CODE += readFile(anotherRootFile) + "\n\n\n\n\n\n\n\n";
 		}
 	}
 

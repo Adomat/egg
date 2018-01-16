@@ -4,7 +4,8 @@ var ctx;
 var width;
 var height;
 
-var blockSize = 75;
+var blockSize;
+var startPageKey;
 
 
 
