@@ -24,7 +24,7 @@ public class CodeGrabber {
 						int firstScript = htmlContent.indexOf("script");
 						int lastScript = htmlContent.lastIndexOf("script");
 						
-						htmlContent = htmlContent.substring(0, firstScript) + "script>%s</" + htmlContent.substring(lastScript, htmlContent.length());
+						htmlContent = htmlContent.substring(0, firstScript) + "script>\n\n%s\n\n\t</" + htmlContent.substring(lastScript, htmlContent.length());
 						
 						for(File anotherRootFile : project.listFiles()) {
 							if(anotherRootFile.toString().endsWith("js")) {

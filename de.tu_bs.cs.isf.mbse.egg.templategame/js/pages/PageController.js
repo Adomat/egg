@@ -36,58 +36,45 @@ function setupPages() {
 	tutorialPage.addParagraph("HAVE FUN!");
 	
 	pages.push(tutorialPage);
+    
+    var dirtBlock = new Block();
+    dirtBlock.addImage("images/blocks/dirt.png");
+    
+    var grassBlock = new Block();
+    grassBlock.addImage("images/blocks/grass.png");
+    grassBlock.addImage("images/blocks/grass2.png");
+    grassBlock.animationSpeed = 500;
 
 	// LEVEL PAGE 1
 	var level1Page = new LevelPage();
 	level1Page.setPageKey("level1");
 	level1Page.setBackgroundImage("images/background.png");
 	level1Page.setBackgroundColor("6699ff");
-	
-	var newBlock;
+    
 	for(var i=0; i<10; i++) {
-		newBlock = new Block(-1, i);
-		newBlock.addImage("images/blocks/dirt.png");
-		level1Page.addBlock(newBlock);
+		level1Page.addBlock(dirtBlock, -1, i);
 	}
 	for(var i=14; i<25; i++) {
-		newBlock = new Block(i, i-10);
-		newBlock.addImage("images/blocks/dirt.png");
-		level1Page.addBlock(newBlock);
+		level1Page.addBlock(dirtBlock, i, i-10);
 	}
-	newBlock = new Block(25, 15);
-	newBlock.addImage("images/blocks/grass.png");
-	level1Page.addBlock(newBlock);
+	level1Page.addBlock(grassBlock, 25, 15);
 	for(var j=0; j<2*25; j+=25) {
 		for(var i=0; i<10; i++) {
-			newBlock = new Block(i+j, 0);
-			newBlock.addImage("images/blocks/dirt.png");
-			level1Page.addBlock(newBlock);
+			level1Page.addBlock(dirtBlock, i+j, 0);
 		}
 		for(var i=0; i<10; i++) {
-			newBlock = new Block(i+j, 4);
-			newBlock.addImage("images/blocks/grass.png");
-			level1Page.addBlock(newBlock);
+			level1Page.addBlock(grassBlock, i+j, 4);
 		}
 		for(var i=13; i<25; i++) {
-			newBlock = new Block(i+j, 0);
-			newBlock.addImage("images/blocks/grass.png");
-			level1Page.addBlock(newBlock);
+			level1Page.addBlock(grassBlock, i+j, 0);
 		}
 		
-		newBlock = new Block(9+j, 1);
-		newBlock.addImage("images/blocks/grass.png");
-		level1Page.addBlock(newBlock);
-
-		newBlock = new Block(12+j, 0);
-		newBlock.addImage("images/blocks/dirt.png");
-		level1Page.addBlock(newBlock);
-		newBlock = new Block(12+j, 1);
-		newBlock.addImage("images/blocks/grass.png");
-		level1Page.addBlock(newBlock);
+		level1Page.addBlock(grassBlock, 9+j, 1);
+		level1Page.addBlock(dirtBlock, 12+j, 0);
+		level1Page.addBlock(grassBlock, 12+j, 1);
 	}
 	
 	var hero = new HeroCharacter();
-	hero.setPosition(5, 1);
 	hero.setCollisionBox(30, 130);
 	hero.animationSpeed = 200;
 	hero.life = 100;
@@ -97,7 +84,7 @@ function setupPages() {
 	hero.addRunImage("images/character/run1.png");
 	hero.addRunImage("images/character/run2.png");
 	hero.addJumpImage("images/character/jump.png");
-	level1Page.addHero(hero);
+	level1Page.addHero(hero, 5, 1);
 	
 	level1Page.gravity = 10;
 	level1Page.addExitGate("level2", 24, 15);
@@ -112,13 +99,10 @@ function setupPages() {
 	
 	var newBlock;
 	for(var i=0; i<10; i++) {
-		newBlock = new Block(i, 0);
-		newBlock.addImage("images/blocks/grass.png");
-		level2Page.addBlock(newBlock);
+		level2Page.addBlock(grassBlock, i, 0);
 	}
 	
 	var hero = new HeroCharacter();
-	hero.setPosition(5, 1);
 	hero.setCollisionBox(30, 130);
 	hero.animationSpeed = 200;
 	hero.life = 100;
@@ -128,7 +112,7 @@ function setupPages() {
 	hero.addRunImage("images/character/run1.png");
 	hero.addRunImage("images/character/run2.png");
 	hero.addJumpImage("images/character/jump.png");
-	level2Page.addHero(hero);
+	level2Page.addHero(hero, 5, 1);
 	
 	level2Page.gravity = 5;
 

@@ -51,11 +51,6 @@ HeroCharacter.prototype.addJumpImage = function(imageURL) {
 	this.jumpImages.push(image);
 }
 
-HeroCharacter.prototype.setPosition = function(x, y) {
-	this.position.x = x;
-	this.position.y = y;
-}
-
 HeroCharacter.prototype.setCollisionBox = function(x, y) {
 	this.collisionBox.x = x;
 	this.collisionBox.y = y;

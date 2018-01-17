@@ -6,7 +6,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
 
-        <script>function getPixelOffsetFromScroll(scroll, mapSize) {
+        <script>
+
+function getPixelOffsetFromScroll(scroll, mapSize) {
 	var returnVector = function () {  return {  x: null,  y: null  };  };
 	
 	var leftGap = Math.min(0, scroll.x * mapSize.x * blockSize - width/2 + blockSize/2);
@@ -51,12 +53,16 @@
 
 
 
-function Block(x, y) {
+function Block() {
 	this.images = [];
 	this.position = function () {  return {  x: null,  y: null  };  }
-	this.position.x = x;
-	this.position.y = y;
+	this.position.x;
+	this.position.y;
 	
+	this.currentImageIndex = 0;
+	this.lastAnimationChange = 0;
+	
+	this.animationSpeed = 0;
 	this.isSolid = true;
 }
 
@@ -72,6 +78,9 @@ Block.prototype.addImage = function(imageURL) {
 }
 
 Block.prototype.draw = function(scroll, mapSize) {
+    if(this.images.length > 1 && this.animationSpeed > 0)
+	   this.switchAnimationIndex();
+    
 	var x = this.position.x * blockSize;
 	var y = height - this.position.y * blockSize;
 
@@ -82,8 +91,19 @@ Block.prototype.draw = function(scroll, mapSize) {
 	
 	x += offSet.x;
 	y -= offSet.y;
+	ctx.drawImage(this.images[this.currentImageIndex], x, y, blockSize, blockSize);
+}
+
+Block.prototype.switchAnimationIndex = function() {
+	var timePassed = (new Date()).getTime() - this.lastAnimationChange;
 	
-	ctx.drawImage(this.images[0], x, y, blockSize, blockSize);
+	if(timePassed > this.animationSpeed) {
+		this.currentImageIndex ++;
+        if(this.currentImageIndex >= this.images.length)
+            this.currentImageIndex = 0;
+		
+		this.lastAnimationChange = (new Date()).getTime();
+	}
 }
 
 Block.prototype.getCenter = function() {
@@ -172,11 +192,6 @@ HeroCharacter.prototype.addJumpImage = function(imageURL) {
 	image.src = imageURL;
 	
 	this.jumpImages.push(image);
-}
-
-HeroCharacter.prototype.setPosition = function(x, y) {
-	this.position.x = x;
-	this.position.y = y;
 }
 
 HeroCharacter.prototype.setCollisionBox = function(x, y) {
@@ -390,7 +405,7 @@ HeroCharacter.prototype.collisionWithBlocks = function(blocks) {
 				if(blocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
 					// unter oberer Kante
 					if(blocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
-						// Ã¼ber unterer Kante
+						// über unterer Kante
 						
 						// COLLISION
 						return true;
@@ -412,7 +427,7 @@ HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
 				if(exitGates[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
 					// unter oberer Kante
 					if(exitGates[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
-						// Ã¼ber unterer Kante
+						// über unterer Kante
 						
 						// COLLISION
 						return exitGates[i].newPageKey;
@@ -491,7 +506,7 @@ var startPageKey;
 
 // Setup-Methode. Wird getriggert sobald html-Inhalt geladen ist.
 window.addEventListener('load', function(){
-	// ODER: document einen listener auf 'DOMContentLoaded' hinzufÃ¼gen
+	// ODER: document einen listener auf 'DOMContentLoaded' hinzufügen
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     
@@ -619,12 +634,22 @@ function LevelPage() {
     this.deathReturnPage = startPageKey;
 }
 
-LevelPage.prototype.addBlock = function(newBlock) {
+LevelPage.prototype.addBlock = function(givenBlock, x, y) {
+    var newBlock = new Block();
+    newBlock.images = givenBlock.images;
+    newBlock.isSolid = givenBlock.isSolid;
+    newBlock.animationSpeed = givenBlock.animationSpeed;
+    
+    newBlock.position.x = x;
+    newBlock.position.y = y;
+    
 	this.blocks.push(newBlock);
 }
 
-LevelPage.prototype.addHero = function(newHero) {
+LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero = newHero;
+	this.hero.position.x = x;
+	this.hero.position.y = y;
 }
 
 LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
@@ -995,7 +1020,9 @@ TextPage.prototype.executeTick = function() {
 
 
 
-</script>
+
+
+	</script>
 
         <style type="text/css">  
             html, body {
@@ -1024,4 +1051,4 @@ TextPage.prototype.executeTick = function() {
             Um diese Seite korrekt sehen zu koennen wird ein halbwegs aktueller Browser benoetigt. Du hast so etwas leider nicht.
         </canvas>
     </body>
-</html>
+</html> 

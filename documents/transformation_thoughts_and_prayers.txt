@@ -1,7 +1,10 @@
+WICHTIG: EINDEUTIGE BENNUNG DER DESCRIPTIONS DAMIT DIE VARIABLENNAMEN IN JAVASCRIPT UNIQUE SIND!
+
 ES DARF NUR EINE MENÜ SEITE GEBEN! Und zwar nicht pro page sondern pro projekt
 	> keine zeit für vernünftige implementierung von verschachtelten menüs imo
+	> warum eigentlich? geht das nicht auch so? müsste eigentlich
 
-for simplicity: alle .egg und level dateien in einem ordner!!
+for simplicity: alle .egg und level dateien in einem ordner!! Bilder in einen 'img' folder dahinter oder so
 	> bei der generierung würde ich am liebsten einfach nur den ordner der datei durchsuchen, auf die geklickt wurde, dateiendungen filtern, emf resourcen
 	  daraus basteln und ab dafür in die html datei
 

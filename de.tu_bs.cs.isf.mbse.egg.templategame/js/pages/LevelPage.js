@@ -15,12 +15,22 @@ function LevelPage() {
     this.deathReturnPage = startPageKey;
 }
 
-LevelPage.prototype.addBlock = function(newBlock) {
+LevelPage.prototype.addBlock = function(givenBlock, x, y) {
+    var newBlock = new Block();
+    newBlock.images = givenBlock.images;
+    newBlock.isSolid = givenBlock.isSolid;
+    newBlock.animationSpeed = givenBlock.animationSpeed;
+    
+    newBlock.position.x = x;
+    newBlock.position.y = y;
+    
 	this.blocks.push(newBlock);
 }
 
-LevelPage.prototype.addHero = function(newHero) {
+LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero = newHero;
+	this.hero.position.x = x;
+	this.hero.position.y = y;
 }
 
 LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
