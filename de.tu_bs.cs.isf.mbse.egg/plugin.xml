@@ -97,7 +97,7 @@
          point="org.eclipse.emf.ecore.factory_override">
       <factory
             class="de.tu_bs.cs.isf.mbse.egg.level.impl.custom.LevelFactoryImplCustom"
-            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level/impl/custom/LevelFactoryImplCustom">
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level">
       </factory>
    </extension>
 

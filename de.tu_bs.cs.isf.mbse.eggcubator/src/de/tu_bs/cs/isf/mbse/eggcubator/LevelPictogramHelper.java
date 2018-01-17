@@ -2,6 +2,7 @@ package de.tu_bs.cs.isf.mbse.eggcubator;
 
 import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
+import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
@@ -13,6 +14,7 @@ import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 
 /**
  * Utility class for drawing with pictograms.
@@ -195,6 +197,59 @@ public final class LevelPictogramHelper {
 	public static final LineStyle EMPTY_ELEMENT_BORDER_STYLE = LineStyle.DASH;
 	
 	/**
+	 * Background color of the element shape between empty element shape and image.
+	 */
+	public static final IColorConstant ELEMENT_BACKGROUND_COLOR = IColorConstant.WHITE;
+	
+	/**
+	 * Wrapper class to get/save an ElementPosition.
+	 */
+	public static final class ElementPosition {
+		private int x;
+		private int y;
+		
+		/**
+		 * Create from {@link Shape}.
+		 */
+		public ElementPosition(Shape shape) {
+			int x = -1, y = -1;
+			for (Property prop : shape.getProperties()) {
+				if (prop.getKey().equals(ELEMENT_X_PROPERTY))
+					x = Integer.parseInt(prop.getValue());
+				else if (prop.getKey().equals(ELEMENT_Y_PROPERTY))
+					y = Integer.parseInt(prop.getValue());
+			}
+			if (x < 0 && y < 0)
+				throw new UnsupportedOperationException("Shape has no element position properties set");
+			else if (x < 0)
+				throw new UnsupportedOperationException("Shape misses property for x position");
+			else if (y < 0)
+				throw new UnsupportedOperationException("Shape misses property for y position");
+			
+			this.x = x;
+			this.y = y;
+		}
+		
+		/**
+		 * Create from x and y values.
+		 */
+		public ElementPosition(int x, int y) {
+			if (x < 0 || y < 0)
+				throw new UnsupportedOperationException("Coordinates must be greater than or equal zero");
+			this.x = x;
+			this.y = y;
+		}
+		
+		public int getX() {
+			return x;
+		}
+		
+		public int getY() {
+			return y;
+		}
+	}
+	
+	/**
 	 * Add a single empty element shape into the ContainerShape.
 	 * @return the new ContainerShape of the empty element
 	 */
@@ -231,14 +286,8 @@ public final class LevelPictogramHelper {
 			// remove shapes and elements that are now outside the level
 			final Shape[] shapes = levelShape.getChildren().toArray(new Shape[levelShape.getChildren().size()]);
 			for (Shape shape : shapes) {
-				int x = -1, y = -1;
-				for (Property prop : shape.getProperties()) {
-					if (prop.getKey().equals(ELEMENT_X_PROPERTY))
-						x = Integer.parseInt(prop.getValue());
-					else if (prop.getKey().equals(ELEMENT_Y_PROPERTY))
-						y = Integer.parseInt(prop.getValue());
-				}
-				if (x >= newWidth || y >= newHeight)
+				ElementPosition elPos = new ElementPosition(shape);
+				if (elPos.getX() >= newWidth || elPos.getY() >= newHeight)
 					pe.deletePictogramElement(shape);
 			}
 		}
@@ -271,18 +320,13 @@ public final class LevelPictogramHelper {
 			if (!(elCShape instanceof ContainerShape))
 				continue;
 			ContainerShape elContainerShape = (ContainerShape) elCShape;
-			int x = -1, y = -1;
-			for (Property prop : elContainerShape.getProperties()) {
-				if (prop.getKey().equals(ELEMENT_X_PROPERTY))
-					x = Integer.parseInt(prop.getValue());
-				else if (prop.getKey().equals(ELEMENT_Y_PROPERTY))
-					y = Integer.parseInt(prop.getValue());
-			}
-			if (x >= 0 && x < xKeep && y >= 0 && y < yKeep) {
+			ElementPosition elPos = new ElementPosition(elContainerShape);
+			if (elPos.getX() < xKeep && elPos.getY() < yKeep) {
 				GraphicsAlgorithm elRectangle = elContainerShape.getGraphicsAlgorithm();
 				// change size and position
 				ga.setLocationAndSize(elRectangle,
-						level.getElementSize() * x + LEVEL_BORDER_WIDTH, level.getElementSize() * y + LEVEL_BORDER_WIDTH, // mind the left and top border
+						level.getElementSize() * elPos.getX() + LEVEL_BORDER_WIDTH,
+						level.getElementSize() * elPos.getY() + LEVEL_BORDER_WIDTH, // mind the left and top border
 						level.getElementSize(), level.getElementSize());
 				
 				// also for possible element within
@@ -295,6 +339,47 @@ public final class LevelPictogramHelper {
 		
 		// add new ones
 		layoutElementShapes(oldWidth, oldHeight, newWidth, newHeight, levelShape, level, diagram);
+	}
+	
+	/**
+	 * Get the empty element shape on the given position within the levelShape.
+	 * @return empty element {@link ContainerShape}
+	 */
+	public static final ContainerShape getEmptyElementShape(int x, int y, ContainerShape levelShape) {
+		for (Shape elCShape : levelShape.getChildren()) {
+			if (!(elCShape instanceof ContainerShape))
+				continue;
+			ContainerShape elContainerShape = (ContainerShape) elCShape;
+			ElementPosition elPos = new ElementPosition(elContainerShape);
+			if (elPos.getX() == x && elPos.getY() == y)
+				return elContainerShape;
+		}
+		return null;
+	}
+	
+	public static final ContainerShape addElementShape(ContainerShape elementContainer, PlacedElement element, Level level, Diagram diagram) {
+		IPeService pe = Graphiti.getPeService();
+		IGaService ga = Graphiti.getGaService();
+		
+		// add visible rectangle to hide empty element border
+		ContainerShape elementShape = pe.createContainerShape(elementContainer, true);
+		Rectangle elRectangle = ga.createRectangle(elementShape);
+		elRectangle.setBackground(ga.manageColor(diagram, ELEMENT_BACKGROUND_COLOR));
+		elRectangle.setLineWidth(0);
+		elRectangle.setLineVisible(false);
+		ga.setLocationAndSize(elRectangle, LEVEL_BORDER_WIDTH + element.getPositionX() * level.getElementSize(),
+				LEVEL_BORDER_WIDTH + element.getPositionY() * level.getElementSize(),
+				level.getElementSize(), level.getElementSize());
+
+		// add image onto this new rectangle
+		Shape blockImage = pe.createShape(elementShape, false);
+		Image image = ga.createImage(blockImage, EggImageProvider.getImageId(element));
+		image.setProportional(true);
+		image.setStretchH(true);
+		image.setStretchV(true);
+		ga.setLocationAndSize(image, 0, 0, level.getElementSize(), level.getElementSize());
+		
+		return elementShape;
 	}
 	
 }

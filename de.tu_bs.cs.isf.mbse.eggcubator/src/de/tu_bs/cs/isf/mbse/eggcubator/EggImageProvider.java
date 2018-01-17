@@ -13,11 +13,25 @@ import org.eclipse.graphiti.platform.AbstractExtension;
 import org.eclipse.graphiti.ui.platform.IImageProvider;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.graphiti.ui.services.IImageService;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
+
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemAttribute;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationAttribute;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedEnemy;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedItem;
 
 // including {@Link AbstractImageProvider} instead of extending it, so the Hashtable can be cleared on reload
 
 public class EggImageProvider extends AbstractExtension implements IImageProvider {
-protected static final String PREFIX = "de.tu_bs.cs.isf.mbse.egg.";
+
+	public static final String IMG_PREFIX = "de.tu_bs.cs.isf.mbse.egg.";
 	
 	private String pluginId;
 
@@ -88,24 +102,98 @@ protected static final String PREFIX = "de.tu_bs.cs.isf.mbse.egg.";
 	    }
 	    return result;
 	}
+	
+	/**
+	 * Convert imagePath in project to corresponding id.
+	 * @return image id
+	 */
+	public static String getImageId(PlacedElement element) {
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (!(editor instanceof LevelEditor))
+			throw new IllegalStateException("Wrong editor used. Cannot use this one for this operation");
+		LevelEditor levelEditor = (LevelEditor) editor;
+		
+		String imagePath = null;
+		if (element instanceof PlacedBlock) {
+			for (BlockAttribute attr : ((PlacedBlock) element).getProperties().getProperties()) {
+				if (attr instanceof AnimationDescription) {
+					for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+						if (animation instanceof Pictures) {
+							if (((Pictures) animation).getValue().size() > 0)
+								imagePath = ((Pictures) animation).getValue().get(0);
+							else
+								throw new IllegalStateException("Block doesn't contain any image");
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} else if (element instanceof PlacedEnemy) {
+			for (EnemyAttribute attr : ((PlacedEnemy) element).getProperties().getProperties()) {
+				if (attr instanceof AnimationDescription) {
+					for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+						if (animation instanceof Pictures) {
+							if (((Pictures) animation).getValue().size() > 0)
+								imagePath = ((Pictures) animation).getValue().get(0);
+							else
+								throw new IllegalStateException("Enemy doesn't contain any image");
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} else if (element instanceof PlacedItem) {
+			for (ItemAttribute attr : ((PlacedItem) element).getProperties().getProperties()) {
+				if (attr instanceof AnimationDescription) {
+					for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+						if (animation instanceof Pictures) {
+							if (((Pictures) animation).getValue().size() > 0)
+								imagePath = ((Pictures) animation).getValue().get(0);
+							else
+								throw new IllegalStateException("Item doesn't contain any image");
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} else
+			throw new IllegalStateException("Unknown element type");
+		if (imagePath == null)
+			throw new IllegalStateException("Image path for element must be set in order to use it");
+		
+		imagePath = imagePath.substring(1); // TODO bugfix eggscriptor and remove substring
+		
+		return getImageId(levelEditor.getCurrentProject(), imagePath);
+	}
+	
+	/**
+	 * Convert imagePath in project to corresponding id.
+	 * @return image id
+	 */
+	public static String getImageId(String project, String imagePath) {
+		return IMG_PREFIX + project + '.' + imagePath.substring(0, imagePath.lastIndexOf('.'));
+	}
 
 	/**
 	 * Adds all egg related images to this provider.
 	 * @see org.eclipse.graphiti.ui.platform.AbstractImageProvider#addAvailableImages
 	 */
 	protected void addAvailableImages() {
-		// ResourcesPlugin.getWorkspace().getRoot().getProject() is null at start
 		for (IProject proj : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-			File dir = new File(proj.getLocation().toString() + File.separatorChar + "images"); // TODO correct image dir
+			File dir = new File(proj.getLocation().toString() + File.separatorChar + "images"); // TODO find correct image dir
 			if (dir.exists()) {
 				List<File> files = getImagesFromDir(dir);
 				if (files != null) {
 					for (File f : files) {
 						String imageName = f.getName().substring(0, f.getName().lastIndexOf('.'));
-						int dirEnd = dir.getAbsolutePath().length() + 1;
+						int dirEnd = dir.getAbsolutePath().length();
 						int pathEnd = f.getAbsolutePath().lastIndexOf(File.separatorChar);
+						pathEnd = pathEnd != -1 ? pathEnd : 0; // in case of no dir
 						String folderPrefix = f.getAbsolutePath().substring(dirEnd, pathEnd).replace(File.separatorChar, '.');
-						String imageId = PREFIX + folderPrefix + '.' + imageName;
+						String imageId = IMG_PREFIX + proj.getName() + '.' + (!folderPrefix.isEmpty() ? folderPrefix + '.' : "") + imageName;
 						String imagePath = "file:/" + f.getAbsolutePath();
 						addImageFilePath(imageId, imagePath);
 					}

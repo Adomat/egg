@@ -31,9 +31,9 @@ public class LevelUpdateFeature extends AbstractUpdateFeature implements ILevelF
 		Level level = (Level) levelShape.getLink().getBusinessObjects().get(0);
 		int oldWidth = -1, oldHeight = -1;
 		for (Property prop : levelShape.getProperties()) {
-			if (prop.getKey().equals("width"))
+			if (prop.getKey().equals(LevelPictogramHelper.LEVEL_WIDTH_PROPERTY))
 				oldWidth = Integer.parseInt(prop.getValue());
-			else if (prop.getKey().equals("height"))
+			else if (prop.getKey().equals(LevelPictogramHelper.LEVEL_HEIGHT_PROPERTY))
 				oldHeight = Integer.parseInt(prop.getValue());
 		}
 		if (level.getWidth() != oldWidth || level.getHeight() != oldHeight // trivial resize
