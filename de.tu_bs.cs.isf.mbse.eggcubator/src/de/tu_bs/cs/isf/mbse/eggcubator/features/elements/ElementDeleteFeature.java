@@ -4,13 +4,13 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IRemoveFeature;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
-import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.IElementFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.InternalRemoveContext;
 
 public class ElementDeleteFeature extends DefaultDeleteFeature implements IElementFeature {
 
@@ -24,7 +24,9 @@ public class ElementDeleteFeature extends DefaultDeleteFeature implements IEleme
 		if (!(context.getPictogramElement() instanceof Shape))
 			return false;
 		Shape shape = (Shape) context.getPictogramElement();
-		return super.canDelete(context) && shape.getLink() != null &&
+		IRemoveContext rc = new InternalRemoveContext(shape);
+		IRemoveFeature removeFeature = getFeatureProvider().getRemoveFeature(rc);
+		return removeFeature != null && removeFeature.canRemove(rc) && shape.getLink() != null &&
 						shape.getLink().getBusinessObjects().size() == 1 &&
 						shape.getLink().getBusinessObjects().get(0) instanceof PlacedElement &&
 						shape.getContainer().getContainer() != null &&
@@ -40,7 +42,7 @@ public class ElementDeleteFeature extends DefaultDeleteFeature implements IEleme
 		Level level = (Level) shape.getContainer().getContainer().getLink().getBusinessObjects().get(0);
 		
 		// pass to remove feature
-		IRemoveContext rc = new RemoveContext(shape);
+		IRemoveContext rc = new InternalRemoveContext(shape);
 		IRemoveFeature removeFeature = getFeatureProvider().getRemoveFeature(rc);
 		removeFeature.remove(rc);
 		

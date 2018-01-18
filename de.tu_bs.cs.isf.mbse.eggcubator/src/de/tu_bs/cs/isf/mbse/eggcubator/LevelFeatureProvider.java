@@ -27,15 +27,14 @@ import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.context.IResizeShapeContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractFeatureProvider;
-import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
 
 import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.ElementAddFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.ElementRemoveFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EggBlockCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementDeleteFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EnemyCreateFeature;
@@ -56,7 +55,7 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	private LevelLayoutFeature levelLayoutFeature = new LevelLayoutFeature(this);
 	private LevelUpdateFeature levelUpdateFeature = new LevelUpdateFeature(this);
 	private IDeleteFeature elementDeleteFeature = new ElementDeleteFeature(this);
-	private IRemoveFeature defaultRemoveFeature = new DefaultRemoveFeature(this);
+	private IRemoveFeature elementRemoveFeature = new ElementRemoveFeature(this);
 	
 	public LevelFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
@@ -134,9 +133,8 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	
 	@Override
 	public IRemoveFeature getRemoveFeature(IRemoveContext context) {
-		if (context.getPictogramElement().getLink() != null && context.getPictogramElement().getLink().getBusinessObjects().size() == 1 &&
-				context.getPictogramElement().getLink().getBusinessObjects().get(0) instanceof PlacedElement)
-			return defaultRemoveFeature;
+		if (elementRemoveFeature.canRemove(context))
+			return elementRemoveFeature;
 		return null;
 	}
 	

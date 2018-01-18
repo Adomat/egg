@@ -95,7 +95,7 @@ public class LevelImplCustom extends LevelImpl {
 		if (!elements.containsKey(element.getPositionX())) {
 			columnEntry = (ColumnEntryImpl) factory.createColumnEntry(); // TODO error checking needed? Cannot use interface because none exists
 			columnEntry.setKey(element.getPositionX());
-			elements.put(columnEntry.getKey(), columnEntry.getValue());
+			elements.add(columnEntry);
 		} else
 			columnEntry = getColumnEntry(elements, element.getPositionX());
 		
@@ -103,7 +103,7 @@ public class LevelImplCustom extends LevelImpl {
 		if (!columnEntry.getValue().containsKey(element.getPositionY())) {
 			rowEntry = (RowEntryImpl) factory.createRowEntry(); // TODO error checking needed? Cannot use interface because none exists
 			rowEntry.setKey(element.getPositionY());
-			columnEntry.getValue().put(rowEntry.getKey(), rowEntry.getValue());
+			columnEntry.getValue().add(rowEntry);
 		} else
 			rowEntry = getRowEntry(columnEntry.getValue(), element.getPositionY());
 		
