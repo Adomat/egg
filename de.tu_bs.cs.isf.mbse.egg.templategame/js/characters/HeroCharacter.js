@@ -58,30 +58,25 @@ HeroCharacter.prototype.setCollisionBox = function(x, y) {
 
 
 HeroCharacter.prototype.getCenter = function() {
-	if(this.currentImage == null)
-		this.currentImage = this.idleImages[0];
-	
-	var x = this.position.x * blockSize;
-	var y = height - blockSize - this.position.y * blockSize;
+  if(this.currentImage == null)
+    this.currentImage = this.idleImages[0];
+  
+  var x = this.position.x * blockSize;
+  var y = height - blockSize - this.position.y * blockSize;
 
-	x += (blockSize - this.currentImage.width) / 2;
-	y += blockSize - this.currentImage.height;
-
-	x += this.currentImage.width / 2;
-	y += this.currentImage.height / 2;
-	
-	var returnVector = function () {  return {  x: null,  y: null  };  };
-	returnVector.x = x;
-	returnVector.y = y;
-	
-	return returnVector;
+  x += blockSize / 2;
+  
+  var returnVector = function () {  return {  x: null,  y: null  };  };
+  returnVector.x = x;
+  returnVector.y = y;
+  
+  return returnVector;
 }
 
 HeroCharacter.prototype.displaceByPixels = function(x, y) {
 	this.position.x += x / blockSize;
 	this.position.y += y / blockSize;
 }
-
 
 
 
@@ -107,6 +102,10 @@ HeroCharacter.prototype.draw = function(scroll, mapSize) {
 
 	imageX += offSet.x;
 	imageY -= offSet.y;
+    
+    // draw Collision Box
+    ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
+    ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBox.x / 2, imageY + this.currentImage.height / 2 - this.collisionBox.y / 2, this.collisionBox.x, this.collisionBox.y);
 
 	if(this.lookingright) {
 		ctx.drawImage(this.currentImage, imageX, imageY);

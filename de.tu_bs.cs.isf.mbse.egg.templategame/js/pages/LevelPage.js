@@ -8,8 +8,10 @@ function LevelPage() {
 	this.blocks = [];
 	this.exitGates = [];
 	this.hero = null;
-	
 	this.showDeathScreen = false;
+    
+    this.blockSize = 75;
+    
     this.deathMessage = "GAME OVER";
     this.deathMessageParagraph = "Press \'Enter\' to enter the main menu";
     this.deathReturnPage = startPageKey;

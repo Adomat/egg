@@ -47,6 +47,7 @@ function setupPages() {
 
 	// LEVEL PAGE 1
 	var level1Page = new LevelPage();
+    level1Page.blockSize = 100;
 	level1Page.setPageKey("level1");
 	level1Page.setBackgroundImage("images/background.png");
 	level1Page.setBackgroundColor("6699ff");
@@ -84,7 +85,7 @@ function setupPages() {
 	hero.addRunImage("images/character/run1.png");
 	hero.addRunImage("images/character/run2.png");
 	hero.addJumpImage("images/character/jump.png");
-	level1Page.addHero(hero, 5, 1);
+	level1Page.addHero(hero, 5, 20);
 	
 	level1Page.gravity = 10;
 	level1Page.addExitGate("level2", 24, 15);
@@ -93,6 +94,7 @@ function setupPages() {
 
 	// LEVEL PAGE 2
 	var level2Page = new LevelPage();
+    level2Page.blockSize = 250;
 	level2Page.setPageKey("level2");
 	level2Page.setBackgroundImage("images/background.png");
 	level2Page.setBackgroundColor("6699ff");
@@ -150,6 +152,10 @@ function switchPage(pageKey) {
 	for(var i=0; i<pages.length; i++) {
 		if(pages[i].getPageKey() == pageKey) {
 			currentPage = pages[i];
+            
+            if(currentPage instanceof LevelPage) {
+                blockSize = currentPage.blockSize;
+            }
 		}
 	}
 }
