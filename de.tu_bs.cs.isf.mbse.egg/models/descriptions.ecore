@@ -212,6 +212,11 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="page" lowerBound="1"
             eType="#//gui/PageDescription"/>
       </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="StartPage" eSuperTypes="#//attributes/gui/MenuPageAttribute #//attributes/gui/TextPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+            defaultValueLiteral="false"/>
+      </eClassifiers>
     </eSubpackages>
   </eSubpackages>
 </ecore:EPackage>

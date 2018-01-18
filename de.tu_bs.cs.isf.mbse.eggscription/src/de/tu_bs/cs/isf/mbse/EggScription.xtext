@@ -48,11 +48,16 @@ TextPageDescription returns gui::TextPageDescription:
 ;
 
 MenuPageAttribute returns guiattr::MenuPageAttribute:
-	Logo | Title | BackgroundImage | BackgroundColor | Button
+	Logo | Title | BackgroundImage | BackgroundColor | Button | StartPage
 ;
 
 TextPageAttribute returns guiattr::TextPageAttribute:
-	NextPage | Title | Text | BackgroundImage | BackgroundColor
+	NextPage | Title | Text | BackgroundImage | BackgroundColor | StartPage
+;
+
+StartPage returns guiattr::StartPage:
+	{guiattr::StartPage}
+	(value ?= 'startPage')
 ;
 
 Logo returns guiattr::Logo:
