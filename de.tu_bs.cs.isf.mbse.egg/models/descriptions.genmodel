@@ -164,6 +164,17 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Text">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Text/value"/>
         </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/BackgroundImage">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/BackgroundImage/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/BackgroundColor">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/BackgroundColor/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Button">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Button/label"/>
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference descriptions.ecore#//attributes/gui/Button/page"/>
+        </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
   </genPackages>

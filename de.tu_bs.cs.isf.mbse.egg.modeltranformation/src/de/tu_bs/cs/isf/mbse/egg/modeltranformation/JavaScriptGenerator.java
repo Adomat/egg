@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -32,9 +33,13 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpPower;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MaxLife;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RunAnimation;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Speed;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundColor;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundImage;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Button;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Logo;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.MenuPageAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.NextPage;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Text;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.TextPageAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Title;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationAttribute;
@@ -243,19 +248,31 @@ public class JavaScriptGenerator {
 			if(property instanceof NextPage) {
 				PageDescription nextPage = ((NextPage) property).getValue();
 				String nextPageKey = generateVariableNameFromDescription(nextPage);
-				addCodeLine("tutorialPage.newPageKey = \"menu\";", variableName, nextPageKey);
+				addCodeLine("%s.newPageKey = \"%s\";", variableName, nextPageKey);
 				break;
 			}
 		}
 		
 		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
-		addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, "TODO");
-		addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, "TODO");
-
-		addCodeLine("%s.addParagraph(\"%s\");", variableName, "TODO");
-		addCodeLine("%s.addParagraph(\"%s\");", variableName, "TODO");
-		addCodeLine("%s.addParagraph(\"%s\");", variableName, "TODO");
-		addCodeLine("%s.addParagraph(\"%s\");", variableName, "TODO");
+		
+		for(TextPageAttribute property : description.getProperties()) {
+			if(property instanceof Text) {
+				EList<String> allParagraphs = ((Text) property).getValue();
+				for(String paragraph : allParagraphs) {
+					addCodeLine("%s.addParagraph(\"%s\");", variableName, paragraph);
+				}
+				break;
+			}
+			else if(property instanceof BackgroundImage) {
+				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, ((BackgroundImage) property).getValue());
+			}
+			else if(property instanceof BackgroundColor) {
+				addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, ((BackgroundColor) property).getValue());
+			}
+			else {
+				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
+			}
+		}
 		
 		addCodeLine("pages.push(%s);\n", variableName);
 	}
@@ -266,14 +283,6 @@ public class JavaScriptGenerator {
 		addCodeLine("// Menu Page to the description with name \"%s\"", description.getName());
 		addCodeLine("var %s = new MenuPage();", variableName);
 		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
-		
-		addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, "TODO");
-		addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, "TODO");
-
-		addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, "TODO", "TODO");
-		addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, "TODO", "TODO");
-		addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, "TODO", "TODO");
-		addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, "TODO", "TODO");
 		
 		for(MenuPageAttribute property : description.getProperties()) {
 			if(property instanceof Logo) {
@@ -287,6 +296,16 @@ public class JavaScriptGenerator {
 						addCodeLine("%s.logoAnimationSpeed = %d;", variableName, ((Duration) animationProperty).getValue());
 					}
 				}
+			}
+			else if(property instanceof Button) {
+				String newPageKey = generateVariableNameFromDescription(((Button) property).getPage());
+				addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, ((Button) property).getLabel(), newPageKey);
+			}
+			else if(property instanceof BackgroundImage) {
+				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, ((BackgroundImage) property).getValue());
+			}
+			else if(property instanceof BackgroundColor) {
+				addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, ((BackgroundColor) property).getValue());
 			}
 //			else if(property instanceof Title) {
 //				// TODO what are we gonna do with this?

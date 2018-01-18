@@ -1,0 +1,14 @@
+[x]	MenuPage
+	[x] Background Image
+	[x] Background Color
+	[x] Button: Text + following Page
+
+[x] Animations
+	[x] remove diamond brackets from picture string (move to grammar)
+	
+[x] TextPage
+	[x] Background Image
+	[x] Background Color
+	[x] Paragraph = "Text" (description/attributes/gui)
+	
+[ ] Validator 4 picturestring

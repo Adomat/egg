@@ -163,9 +163,7 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 			throw new IllegalStateException("Unknown element type");
 		if (imagePath == null)
 			throw new IllegalStateException("Image path for element must be set in order to use it");
-		
-		imagePath = imagePath.substring(1); // TODO bugfix eggscriptor and remove substring
-		
+				
 		return getImageId(levelEditor.getCurrentProject(), imagePath);
 	}
 	

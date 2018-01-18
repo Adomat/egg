@@ -1,21 +1,15 @@
-# constraints
-
-#DONE 		usable und consumable schliessen sich gegenseitig aus
-#DONE 		constraints auf hero properties
-#DONE		strength, speed, jumppower, maxlife > 0
-#DONE		inventorysize >= 0
-#DONE		duration von animationen > 0
-#DONE		Animation hat 1x duration und 1x pictures
-#DONE 		movable und noCollision schlie�en sich gegenseitig aus
-#DONE 		destroyable und no collision schlie�en sich gegenseitig aus
-#DONE		Hero 1..1
-#DONE		unique identifiers!!
-#DONE		hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
-#DONE		unique attributes max. one time existing items, heros, enemys, blocks, animation
-
-unique attributes min one time existing in items, heros, enemies, blocks, animation
-hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
-inventoryItemsTypes : jedes Item nur 1x
-
-# reference resolver
-pictures
+[x] 		usable und consumable schliessen sich gegenseitig aus
+[x] 		constraints auf hero properties
+[x]			strength, speed, jumppower, maxlife > 0
+[x]			inventorysize >= 0
+[x]			duration von animationen > 0
+[x]			Animation hat 1x duration und 1x pictures
+[x] 		movable und noCollision schlie�en sich gegenseitig aus
+[x] 		destroyable und no collision schlie�en sich gegenseitig aus
+[x]			Hero 1..1
+[x]			unique identifiers!!
+[x]			hero.inventoryItemsTypes.size() == hero.inventoryItemsCounts.size()
+[x]			unique attributes max. one time existing items, heros, enemys, blocks, animation
+[x]			unique attributes min one time existing in items, heros, enemies, blocks, animation
+[x]			hero: wenn canKillInDistance -> DistanceAttackAnimation muss gesetzt werden, sonst obsolet
+[ ] 		inventoryItemsTypes : jedes Item nur 1x

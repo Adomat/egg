@@ -48,11 +48,11 @@ TextPageDescription returns gui::TextPageDescription:
 ;
 
 MenuPageAttribute returns guiattr::MenuPageAttribute:
-	Logo | Title
+	Logo | Title | BackgroundImage | BackgroundColor | Button
 ;
 
 TextPageAttribute returns guiattr::TextPageAttribute:
-	NextPage | Title | Text
+	NextPage | Title | Text | BackgroundImage | BackgroundColor
 ;
 
 Logo returns guiattr::Logo:
@@ -65,9 +65,28 @@ Title returns guiattr::Title:
 	('title' value = EString)
 ;
 
+BackgroundImage returns guiattr::BackgroundImage:
+	{guiattr::BackgroundImage}
+	('backgroundImage' '<' value = EString '>')
+;
+
+BackgroundColor returns guiattr::BackgroundColor:
+	{guiattr::BackgroundColor}
+	('backgroundColor' '#' value = EString)
+;
+
 Text returns guiattr::Text:
 	{guiattr::Text}
 	('paragraph' value += EString)
+;
+
+Button returns guiattr::Button:
+	{guiattr::Button}
+	('button' '{'
+			'label' label = EString ';'
+			'page' page = [gui::PageDescription|EString] ';'
+		'}'
+	)
 ;
 
 NextPage returns guiattr::NextPage:
@@ -270,7 +289,7 @@ Duration returns auxiliary::Duration:
 
 Pictures returns auxiliary::Pictures:
 	{auxiliary::Pictures}
-	('pictures' value += PICTURESTRING (','value += PICTURESTRING)*)
+	('pictures' value += EString (',' value += EString )*)
 ;
 
 //#######################################################################################################
@@ -279,10 +298,6 @@ Pictures returns auxiliary::Pictures:
 
 EString returns ecore::EString:
 	STRING | ID;
-   
-//terminal FLOAT returns ecore::EFloat:
-//	INT '.' INT;
-//
 
 WHOLEINT returns ecore::EInt:
 	('-'|'+') INT
@@ -293,10 +308,10 @@ terminal PICTURESTRING returns ecore::EString:
 ;
 
 enum IQ returns character::Intelligence:
-	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low' |
-	HIGH = 'HIGH' | MEDIUM = 'MEDIUM' | LOW = 'LOW' |
-	HIGH = 'H' | MEDIUM = 'M' | LOW = 'L' |
-	HIGH = 'h' | MEDIUM = 'm' | LOW = 'l'
+//	HIGH = 'high' | MEDIUM = 'medium' | LOW = 'low' |
+	HIGH = 'HIGH' | MEDIUM = 'MEDIUM' | LOW = 'LOW' //|
+//	HIGH = 'H' | MEDIUM = 'M' | LOW = 'L' |
+//	HIGH = 'h' | MEDIUM = 'm' | LOW = 'l'
 ;
 
 enum OCPROPS returns character::DynamicOCProperties:
