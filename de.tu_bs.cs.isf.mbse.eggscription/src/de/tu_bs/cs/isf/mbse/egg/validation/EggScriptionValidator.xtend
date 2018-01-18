@@ -44,6 +44,12 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RangeAttackAni
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RangeAttackEnabled
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IntelligenceLevel
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.MenuPageDescription
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.MenuPageAttribute
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Button
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.TextPageAttribute
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.NextPage
 
 /**
  * This class contains custom validation rules. 
@@ -243,11 +249,37 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof Pictures) foundPictures = true;
 		}
 		if(!foundDuration) {
-			warning('Could not find attribute duration in  of the Animation', 
+			warning('Could not find attribute duration in the Animation', 
 				desc.eClass.getEStructuralFeature(desc.toString));
 		}
 		if(!foundPictures) {
-			warning('Could not find attribute pictures in  of the Animation', 
+			warning('Could not find attribute pictures in the Animation', 
+				desc.eClass.getEStructuralFeature(desc.toString));
+		}
+	}
+	
+	@Check
+	def checkExistenceOfMenuPageAttributes(MenuPageDescription desc) {
+		var foundButton = false;
+		
+		for(MenuPageAttribute attribute : desc.properties) {
+			if(attribute instanceof Button) foundButton = true;
+		}
+		if(!foundButton) {
+			warning('Could not find any button in menu  \"' + desc.name.toString + '\"', 
+				desc.eClass.getEStructuralFeature(desc.toString));
+		}
+	}
+	
+	@Check
+	def checkExistenceOfTextPageAttributes(TextPageDescription desc) {
+		var foundNextPage = false;
+		
+		for(TextPageAttribute attribute : desc.properties) {
+			if(attribute instanceof NextPage) foundNextPage = true;
+		}
+		if(!foundNextPage) {
+			warning('Could not find a next page for \"' + desc.name.toString + '\"', 
 				desc.eClass.getEStructuralFeature(desc.toString));
 		}
 	}
