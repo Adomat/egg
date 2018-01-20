@@ -87,7 +87,7 @@ function setupPages() {
 	hero.addJumpImage("images/character/jump.png");
 	level1Page.addHero(hero, 5, 20);
 	
-	level1Page.gravity = 10;
+	level1Page.gravity = 10,00;
 	level1Page.addExitGate("level2", 24, 15);
 
 	pages.push(level1Page);

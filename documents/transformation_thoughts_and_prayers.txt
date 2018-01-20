@@ -1,9 +1,5 @@
 WICHTIG: EINDEUTIGE BENNUNG DER DESCRIPTIONS DAMIT DIE VARIABLENNAMEN IN JAVASCRIPT UNIQUE SIND!
 
-ES DARF NUR EINE MENÜ SEITE GEBEN! Und zwar nicht pro page sondern pro projekt
-	> keine zeit für vernünftige implementierung von verschachtelten menüs imo
-	> warum eigentlich? geht das nicht auch so? müsste eigentlich
-
 for simplicity: alle .egg und level dateien in einem ordner!! Bilder in einen 'img' folder dahinter oder so
 	> bei der generierung würde ich am liebsten einfach nur den ordner der datei durchsuchen, auf die geklickt wurde, dateiendungen filtern, emf resourcen
 	  daraus basteln und ab dafür in die html datei
@@ -11,13 +7,9 @@ for simplicity: alle .egg und level dateien in einem ordner!! Bilder in einen 'i
 es wird beim derzeitigen stand nur die hälfte funktionieren (keine destroyable blöcke, nicht mal ein inventory geschweige denn gegner.. OMG)
 	> das würde noch dauern, uns fehlt halt auch eine person ¯\_(ツ)_/¯
 	
-
 IRGENDWO MUSS SPEZIFIZIERT WERDEN MIT WELCHER PAGE DAS SPIEL STARTEN SOLL !!!!!!!!111einseinself
 
-Wie machen wir das setup der menü seite? grammatik nicht vollständig
-	> hintergrundbild?
-	> hintergrundfarbe?
-	> buttons (beschriftung, link auf andere page)
-	> das attribut "title" wird bisher nicht genutzt, ich dachte ein titelbild wäre sinnvoller? soll das rein? kleiner kommentar an dieser stelle wäre super o/
-
-Warum sind die Diamantklammern vom Picture Attribut ein Teil des Strings, der das Bild referenzieren soll? Find ich nicht so optimal, sollte doch eher Teil der Grammatikrule sein!
+Level:
+	> Wo startet der Held?
+	> Hintergrundbild & Farbe?
+	> Sonderblöcke

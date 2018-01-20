@@ -12,7 +12,6 @@
   <genPackages prefix="Level" basePackage="de.tu_bs.cs.isf.mbse.egg" disposableProviderFactory="true"
       ecorePackage="level.ecore#/">
     <genClasses ecoreClass="level.ecore#//Level">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/width"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/height"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/gravity"/>

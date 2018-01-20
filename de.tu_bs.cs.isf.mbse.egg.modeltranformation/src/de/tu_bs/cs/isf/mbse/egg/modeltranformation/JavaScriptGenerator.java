@@ -9,15 +9,19 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.Bundle;
@@ -51,20 +55,24 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.MenuPageDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.PageDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription;
+import de.tu_bs.cs.isf.mbse.egg.level.Level;
+import de.tu_bs.cs.isf.mbse.egg.level.LevelPackage;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 
 public class JavaScriptGenerator {
 	private static String _GENERATED_CODE;
 	
 	public static void generateCode(File selectedFile, Shell shell) throws IOException, URISyntaxException {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		
 		if(!selectedFile.getParentFile().isDirectory()) {
 			System.out.println("Generator messed up...");
 			return;
 		}
 		
+		ResourceSet resourceSet = new ResourceSetImpl();
+		
+		// Load Egg Resources
 		for(File sibling : selectedFile.getParentFile().listFiles()) {
-			// Load all descriptions into the resource set
 			if(!sibling.toURI().toString().endsWith(".egg"))
 				continue;
 			
@@ -73,8 +81,24 @@ public class JavaScriptGenerator {
 			
 			Resource resource = resourceSet.createResource(URI.createURI(sibling.toURI().toString()));
 			resource.load(in, resourceSet.getLoadOptions());
+		}
+		
+		// Load Level Resources
+		for(File sibling : selectedFile.getParentFile().listFiles()) {
+			if(!sibling.toURI().toString().endsWith(".level"))
+				continue;
 			
-			// TODO Load all levels into resource set
+			// Initialize the model
+	        LevelPackage.eINSTANCE.eClass();
+
+	        // Register the XMI resource factory for the .website extension
+
+	        Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+	        Map<String, Object> m = reg.getExtensionToFactoryMap();
+	        m.put("website", new XMIResourceFactoryImpl());
+
+	        // Get the resource
+	        resourceSet.getResource(URI.createURI(sibling.toURI().toString()), true);
 		}
 		
 		File templateFile = getFileFromBundle("de.tu_bs.cs.isf.mbse.egg.modeltranformation", "PlaceHolder.eggtransformation");
@@ -96,8 +120,8 @@ public class JavaScriptGenerator {
 
 		// Write the target file
 		PrintWriter out = new PrintWriter(targetFile);
-//		out.println(_GENERATED_CODE);
-		out.println(modifiedContent);
+		out.println(_GENERATED_CODE);
+//		out.println(modifiedContent);
 		out.close();
 	}
 	
@@ -129,8 +153,42 @@ public class JavaScriptGenerator {
 						}
 					}
 				}
+				else if(root instanceof Level) {
+					generateCodeForLevel((Level) root);
+				}
 			}
 		}
+	}
+
+	private static void generateCodeForLevel(Level level) {
+		String variableName = generateVariableNameFromDescription(level);
+		addCodeLine("// Level \"%s\"", level.getName());
+		addCodeLine("var %s = new LevelPage();", variableName);
+		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
+		addCodeLine("%s.blockSize = %d;", variableName, level.getElementSize());
+		addCodeLine("%s.gravity = %f;", variableName, level.getGravity());
+		
+		for(Entry<Integer, EMap<Integer, PlacedElement>> column : level.getElements()) {
+			for(Entry<Integer, PlacedElement> row : column.getValue()) {
+				if(row.getValue() != null) {
+					PlacedElement element = row.getValue();
+					
+					if(element instanceof PlacedBlock) {
+						BlockDescription desc = ((PlacedBlock) element).getProperties();
+						String blockVariableName = generateVariableNameFromDescription(desc);
+						int x = column.getKey();
+						int y = row.getKey();
+						
+						addCodeLine("%s.addBlock(%s, %d, %d);", variableName, blockVariableName, x, y);
+					}
+					else {
+						System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n\t  > " + element.getClass().getSimpleName().replace("Impl", ""));
+					}
+				}
+			}
+		}
+		
+		addCodeLine("");
 	}
 
 	private static void generateCodeForBlock(BlockDescription description) {
@@ -230,7 +288,7 @@ public class JavaScriptGenerator {
 		}
 
 		addCodeLine("%s.animationSpeed = %d;", variableName, refreshTime);
-		addCodeLine("// Hiiiiii, please add me to the level \\o thaaaaaanks\n");
+		addCodeLine("// TODO Hiiiiii, please add me to the level \\o thaaaaaanks\n");
 	}
 
 	private static void generateCodeForTextPage(TextPageDescription description) {
