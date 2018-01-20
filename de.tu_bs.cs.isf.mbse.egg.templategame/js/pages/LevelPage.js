@@ -30,9 +30,23 @@ LevelPage.prototype.addBlock = function(givenBlock, x, y) {
 }
 
 LevelPage.prototype.addHero = function(newHero, x, y) {
-	this.hero = newHero;
+	this.hero = new HeroCharacter();
+    
 	this.hero.position.x = x;
 	this.hero.position.y = y;
+    
+	
+	this.hero.idleImages = newHero.idleImages;
+	this.hero.attackImages = newHero.attackImages;
+	this.hero.runImages = newHero.runImages;
+	this.hero.jumpImages = newHero.jumpImages;
+	
+	this.hero.collisionBox = newHero.collisionBox;
+	this.hero.animationSpeed = newHero.animationSpeed;
+	this.hero.life = newHero.life;
+	this.hero.speed = newHero.speed;
+	this.hero.jumpPower = newHero.jumpPower;
+    this.hero.showCollisionBox = newHero.showCollisionBox;
 }
 
 LevelPage.prototype.addExitGate = function(newPageKey, x, y) {

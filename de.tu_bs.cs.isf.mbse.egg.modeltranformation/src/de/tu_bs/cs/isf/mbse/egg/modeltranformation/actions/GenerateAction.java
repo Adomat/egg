@@ -39,8 +39,7 @@ public class GenerateAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 		if(MessageDialog.openQuestion(shell, "EGG - Generate JavaScript Code?",
-				"Do you want EGG to generate your game now?\n\nJavaScript Code will be created somewhere in this workspace"
-				+ " - at least we're trying to!")) {
+				"Do you want EGG to generate your game now?\n\nThis might override older versions of the generated html-file.")) {
 			try {
 				//IFile targetFile = action.;
 				JavaScriptGenerator.generateCode(selectedFile, shell);

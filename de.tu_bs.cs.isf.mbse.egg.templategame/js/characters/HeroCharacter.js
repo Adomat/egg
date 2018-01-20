@@ -15,6 +15,7 @@ function HeroCharacter() {
 	this.life;
 	this.speed;
 	this.jumpPower;
+    this.showCollisionBox = false;
 	
 	this.lookingright = true;
 	this.fallingState = 0;
@@ -102,10 +103,6 @@ HeroCharacter.prototype.draw = function(scroll, mapSize) {
 
 	imageX += offSet.x;
 	imageY -= offSet.y;
-    
-    // draw Collision Box
-    ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
-    ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBox.x / 2, imageY + this.currentImage.height / 2 - this.collisionBox.y / 2, this.collisionBox.x, this.collisionBox.y);
 
 	if(this.lookingright) {
 		ctx.drawImage(this.currentImage, imageX, imageY);
@@ -115,6 +112,12 @@ HeroCharacter.prototype.draw = function(scroll, mapSize) {
 			ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
 		}
 	}
+    
+    // draw Collision Box
+    if(this.showCollisionBox) {
+        ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
+        ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBox.x / 2, imageY + this.currentImage.height / 2 - this.collisionBox.y / 2, this.collisionBox.x, this.collisionBox.y);
+    }
 }
 
 HeroCharacter.prototype.switchAnimationIndex = function() {

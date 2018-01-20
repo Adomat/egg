@@ -201,30 +201,25 @@ HeroCharacter.prototype.setCollisionBox = function(x, y) {
 
 
 HeroCharacter.prototype.getCenter = function() {
-	if(this.currentImage == null)
-		this.currentImage = this.idleImages[0];
-	
-	var x = this.position.x * blockSize;
-	var y = height - blockSize - this.position.y * blockSize;
+  if(this.currentImage == null)
+    this.currentImage = this.idleImages[0];
+  
+  var x = this.position.x * blockSize;
+  var y = height - blockSize - this.position.y * blockSize;
 
-	x += (blockSize - this.currentImage.width) / 2;
-	y += blockSize - this.currentImage.height;
-
-	x += this.currentImage.width / 2;
-	y += this.currentImage.height / 2;
-	
-	var returnVector = function () {  return {  x: null,  y: null  };  };
-	returnVector.x = x;
-	returnVector.y = y;
-	
-	return returnVector;
+  x += blockSize / 2;
+  
+  var returnVector = function () {  return {  x: null,  y: null  };  };
+  returnVector.x = x;
+  returnVector.y = y;
+  
+  return returnVector;
 }
 
 HeroCharacter.prototype.displaceByPixels = function(x, y) {
 	this.position.x += x / blockSize;
 	this.position.y += y / blockSize;
 }
-
 
 
 
@@ -250,6 +245,10 @@ HeroCharacter.prototype.draw = function(scroll, mapSize) {
 
 	imageX += offSet.x;
 	imageY -= offSet.y;
+    
+    // draw Collision Box
+    ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
+    ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBox.x / 2, imageY + this.currentImage.height / 2 - this.collisionBox.y / 2, this.collisionBox.x, this.collisionBox.y);
 
 	if(this.lookingright) {
 		ctx.drawImage(this.currentImage, imageX, imageY);
@@ -405,7 +404,7 @@ HeroCharacter.prototype.collisionWithBlocks = function(blocks) {
 				if(blocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
 					// unter oberer Kante
 					if(blocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
-						// über unterer Kante
+						// Ã¼ber unterer Kante
 						
 						// COLLISION
 						return true;
@@ -427,7 +426,7 @@ HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
 				if(exitGates[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
 					// unter oberer Kante
 					if(exitGates[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
-						// über unterer Kante
+						// Ã¼ber unterer Kante
 						
 						// COLLISION
 						return exitGates[i].newPageKey;
@@ -506,7 +505,7 @@ var startPageKey;
 
 // Setup-Methode. Wird getriggert sobald html-Inhalt geladen ist.
 window.addEventListener('load', function(){
-	// ODER: document einen listener auf 'DOMContentLoaded' hinzufügen
+	// ODER: document einen listener auf 'DOMContentLoaded' hinzufÃ¼gen
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     
@@ -627,8 +626,10 @@ function LevelPage() {
 	this.blocks = [];
 	this.exitGates = [];
 	this.hero = null;
-	
 	this.showDeathScreen = false;
+    
+    this.blockSize = 75;
+    
     this.deathMessage = "GAME OVER";
     this.deathMessageParagraph = "Press \'Enter\' to enter the main menu";
     this.deathReturnPage = startPageKey;
@@ -914,6 +915,10 @@ function switchPage(pageKey) {
 	for(var i=0; i<pages.length; i++) {
 		if(pages[i].getPageKey() == pageKey) {
 			currentPage = pages[i];
+            
+            if(currentPage instanceof LevelPage) {
+                blockSize = currentPage.blockSize;
+            }
 		}
 	}
 }

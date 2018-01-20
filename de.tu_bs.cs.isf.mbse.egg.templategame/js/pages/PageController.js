@@ -81,11 +81,12 @@ function setupPages() {
 	hero.life = 100;
 	hero.speed = 5;
 	hero.jumpPower = 35;
+    hero.showCollisionBox = true;
 	hero.addIdleImage("images/character/idle.png");
 	hero.addRunImage("images/character/run1.png");
 	hero.addRunImage("images/character/run2.png");
 	hero.addJumpImage("images/character/jump.png");
-	level1Page.addHero(hero, 5, 20);
+	level1Page.addHero(hero, 5, 6);
 	
 	level1Page.gravity = 10,00;
 	level1Page.addExitGate("level2", 24, 15);
@@ -103,18 +104,7 @@ function setupPages() {
 	for(var i=0; i<10; i++) {
 		level2Page.addBlock(grassBlock, i, 0);
 	}
-	
-	var hero = new HeroCharacter();
-	hero.setCollisionBox(30, 130);
-	hero.animationSpeed = 200;
-	hero.life = 100;
-	hero.speed = 5;
-	hero.jumpPower = 35;
-	hero.addIdleImage("images/character/idle.png");
-	hero.addRunImage("images/character/run1.png");
-	hero.addRunImage("images/character/run2.png");
-	hero.addJumpImage("images/character/jump.png");
-	level2Page.addHero(hero, 5, 1);
+	level2Page.addHero(hero, 1, 1);
 	
 	level2Page.gravity = 5;
 

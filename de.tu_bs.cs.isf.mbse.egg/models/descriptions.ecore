@@ -85,6 +85,16 @@
     </eSubpackages>
     <eSubpackages name="character" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/descriptions/attributes/character"
         nsPrefix="character">
+      <eClassifiers xsi:type="ecore:EClass" name="CollisionBox" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ShowCollisionBox" eSuperTypes="#//attributes/character/HeroAttribute #//attributes/character/EnemyAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="EnemyAttribute" abstract="true"
           eSuperTypes="#//attributes/UniqueAttribute"/>
       <eClassifiers xsi:type="ecore:EClass" name="HeroAttribute" abstract="true" eSuperTypes="#//attributes/UniqueAttribute"/>

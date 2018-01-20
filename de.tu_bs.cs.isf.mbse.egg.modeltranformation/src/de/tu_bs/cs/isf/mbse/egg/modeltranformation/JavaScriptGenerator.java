@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.Bundle;
 
@@ -30,12 +29,14 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionRoot;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.NoCollision;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CollisionBox;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IdleAnimation;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpAnimation;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpPower;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MaxLife;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RunAnimation;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.ShowCollisionBox;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Speed;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundColor;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundImage;
@@ -43,6 +44,7 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Button;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Logo;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.MenuPageAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.NextPage;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.StartPage;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Text;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.TextPageAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Title;
@@ -111,17 +113,18 @@ public class JavaScriptGenerator {
 		File targetFile = new File(selectedFile.getParentFile() + "/index.html");
 		
 		if (targetFile.exists()) {
-			if (MessageDialog.openQuestion(shell, "EGG - Override old version?",
-					"You are about to override your latest game version.\n\nContinue anyway?"))
-				targetFile.delete();
-			else return;
+//			if (MessageDialog.openQuestion(shell, "EGG - Override old version?",
+//					"You are about to override your latest game version.\n\nContinue anyway?"))
+//				targetFile.delete();
+//			else return;
+			targetFile.delete();
 		}
 		targetFile.createNewFile();
 
 		// Write the target file
 		PrintWriter out = new PrintWriter(targetFile);
-		out.println(_GENERATED_CODE);
-//		out.println(modifiedContent);
+//		out.println(_GENERATED_CODE);
+		out.println(modifiedContent);
 		out.close();
 	}
 	
@@ -182,12 +185,13 @@ public class JavaScriptGenerator {
 						addCodeLine("%s.addBlock(%s, %d, %d);", variableName, blockVariableName, x, y);
 					}
 					else {
-						System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n\t  > " + element.getClass().getSimpleName().replace("Impl", ""));
+						System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n  > " + element.getClass().getSimpleName().replace("Impl", ""));
 					}
 				}
 			}
 		}
-		
+
+		addCodeLine("// TODO Hiiiiii, I need a hero to make sense \\o thaaaaaanks!");
 		addCodeLine("");
 	}
 
@@ -226,7 +230,6 @@ public class JavaScriptGenerator {
 		addCodeLine("// Hero to the description with name \"%s\"", description.getName());
 
 		addCodeLine("var %s = new HeroCharacter();", variableName);
-		addCodeLine("%s.setCollisionBox(%d, %d);", variableName, 123456789, 123456789);
 		
 		int refreshTime = 200;
 		
@@ -239,6 +242,12 @@ public class JavaScriptGenerator {
 			}
 			else if(property instanceof JumpPower) {
 				addCodeLine("%s.jumpPower = %d;", variableName, ((JumpPower) property).getValue());
+			}
+			else if(property instanceof CollisionBox) {
+				addCodeLine("%s.setCollisionBox(%d, %d);", variableName, ((CollisionBox) property).getWidth(), ((CollisionBox) property).getHeight());
+			}
+			else if(property instanceof ShowCollisionBox) {
+				addCodeLine("%s.showCollisionBox = true;", variableName);
 			}
 			else if(property instanceof RunAnimation) {
 				for(AnimationAttribute animationProperty : ((RunAnimation) property).getValue().getProperties()) {
@@ -287,8 +296,9 @@ public class JavaScriptGenerator {
 			}
 		}
 
+		addCodeLine("// The Generator will simply take the highest refresh rate of all animation types.");
 		addCodeLine("%s.animationSpeed = %d;", variableName, refreshTime);
-		addCodeLine("// TODO Hiiiiii, please add me to the level \\o thaaaaaanks\n");
+		addCodeLine("");
 	}
 
 	private static void generateCodeForTextPage(TextPageDescription description) {
@@ -326,6 +336,9 @@ public class JavaScriptGenerator {
 			}
 			else if(property instanceof BackgroundColor) {
 				addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, ((BackgroundColor) property).getValue());
+			}
+			else if(property instanceof StartPage) {
+				addCodeLine("startPageKey = \"%s\";", variableName);
 			}
 			else {
 				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
@@ -369,6 +382,9 @@ public class JavaScriptGenerator {
 //				// TODO what are we gonna do with this?
 //				addCodeLine("// %s.doSomeThingWithTheDamnTitle(\"%s\");", variableName, ((Title) property).getValue());
 //			}
+			else if(property instanceof StartPage) {
+				addCodeLine("startPageKey = \"%s\";", variableName);
+			}
 			else {
 				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
 			}
@@ -378,10 +394,6 @@ public class JavaScriptGenerator {
 	}
 
 	private static void generateSetupCode() {
-		addCodeLine("blockSize = %d;", 123456789);
-		addCodeLine("startPageKey = \"%s\";", "TODO");
-		
-		addCodeLine("");
 		addCodeLine("pages = [];");
 		addCodeLine("");
 	}

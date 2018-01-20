@@ -181,6 +181,7 @@ HeroAttribute returns character::HeroAttribute:
 	Speed | JumpPower | MaxLife | Strength | InventorySize | CanKillInDistance
 	| IdleAnimation | RunAnimation | JumpAnimation | CloseAttackAnimation | DistanceAttackAnimation 
 	| InventoryItemsTypes | InventoryItemsCounts
+	| ShowCollisionBox | CollisionBox
 ;
 
 EnemyDescription returns gameelements::EnemyDescription:
@@ -195,6 +196,17 @@ EnemyDescription returns gameelements::EnemyDescription:
 EnemyAttribute returns character::EnemyAttribute:
 	Speed | JumpPower | MaxLife | Strength | IntelligenceLevel | CanKillInDistance
 	| IdleAnimation | RunAnimation | JumpAnimation | CloseAttackAnimation | DistanceAttackAnimation 
+	| ShowCollisionBox | CollisionBox
+;
+
+ShowCollisionBox returns character::ShowCollisionBox:
+	{character::ShowCollisionBox}
+	(value ?= 'showCollisionBox')
+;
+
+CollisionBox returns character::CollisionBox:
+	{character::CollisionBox}
+	('collisionBox' width = INT ',' height = INT)
 ;
 
 IntelligenceLevel returns character::IntelligenceLevel:

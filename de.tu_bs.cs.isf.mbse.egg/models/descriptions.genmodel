@@ -84,6 +84,13 @@
           <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/MAXLIFE"/>
           <genEnumLiterals ecoreEnumLiteral="descriptions.ecore#//attributes/character/DynamicOCProperties/INVENTORYSIZE"/>
         </genEnums>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/CollisionBox">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/CollisionBox/width"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/CollisionBox/height"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/character/ShowCollisionBox">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/character/ShowCollisionBox/value"/>
+        </genClasses>
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/EnemyAttribute"/>
         <genClasses image="false" ecoreClass="descriptions.ecore#//attributes/character/HeroAttribute"/>
         <genClasses ecoreClass="descriptions.ecore#//attributes/character/Speed">
