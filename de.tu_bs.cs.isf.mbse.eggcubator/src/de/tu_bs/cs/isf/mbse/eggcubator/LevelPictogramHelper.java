@@ -316,13 +316,13 @@ public final class LevelPictogramHelper {
 		final int xKeep = Math.min(oldWidth, newWidth);
 		final int yKeep = Math.min(oldHeight, newHeight);
 		final Shape[] shapes = levelShape.getChildren().toArray(new Shape[levelShape.getChildren().size()]);
-		for (Shape elCShape : shapes) {
-			if (!(elCShape instanceof ContainerShape))
+		for (Shape emptyElementShape : shapes) {
+			if (!(emptyElementShape instanceof ContainerShape))
 				continue;
-			ContainerShape elContainerShape = (ContainerShape) elCShape;
-			ElementPosition elPos = new ElementPosition(elContainerShape);
+			ContainerShape emptyElementContainerShape = (ContainerShape) emptyElementShape;
+			ElementPosition elPos = new ElementPosition(emptyElementContainerShape);
 			if (elPos.getX() < xKeep && elPos.getY() < yKeep) {
-				GraphicsAlgorithm elRectangle = elContainerShape.getGraphicsAlgorithm();
+				GraphicsAlgorithm elRectangle = emptyElementContainerShape.getGraphicsAlgorithm();
 				// change size and position
 				ga.setLocationAndSize(elRectangle,
 						level.getElementSize() * elPos.getX() + LEVEL_BORDER_WIDTH,
@@ -330,10 +330,21 @@ public final class LevelPictogramHelper {
 						level.getElementSize(), level.getElementSize());
 				
 				// also for possible element within
-				// TODO change element itself (if exists)
+				if (emptyElementContainerShape.getChildren().size() == 1) {
+					ContainerShape elementRecShape = (ContainerShape) emptyElementContainerShape.getChildren().get(0);
+					if (elementRecShape.getChildren().size() != 1)
+						throw new IllegalStateException("Invalid shape state");
+					Shape elementImgShape = elementRecShape.getChildren().get(0);
+					ga.setLocationAndSize(elementRecShape.getGraphicsAlgorithm(),
+							level.getElementSize() * elPos.getX() + LEVEL_BORDER_WIDTH,
+							level.getElementSize() * elPos.getY() + LEVEL_BORDER_WIDTH, // mind the left and top border
+							level.getElementSize(), level.getElementSize());
+					ga.setLocationAndSize(elementImgShape.getGraphicsAlgorithm(),
+							0, 0, level.getElementSize(), level.getElementSize());
+				}
 			} else {
 				// since we already iterate over all children, remove this one (faster)
-				pe.deletePictogramElement(elContainerShape);
+				pe.deletePictogramElement(emptyElementContainerShape);
 			}
 		}
 		
@@ -357,6 +368,10 @@ public final class LevelPictogramHelper {
 		return null;
 	}
 	
+	/**
+	 * Adds a new element shape and image for the PlacedElement to the given container.
+	 * @return The new element shape
+	 */
 	public static final ContainerShape addElementShape(ContainerShape elementContainer, PlacedElement element, Level level, Diagram diagram) {
 		IPeService pe = Graphiti.getPeService();
 		IGaService ga = Graphiti.getGaService();
@@ -380,6 +395,19 @@ public final class LevelPictogramHelper {
 		ga.setLocationAndSize(image, 0, 0, level.getElementSize(), level.getElementSize());
 		
 		return elementShape;
+	}
+	
+	/**
+	 * Move an element shape to an empty element container.
+	 */
+	public static final void moveElementShape(Shape shape, ContainerShape targetContainer, Level level) {
+		ElementPosition newPos = new ElementPosition(targetContainer);
+		
+		// move shape
+		shape.getContainer().getChildren().remove(shape);
+		shape.setContainer(targetContainer);
+		Graphiti.getGaService().setLocation(shape.getGraphicsAlgorithm(), LEVEL_BORDER_WIDTH + newPos.getX() * level.getElementSize(),
+				LEVEL_BORDER_WIDTH + newPos.getY() * level.getElementSize(), true);
 	}
 	
 }

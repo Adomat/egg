@@ -7,6 +7,7 @@ import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.features.impl.AbstractLayoutFeature;
 import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.eggcubator.LevelPictogramHelper;
@@ -44,6 +45,9 @@ public class LevelLayoutFeature extends AbstractLayoutFeature implements ILevelF
 			return false; // nothing changed
 		
 		LevelPictogramHelper.layoutElementShapes(level.getWidth(), level.getHeight(), newWidth, newHeight, levelShape, level, getDiagram());
+		
+		// set as selected
+		getDiagramBehavior().getDiagramContainer().setPictogramElementsForSelection(new PictogramElement[] {levelShape});
 		
 		return true; // layout changed
 	}

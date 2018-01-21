@@ -5,7 +5,6 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.LevelFactory;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedEnemy;
-import de.tu_bs.cs.isf.mbse.eggcubator.features.AbstractElementCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.IEnemyFeature;
 
 public class EnemyCreateFeature extends AbstractElementCreateFeature implements IEnemyFeature {

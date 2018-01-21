@@ -67,4 +67,9 @@ public class LevelToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		return res;
 	}
 	
+	@Override
+	public boolean isConnectionSelectionEnabled() {
+		return false; // we don't use this
+	}
+	
 }

@@ -1,4 +1,4 @@
-package de.tu_bs.cs.isf.mbse.eggcubator.features;
+package de.tu_bs.cs.isf.mbse.eggcubator.features.elements;
 
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;

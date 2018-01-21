@@ -1,5 +1,6 @@
 package de.tu_bs.cs.isf.mbse.eggcubator;
 
+import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
 import org.eclipse.ui.IEditorInput;
@@ -26,6 +27,11 @@ public class LevelEditor extends DiagramEditor {
 
 	public String getCurrentProject() {
 		return currentProject;
+	}
+	
+	@Override
+	protected DiagramBehavior createDiagramBehavior() {
+		return new LevelDiagramBehavior(this);
 	}
 	
 }

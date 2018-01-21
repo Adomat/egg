@@ -9,12 +9,11 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.graphiti.platform.AbstractExtension;
 import org.eclipse.graphiti.ui.platform.IImageProvider;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.graphiti.ui.services.IImageService;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute;
@@ -32,12 +31,17 @@ import de.tu_bs.cs.isf.mbse.egg.level.PlacedItem;
 public class EggImageProvider extends AbstractExtension implements IImageProvider {
 
 	public static final String IMG_PREFIX = "de.tu_bs.cs.isf.mbse.egg.";
+	public static final String IMG_NOT_FOUND_ID = IMG_PREFIX + "not-found";
+	
+	protected static EggImageProvider instance = null;
 	
 	private String pluginId;
 
 	private Hashtable<String, String> htKeyImage = new Hashtable<String, String>();
 
 	public EggImageProvider() {
+		instance = this;
+		addPredefinedImages();
 		addAvailableImages();
 	}
 
@@ -102,16 +106,13 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 	    }
 	    return result;
 	}
-	
 	/**
-	 * Convert imagePath in project to corresponding id.
+	 * Get image id from element description.
 	 * @return image id
 	 */
 	public static String getImageId(PlacedElement element) {
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (!(editor instanceof LevelEditor))
-			throw new IllegalStateException("Wrong editor used. Cannot use this one for this operation");
-		LevelEditor levelEditor = (LevelEditor) editor;
+		String project = EcoreUtil.getURI(element).toPlatformString(true);
+		project = project.substring(1, project.indexOf('/', 1));
 		
 		String imagePath = null;
 		if (element instanceof PlacedBlock) {
@@ -163,18 +164,25 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 			throw new IllegalStateException("Unknown element type");
 		if (imagePath == null)
 			throw new IllegalStateException("Image path for element must be set in order to use it");
-				
-		return getImageId(levelEditor.getCurrentProject(), imagePath);
+		
+		return getInstance().getImageId(project, imagePath);
 	}
 	
 	/**
-	 * Convert imagePath in project to corresponding id.
-	 * @return image id
+	 * Convert imagePath in project to corresponding id or an "image not found" id if image unavailable.
+	 * @return image id or id of "image not found" image
 	 */
-	public static String getImageId(String project, String imagePath) {
-		return IMG_PREFIX + project + '.' + imagePath.substring(0, imagePath.lastIndexOf('.'));
+	public String getImageId(String project, String imagePath) {
+		String imageId = IMG_PREFIX + project + '.' + imagePath.substring(0, imagePath.lastIndexOf('.'));
+		if (!htKeyImage.containsKey(imageId))
+			imageId = IMG_NOT_FOUND_ID;
+		return imageId;
 	}
 
+	protected void addPredefinedImages() {
+		addImageFilePath(IMG_NOT_FOUND_ID, "platform:/plugin/de.tu_bs.cs.isf.mbse.eggcubator/images/not_found.jpg");
+	}
+	
 	/**
 	 * Adds all egg related images to this provider.
 	 * @see org.eclipse.graphiti.ui.platform.AbstractImageProvider#addAvailableImages
@@ -210,5 +218,9 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 			imageService.removeImageFromRegistry(id.getKey()); // this removes and disposes the image
 		this.htKeyImage.clear();
 		addAvailableImages();
+	}
+	
+	public static EggImageProvider getInstance() {
+		return instance;
 	}
 }

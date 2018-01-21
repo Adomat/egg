@@ -19,4 +19,9 @@ public class LevelDiagramProvider extends AbstractDiagramTypeProvider {
 		}
 		return toolBehaviorProviders;
 	}
+	
+	@Override
+	public boolean isAutoUpdateAtStartup() {
+		return true; // to reload images
+	}
 }

@@ -5,7 +5,6 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.LevelFactory;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedBlock;
-import de.tu_bs.cs.isf.mbse.eggcubator.features.AbstractElementCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.IEggBlockFeature;
 
 public class EggBlockCreateFeature extends AbstractElementCreateFeature implements IEggBlockFeature {

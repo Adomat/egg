@@ -1,4 +1,4 @@
-package de.tu_bs.cs.isf.mbse.eggcubator.features;
+package de.tu_bs.cs.isf.mbse.eggcubator.features.elements;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
@@ -12,6 +12,7 @@ import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedEnemy;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedItem;
 import de.tu_bs.cs.isf.mbse.eggcubator.LevelPictogramHelper;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.IElementFeature;
 
 // TODO missing EggBlock
 public class ElementAddFeature extends AbstractAddFeature implements IElementFeature {

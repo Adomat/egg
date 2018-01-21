@@ -1,10 +1,12 @@
-package de.tu_bs.cs.isf.mbse.eggcubator.features;
+package de.tu_bs.cs.isf.mbse.eggcubator.features.elements;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
 
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.IElementFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.InternalRemoveContext;
 
 public class ElementRemoveFeature extends DefaultRemoveFeature implements IElementFeature {
 
