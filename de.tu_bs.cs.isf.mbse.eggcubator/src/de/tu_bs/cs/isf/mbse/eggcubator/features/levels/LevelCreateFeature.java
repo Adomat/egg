@@ -5,9 +5,12 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.egg.level.LevelFactory;
+import de.tu_bs.cs.isf.mbse.eggcubator.LevelEditor;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.ILevelFeature;
 
 // TODO this should be done on diagram creation instead, but I have no idea how. Wizards seem to complex...
@@ -19,7 +22,9 @@ public class LevelCreateFeature extends AbstractCreateFeature implements ILevelF
 
 	@Override
 	public boolean canCreate(ICreateContext context) {
-		return context.getTargetContainer() instanceof Diagram &&
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		return editor != null && editor instanceof LevelEditor &&
+				context.getTargetContainer() instanceof Diagram &&
 				(context.getTargetContainer().getChildren() == null ||
 				context.getTargetContainer().getChildren().isEmpty());
 	}

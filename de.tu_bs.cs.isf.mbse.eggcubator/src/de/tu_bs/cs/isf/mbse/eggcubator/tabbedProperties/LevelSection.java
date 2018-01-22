@@ -124,18 +124,34 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         
         // name
         String name = level.getName();
+        if (name == null) {
+        	level.setName("Level");
+        	name = level.getName();
+        }
         nameText.setText(name);
         
         // width
         Integer width = level.getWidth();
+        if (width < 3) {
+        	level.setWidth(3);
+        	width = level.getWidth();
+        }
         widthText.setText(width.toString());
 
         // height
         Integer height = level.getHeight();
+        if (height < 3) {
+        	level.setHeight(3);
+        	height = level.getHeight();
+        }
         heightText.setText(height.toString());
         
         // element size
         Integer elementSize = level.getElementSize();
+        if (elementSize < 15) {
+        	level.setElementSize(15);
+        	elementSize = level.getElementSize();
+        }
         elementSizeText.setText(elementSize.toString());
         
         listenerStopped = false;
