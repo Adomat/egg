@@ -209,7 +209,7 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof AnimationDescription) foundAnimation = true;
 		}
 		if(!foundAnimation) {
-			warning('Could not find attribute Animation in item  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute Animation in item  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundUsable && !foundConsumable) {
@@ -232,7 +232,7 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof AnimationDescription) foundAnimation = true;
 		}
 		if(!foundAnimation) {
-			warning('Could not find attribute Animation in block  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute Animation in block  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 	}
@@ -249,11 +249,11 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof Pictures) foundPictures = true;
 		}
 		if(!foundDuration) {
-			warning('Could not find attribute duration in the Animation', 
+			error('Could not find attribute duration in the Animation', 
 				desc.eClass.getEStructuralFeature(desc.toString));
 		}
 		if(!foundPictures) {
-			warning('Could not find attribute pictures in the Animation', 
+			error('Could not find attribute pictures in the Animation', 
 				desc.eClass.getEStructuralFeature(desc.toString));
 		}
 	}
@@ -344,19 +344,19 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundIdleAni) {
-			warning('Could not find attribute idle (Animation) in hero  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute idle (Animation) in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundRunAni) {
-			warning('Could not find attribute run (Animation) in hero  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute run (Animation) in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundJumpAni) {
-			warning('Could not find attribute jump (Animation) in hero  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute jump (Animation) in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundCloseAni) {
-			warning('Could not find attribute melee (Animation) in hero  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute melee (Animation) in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if((foundDisAni && !foundDistanceKiller) || (!foundDisAni && foundDistanceKiller)) {
@@ -425,19 +425,19 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundIdleAni) {
-			warning('Could not find attribute idle (Animation) in enemy  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute idle (Animation) in enemy  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundRunAni) {
-			warning('Could not find attribute run (Animation) in enemy  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute run (Animation) in enemy  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundJumpAni) {
-			warning('Could not find attribute jump (Animation) in enemy  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute jump (Animation) in enemy  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundCloseAni) {
-			warning('Could not find attribute melee (Animation) in enemy  \"' + desc.name.toString + '\"', 
+			error('Could not find attribute melee (Animation) in enemy  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if((foundDisAni && !foundDistanceKiller) || (!foundDisAni && foundDistanceKiller)) {
