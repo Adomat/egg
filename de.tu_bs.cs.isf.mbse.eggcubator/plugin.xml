@@ -50,6 +50,9 @@
             contributorId="levelDiagram.PropertyContributor">
          <propertyCategory
                category="LevelCategory"></propertyCategory>
+         <propertyCategory
+               category="ElementCategory">
+         </propertyCategory>
       </propertyContributor>
    </extension>
    <extension
@@ -60,6 +63,11 @@
                category="LevelCategory"
                id="de.tu_bs.cs.isf.mbse.eggcubator.levelTab"
                label="Level">
+         </propertyTab>
+         <propertyTab
+               category="ElementCategory"
+               id="de.tu_bs.cs.isf.mbse.eggcubator.elementTab"
+               label="Element">
          </propertyTab>
       </propertyTabs>
    </extension>
@@ -72,6 +80,12 @@
                filter="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.LevelFilter"
                id="de.tu_bs.cs.isf.mbse.eggcubator.levelTab.level"
                tab="de.tu_bs.cs.isf.mbse.eggcubator.levelTab">
+         </propertySection>
+         <propertySection
+               class="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.WarpPointSection"
+               filter="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.WarpPointFilter"
+               id="de.tu_bs.cs.isf.mbse.eggcubator.elementTab.warpPoint"
+               tab="de.tu_bs.cs.isf.mbse.eggcubator.elementTab">
          </propertySection>
       </propertySections>
    </extension>

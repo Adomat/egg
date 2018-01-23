@@ -142,7 +142,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         
         // name
         String name = level.getName();
-        if (name == null)
+        if (name == null || name.isEmpty())
         	name = "Level";
         nameText.setText(name);
         
@@ -279,7 +279,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 	        	final boolean entryPointVal = entryPointButton.getSelection();
 		        if (entryPointVal == level.isEntryPoint())
 		        	return;
-		        domain.getCommandStack().execute(new RecordingCommand(domain, entryPointVal ? "Set entry point flag in level" : "Removed entry point flag from level") {
+		        domain.getCommandStack().execute(new RecordingCommand(domain, entryPointVal ? "Set entry point flag for level" : "Removed entry point flag from level") {
 					@Override
 					protected void doExecute() {
 				        level.setEntryPoint(entryPointVal);

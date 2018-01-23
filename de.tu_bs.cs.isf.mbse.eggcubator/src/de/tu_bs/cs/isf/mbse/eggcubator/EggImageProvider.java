@@ -126,7 +126,7 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 		else if (element instanceof PlacedItem)
 			imagePath = getImageId(((PlacedItem) element).getProperties());
 		else if (element instanceof WarpPoint) {
-			if (((WarpPoint) element).isStart() && ((WarpPoint) element).getWarpTo() != null)
+			if (((WarpPoint) element).isEntry() && ((WarpPoint) element).getWarpTo() != null)
 				imagePath = IMG_WARP_POINT_ID; // both directions
 			else if (((WarpPoint) element).getWarpTo() != null)
 				imagePath = IMG_WARP_POINT_OUT_ID; // out

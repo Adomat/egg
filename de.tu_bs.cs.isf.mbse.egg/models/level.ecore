@@ -47,10 +47,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
           eType="ecore:EClass descriptions.ecore#//gameelements/BlockDescription"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="PlacedHero" eSuperTypes="#//PlacedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
-          eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
-    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="PlacedItem" eSuperTypes="#//PlacedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
           eType="ecore:EClass descriptions.ecore#//gameelements/ItemDescription"/>
@@ -60,11 +56,11 @@
           eType="ecore:EClass descriptions.ecore#//gameelements/EnemyDescription"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="WarpPoint" eSuperTypes="#//PlacedEggBlock">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="start" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="warpTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="entry" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="true"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="warpTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="changeHeroSkinTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="changeHeroTo" eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EndPoint" eSuperTypes="#//PlacedEggBlock"/>
   </eSubpackages>

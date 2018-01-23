@@ -49,10 +49,6 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference level.ecore#//Elements/PlacedBlock/properties"/>
       </genClasses>
-      <genClasses ecoreClass="level.ecore#//Elements/PlacedHero">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference level.ecore#//Elements/PlacedHero/properties"/>
-      </genClasses>
       <genClasses ecoreClass="level.ecore#//Elements/PlacedItem">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference level.ecore#//Elements/PlacedItem/properties"/>
@@ -62,9 +58,10 @@
             ecoreFeature="ecore:EReference level.ecore#//Elements/PlacedEnemy/properties"/>
       </genClasses>
       <genClasses ecoreClass="level.ecore#//Elements/WarpPoint">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/start"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/warpTo"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/changeHeroSkinTo"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/entry"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference level.ecore#//Elements/WarpPoint/changeHeroTo"/>
       </genClasses>
       <genClasses ecoreClass="level.ecore#//Elements/EndPoint"/>
     </nestedGenPackages>

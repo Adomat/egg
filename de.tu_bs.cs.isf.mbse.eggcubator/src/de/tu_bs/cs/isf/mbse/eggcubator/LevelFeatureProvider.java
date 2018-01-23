@@ -31,6 +31,7 @@ import org.eclipse.graphiti.features.impl.AbstractFeatureProvider;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementDeleteFeature;
@@ -42,6 +43,7 @@ import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EnemyCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ItemCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.UserBlockCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.WarpPointCreateFeaute;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.WarpPointUpdateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelLayoutFeature;
@@ -64,6 +66,8 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	private ElementMoveFeature elementMoveFeature = new ElementMoveFeature(this);
 	private ElementInitialUpdateFeature elementInitialUpdateFeature = new ElementInitialUpdateFeature(this);
 	
+	private WarpPointUpdateFeature warpPointUpdateFeature = new WarpPointUpdateFeature(this);
+	
 	public LevelFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
 	}
@@ -79,7 +83,9 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 					features.add(new ItemCreateFeature(this, (ItemDescription) desc));
 				else if (desc instanceof EnemyDescription)
 					features.add(new EnemyCreateFeature(this, (EnemyDescription) desc));
-				else
+				else if (desc instanceof HeroDescription) {
+					// ignore
+				} else
 					System.err.println("[WARN] Unknown description type: " + desc.getClass().getName());
 			}
 			createFeaturesInitialized = true;
@@ -126,6 +132,8 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
 		if (levelUpdateFeature.canUpdate(context) && levelUpdateFeature.updateNeeded(context).toBoolean())
 			return levelUpdateFeature;
+		else if (warpPointUpdateFeature.canUpdate(context) && warpPointUpdateFeature.updateNeeded(context).toBoolean())
+			return warpPointUpdateFeature;
 		else if (elementInitialUpdateFeature.canUpdate(context) && elementInitialUpdateFeature.updateNeeded(context).toBoolean())
 			return elementInitialUpdateFeature;
 		return null;
