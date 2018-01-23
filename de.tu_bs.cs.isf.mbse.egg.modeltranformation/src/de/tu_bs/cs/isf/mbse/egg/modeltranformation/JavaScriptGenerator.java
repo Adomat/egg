@@ -59,7 +59,7 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.PageDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.egg.level.LevelPackage;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 
 public class JavaScriptGenerator {

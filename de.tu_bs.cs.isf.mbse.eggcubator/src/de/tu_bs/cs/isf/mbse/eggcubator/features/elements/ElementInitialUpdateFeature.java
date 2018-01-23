@@ -11,10 +11,10 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.platform.IDiagramBehavior;
 
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedBlock;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedEnemy;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedItem;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedEnemy;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedItem;
 import de.tu_bs.cs.isf.mbse.eggcubator.EggImageProvider;
 import de.tu_bs.cs.isf.mbse.eggcubator.LevelDiagramBehavior;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.IBlockFeature;

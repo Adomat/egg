@@ -26,6 +26,8 @@
         defaultValueLiteral="75"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//ColumnEntry" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isEntryPoint" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RowEntry" instanceClassName="java.util.Map$Entry">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
@@ -38,20 +40,30 @@
         eType="#//RowEntry" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PlacedElement" abstract="true" eSuperTypes="commons.ecore#//PositionedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PlacedBlock" eSuperTypes="#//PlacedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
-        eType="ecore:EClass descriptions.ecore#//gameelements/BlockDescription"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PlacedHero" eSuperTypes="#//PlacedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
-        eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PlacedItem" eSuperTypes="#//PlacedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
-        eType="ecore:EClass descriptions.ecore#//gameelements/ItemDescription"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PlacedEnemy" eSuperTypes="#//PlacedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
-        eType="ecore:EClass descriptions.ecore#//gameelements/EnemyDescription"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlacedEggBlock" eSuperTypes="#//PlacedElement"/>
+  <eSubpackages name="Elements" nsURI="https://www.tu-bs.de/cs/isf/mbse/egg/level/elements"
+      nsPrefix="elements">
+    <eClassifiers xsi:type="ecore:EClass" name="PlacedBlock" eSuperTypes="#//PlacedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+          eType="ecore:EClass descriptions.ecore#//gameelements/BlockDescription"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="PlacedHero" eSuperTypes="#//PlacedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+          eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="PlacedItem" eSuperTypes="#//PlacedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+          eType="ecore:EClass descriptions.ecore#//gameelements/ItemDescription"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="PlacedEnemy" eSuperTypes="#//PlacedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="properties" lowerBound="1"
+          eType="ecore:EClass descriptions.ecore#//gameelements/EnemyDescription"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="WarpPoint" eSuperTypes="#//PlacedEggBlock">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStart" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="warpTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EndPoint" eSuperTypes="#//PlacedEggBlock"/>
+  </eSubpackages>
 </ecore:EPackage>

@@ -124,34 +124,26 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         
         // name
         String name = level.getName();
-        if (name == null) {
-        	level.setName("Level");
-        	name = level.getName();
-        }
+        if (name == null)
+        	name = "Level";
         nameText.setText(name);
         
         // width
         Integer width = level.getWidth();
-        if (width < 3) {
-        	level.setWidth(3);
-        	width = level.getWidth();
-        }
+        if (width < 3)
+        	width = 3;
         widthText.setText(width.toString());
 
         // height
         Integer height = level.getHeight();
-        if (height < 3) {
-        	level.setHeight(3);
-        	height = level.getHeight();
-        }
+        if (height < 3)
+        	height = 3;
         heightText.setText(height.toString());
         
         // element size
         Integer elementSize = level.getElementSize();
-        if (elementSize < 15) {
-        	level.setElementSize(15);
-        	elementSize = level.getElementSize();
-        }
+        if (elementSize < 15)
+        	elementSize = 15;
         elementSizeText.setText(elementSize.toString());
         
         listenerStopped = false;
@@ -190,7 +182,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        // trigger Update
 				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
 				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
-				        if (updateFeature.updateNeeded(context).toBoolean())
+				        if (updateFeature != null)
 				        	updateFeature.update(context);
 					}
 		        });
@@ -212,7 +204,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        // trigger Update
 				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
 				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
-				        if (updateFeature.updateNeeded(context).toBoolean())
+				        if (updateFeature != null)
 				        	updateFeature.update(context);
 					}
 		        });
@@ -234,7 +226,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        // trigger Update
 				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
 				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
-				        if (updateFeature.updateNeeded(context).toBoolean())
+				        if (updateFeature != null)
 				        	updateFeature.update(context);
 					}
 		        });
@@ -256,7 +248,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        // trigger Update
 				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
 				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
-				        if (updateFeature.updateNeeded(context).toBoolean())
+				        if (updateFeature != null)
 				        	updateFeature.update(context);
 					}
 		        });

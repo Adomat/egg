@@ -53,7 +53,8 @@ public class EggScriptionLoader {
 		List<File> eggs = getFilesWithExtension(projDir, "egg");
 		List<Description> desc = new ArrayList<Description>();
 		for (File egg : eggs) {
-			Resource resource = set.getResource(URI.createFileURI(egg.getAbsolutePath()), true);
+			String projRelatedPath = egg.getAbsolutePath().substring(projDir.getAbsolutePath().length()).substring(1).replace(File.pathSeparatorChar, '/');
+			Resource resource = set.getResource(URI.createPlatformResourceURI("/" + project + "/" + projRelatedPath, true), true);
 			if (!resource.isLoaded()) {
 				System.out.println("[WARN] Could not load egg resource file " + egg.getAbsolutePath());
 				continue;
@@ -62,12 +63,12 @@ public class EggScriptionLoader {
 			EList<Diagnostic> errors = resource.getErrors();
 			EList<EObject> contents;
 			if (errors.size() > 0) {
-				System.err.println("There are " + errors.size() + " errors in egg file " + egg.getAbsolutePath() + "\nLoading aborted.");
+				System.err.println("There are " + errors.size() + " errors in egg file " + projRelatedPath + "\nLoading aborted.");
 				resource.unload();
 				set.getResources().remove(resource);
 				continue;
 			} else if ((contents = resource.getContents()).size() != 1 || !(contents.get(0) instanceof DescriptionRoot)) {
-				System.err.println("Invalid format in egg file " + egg.getAbsolutePath() + "\nLoading aborted.");
+				System.err.println("Invalid format in egg file " + projRelatedPath + "\nLoading aborted.");
 				resource.unload();
 				set.getResources().remove(resource);
 				continue;

@@ -28,7 +28,6 @@ public class LevelToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		List<IPaletteCompartmentEntry> compartments = new ArrayList<IPaletteCompartmentEntry>();
 
 		// Create palette structure
-		// TODO icons?
 		PaletteCompartmentEntry blocksEntry = new PaletteCompartmentEntry("Blocks", null);
 		PaletteCompartmentEntry itemsEntry = new PaletteCompartmentEntry("Items", null);
 		PaletteCompartmentEntry enemiesEntry = new PaletteCompartmentEntry("Enemies", null);
@@ -38,9 +37,7 @@ public class LevelToolBehaviorProvider extends DefaultToolBehaviorProvider {
 		compartments.add(enemiesEntry);
 		compartments.add(levelEntry);
 		StackEntry eggBlocks = new StackEntry("Egg blocks", "Pre defined blocks", null);
-		StackEntry userBlocks = new StackEntry("Own blocks", "Your own blocks", null);
 		blocksEntry.addToolEntry(eggBlocks);
-		blocksEntry.addToolEntry(userBlocks);
 
 		// add all creation features based on their marker interface
 		IFeatureProvider featureProvider = getFeatureProvider();		
@@ -53,7 +50,7 @@ public class LevelToolBehaviorProvider extends DefaultToolBehaviorProvider {
 				if (createFeature instanceof IEggBlockFeature)
 					eggBlocks.addCreationToolEntry(ocTool);
 				else if (createFeature instanceof IUserBlockFeature)
-					userBlocks.addCreationToolEntry(ocTool);
+					blocksEntry.addToolEntry(ocTool);
 				else if (createFeature instanceof IItemFeature)
 					itemsEntry.addToolEntry(ocTool);
 				else if (createFeature instanceof IEnemyFeature)

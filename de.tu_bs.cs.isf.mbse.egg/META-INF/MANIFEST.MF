@@ -46,5 +46,8 @@ Export-Package: de.tu_bs.cs.isf.mbse.egg.descriptions,
  de.tu_bs.cs.isf.mbse.egg.commons.impl,
  de.tu_bs.cs.isf.mbse.egg.commons.util,
  de.tu_bs.cs.isf.mbse.egg.level,
+ de.tu_bs.cs.isf.mbse.egg.level.Elements,
+ de.tu_bs.cs.isf.mbse.egg.level.Elements.impl,
+ de.tu_bs.cs.isf.mbse.egg.level.Elements.util,
  de.tu_bs.cs.isf.mbse.egg.level.impl,
  de.tu_bs.cs.isf.mbse.egg.level.util

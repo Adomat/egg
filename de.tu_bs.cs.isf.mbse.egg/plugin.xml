@@ -93,6 +93,14 @@
             class="de.tu_bs.cs.isf.mbse.egg.level.LevelPackage"
             genModel="models/level.genmodel"/>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated level -->
+      <package
+            uri="https://www.tu-bs.de/cs/isf/mbse/egg/level/elements"
+            class="de.tu_bs.cs.isf.mbse.egg.level.Elements.ElementsPackage"
+            genModel="models/level.genmodel"/>
+   </extension>
    <extension
          point="org.eclipse.emf.ecore.factory_override">
       <factory

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.graphiti.platform.AbstractExtension;
 import org.eclipse.graphiti.ui.platform.IImageProvider;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
@@ -21,13 +20,15 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedEnemy;
-import de.tu_bs.cs.isf.mbse.egg.level.PlacedItem;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedEnemy;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedItem;
 
 // including {@Link AbstractImageProvider} instead of extending it, so the Hashtable can be cleared on reload
-
 public class EggImageProvider extends AbstractExtension implements IImageProvider {
 
 	public static final String IMG_PREFIX = "de.tu_bs.cs.isf.mbse.egg.";
@@ -111,61 +112,89 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 	 * @return image id
 	 */
 	public static String getImageId(PlacedElement element) {
-		String project = EcoreUtil.getURI(element).toPlatformString(true);
+		String imagePath = null;
+		if (element instanceof PlacedBlock)
+			imagePath = getImageId(((PlacedBlock) element).getProperties());
+		else if (element instanceof PlacedEnemy)
+			imagePath = getImageId(((PlacedEnemy) element).getProperties());
+		else if (element instanceof PlacedItem)
+			imagePath = getImageId(((PlacedItem) element).getProperties());
+		else
+			throw new IllegalStateException("Unknown element type: " + element.eClass().getName());
+		
+		return imagePath;
+	}
+	
+	public static String getImageId(BlockDescription blockDesc) {
+		String project = blockDesc.eResource().getURI().toPlatformString(true);
+		if (project == null)
+			project = blockDesc.eResource().getURI().toFileString().substring(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString().length()).replace('\\', '/');
 		project = project.substring(1, project.indexOf('/', 1));
 		
-		String imagePath = null;
-		if (element instanceof PlacedBlock) {
-			for (BlockAttribute attr : ((PlacedBlock) element).getProperties().getProperties()) {
-				if (attr instanceof AnimationDescription) {
-					for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
-						if (animation instanceof Pictures) {
-							if (((Pictures) animation).getValue().size() > 0)
-								imagePath = ((Pictures) animation).getValue().get(0);
-							else
-								throw new IllegalStateException("Block doesn't contain any image");
-							break;
-						}
+		String imagePath = IMG_NOT_FOUND_ID;
+		for (BlockAttribute attr : blockDesc.getProperties()) {
+			if (attr instanceof AnimationDescription) {
+				for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+					if (animation instanceof Pictures) {
+						if (((Pictures) animation).getValue().size() > 0)
+							imagePath = getInstance().getImageId(project, ((Pictures) animation).getValue().get(0));
+						//else
+						//	throw new IllegalStateException("Block doesn't contain any image");
+						break;
 					}
-					break;
 				}
+				break;
 			}
-		} else if (element instanceof PlacedEnemy) {
-			for (EnemyAttribute attr : ((PlacedEnemy) element).getProperties().getProperties()) {
-				if (attr instanceof AnimationDescription) {
-					for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
-						if (animation instanceof Pictures) {
-							if (((Pictures) animation).getValue().size() > 0)
-								imagePath = ((Pictures) animation).getValue().get(0);
-							else
-								throw new IllegalStateException("Enemy doesn't contain any image");
-							break;
-						}
-					}
-					break;
-				}
-			}
-		} else if (element instanceof PlacedItem) {
-			for (ItemAttribute attr : ((PlacedItem) element).getProperties().getProperties()) {
-				if (attr instanceof AnimationDescription) {
-					for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
-						if (animation instanceof Pictures) {
-							if (((Pictures) animation).getValue().size() > 0)
-								imagePath = ((Pictures) animation).getValue().get(0);
-							else
-								throw new IllegalStateException("Item doesn't contain any image");
-							break;
-						}
-					}
-					break;
-				}
-			}
-		} else
-			throw new IllegalStateException("Unknown element type");
-		if (imagePath == null)
-			throw new IllegalStateException("Image path for element must be set in order to use it");
+		}
+		return imagePath;
+	}
+	
+	public static String getImageId(ItemDescription itemDesc) {
+		String project = itemDesc.eResource().getURI().toPlatformString(true);
+		if (project == null)
+			project = itemDesc.eResource().getURI().toFileString().substring(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString().length()).replace('\\', '/');
+		project = project.substring(1, project.indexOf('/', 1));
 		
-		return getInstance().getImageId(project, imagePath);
+		String imagePath = IMG_NOT_FOUND_ID;
+		for (ItemAttribute attr : itemDesc.getProperties()) {
+			if (attr instanceof AnimationDescription) {
+				for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+					if (animation instanceof Pictures) {
+						if (((Pictures) animation).getValue().size() > 0)
+							imagePath = getInstance().getImageId(project, ((Pictures) animation).getValue().get(0));
+						//else
+						//	throw new IllegalStateException("Item doesn't contain any image");
+						break;
+					}
+				}
+				break;
+			}
+		}
+		return imagePath;
+	}
+	
+	public static String getImageId(EnemyDescription enemyDesc) {
+		String project = enemyDesc.eResource().getURI().toPlatformString(true);
+		if (project == null)
+			project = enemyDesc.eResource().getURI().toFileString().substring(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString().length()).replace('\\', '/');
+		project = project.substring(1, project.indexOf('/', 1));
+		
+		String imagePath = IMG_NOT_FOUND_ID;
+		for (EnemyAttribute attr : enemyDesc.getProperties()) {
+			if (attr instanceof AnimationDescription) {
+				for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+					if (animation instanceof Pictures) {
+						if (((Pictures) animation).getValue().size() > 0)
+							imagePath = getInstance().getImageId(project, ((Pictures) animation).getValue().get(0));
+						//else
+						//	throw new IllegalStateException("Enemy doesn't contain any image");
+						break;
+					}
+				}
+				break;
+			}
+		}
+		return imagePath;
 	}
 	
 	/**
@@ -189,7 +218,7 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 	 */
 	protected void addAvailableImages() {
 		for (IProject proj : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-			File dir = new File(proj.getLocation().toString() + File.separatorChar + "images"); // TODO find correct image dir
+			File dir = new File(proj.getLocation().toString() + File.separatorChar + "images");
 			if (dir.exists()) {
 				List<File> files = getImagesFromDir(dir);
 				if (files != null) {

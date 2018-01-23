@@ -32,7 +32,6 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription;
-import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EggBlockCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementDeleteFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementInitialUpdateFeature;
@@ -40,6 +39,7 @@ import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementMoveFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementRemoveFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EnemyCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ItemCreateFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.UserBlockCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelLayoutFeature;
@@ -72,7 +72,7 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 		if (descriptions != null) { // Descriptions maybe not ready yet
 			for (Description desc : descriptions) {
 				if (desc instanceof BlockDescription)
-					features.add(new EggBlockCreateFeature(this, (BlockDescription) desc));
+					features.add(new UserBlockCreateFeature(this, (BlockDescription) desc));
 				else if (desc instanceof ItemDescription)
 					features.add(new ItemCreateFeature(this, (ItemDescription) desc));
 				else if (desc instanceof EnemyDescription)
