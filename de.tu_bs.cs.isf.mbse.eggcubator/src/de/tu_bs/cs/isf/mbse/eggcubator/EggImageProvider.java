@@ -24,15 +24,21 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.EndPoint;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedEnemy;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedItem;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.WarpPoint;
 
 // including {@Link AbstractImageProvider} instead of extending it, so the Hashtable can be cleared on reload
 public class EggImageProvider extends AbstractExtension implements IImageProvider {
 
 	public static final String IMG_PREFIX = "de.tu_bs.cs.isf.mbse.egg.";
 	public static final String IMG_NOT_FOUND_ID = IMG_PREFIX + "not-found";
+	public static final String IMG_WARP_POINT_ID = IMG_PREFIX + "warpPoint";
+	public static final String IMG_WARP_POINT_IN_ID = IMG_PREFIX + "warpPoint-in";
+	public static final String IMG_WARP_POINT_OUT_ID = IMG_PREFIX + "warpPoint-out";
+	public static final String IMG_END_POINT_ID = IMG_PREFIX + "endPoint";
 	
 	protected static EggImageProvider instance = null;
 	
@@ -119,6 +125,15 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 			imagePath = getImageId(((PlacedEnemy) element).getProperties());
 		else if (element instanceof PlacedItem)
 			imagePath = getImageId(((PlacedItem) element).getProperties());
+		else if (element instanceof WarpPoint) {
+			if (((WarpPoint) element).isStart() && ((WarpPoint) element).getWarpTo() != null)
+				imagePath = IMG_WARP_POINT_ID; // both directions
+			else if (((WarpPoint) element).getWarpTo() != null)
+				imagePath = IMG_WARP_POINT_OUT_ID; // out
+			else
+				imagePath = IMG_WARP_POINT_IN_ID; // in
+		} else if (element instanceof EndPoint)
+			imagePath = IMG_END_POINT_ID;
 		else
 			throw new IllegalStateException("Unknown element type: " + element.eClass().getName());
 		
@@ -210,6 +225,10 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 
 	protected void addPredefinedImages() {
 		addImageFilePath(IMG_NOT_FOUND_ID, "platform:/plugin/de.tu_bs.cs.isf.mbse.eggcubator/images/not_found.jpg");
+		addImageFilePath(IMG_WARP_POINT_ID, "platform:/plugin/de.tu_bs.cs.isf.mbse.eggcubator/images/level_in_out.png");
+		addImageFilePath(IMG_WARP_POINT_IN_ID, "platform:/plugin/de.tu_bs.cs.isf.mbse.eggcubator/images/level_in.png");
+		addImageFilePath(IMG_WARP_POINT_OUT_ID, "platform:/plugin/de.tu_bs.cs.isf.mbse.eggcubator/images/level_out.png");
+		addImageFilePath(IMG_END_POINT_ID, "platform:/plugin/de.tu_bs.cs.isf.mbse.eggcubator/images/finish.png");
 	}
 	
 	/**

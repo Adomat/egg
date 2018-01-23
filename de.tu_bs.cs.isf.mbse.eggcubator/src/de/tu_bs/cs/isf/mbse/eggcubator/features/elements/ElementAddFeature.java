@@ -8,13 +8,14 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.EndPoint;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedEnemy;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedItem;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.WarpPoint;
 import de.tu_bs.cs.isf.mbse.eggcubator.LevelPictogramHelper;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.IElementFeature;
 
-// TODO missing EggBlock
 public class ElementAddFeature extends AbstractAddFeature implements IElementFeature {
 
 	public ElementAddFeature(IFeatureProvider fp) {
@@ -24,7 +25,7 @@ public class ElementAddFeature extends AbstractAddFeature implements IElementFea
 	@Override
 	public boolean canAdd(IAddContext context) {
 		Object o = context.getNewObject();
-		return (o instanceof PlacedBlock || o instanceof PlacedEnemy || o instanceof PlacedItem) &&
+		return (o instanceof PlacedBlock || o instanceof PlacedEnemy || o instanceof PlacedItem || o instanceof WarpPoint || o instanceof EndPoint) &&
 				context.getTargetContainer().getContainer() != null &&
 				context.getTargetContainer().getContainer().getLink() != null &&
 				context.getTargetContainer().getContainer().getLink().getBusinessObjects().size() == 1 &&

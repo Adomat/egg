@@ -26,7 +26,7 @@ public class ElementDeleteFeature extends DefaultDeleteFeature implements IEleme
 		Shape shape = (Shape) context.getPictogramElement();
 		IRemoveContext rc = new InternalRemoveContext(shape);
 		IRemoveFeature removeFeature = getFeatureProvider().getRemoveFeature(rc);
-		return removeFeature != null && removeFeature.canRemove(rc) && shape.getLink() != null &&
+		return removeFeature != null && shape.getLink() != null &&
 						shape.getLink().getBusinessObjects().size() == 1 &&
 						shape.getLink().getBusinessObjects().get(0) instanceof PlacedElement &&
 						shape.getContainer().getContainer() != null &&

@@ -17,7 +17,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/gravity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/elementSize"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference level.ecore#//Level/elements"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/isEntryPoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/entryPoint"/>
       <genOperations ecoreOperation="level.ecore#//Level/getElement">
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionX"/>
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionY"/>
@@ -62,8 +62,9 @@
             ecoreFeature="ecore:EReference level.ecore#//Elements/PlacedEnemy/properties"/>
       </genClasses>
       <genClasses ecoreClass="level.ecore#//Elements/WarpPoint">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/isStart"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/start"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/warpTo"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/changeHeroSkinTo"/>
       </genClasses>
       <genClasses ecoreClass="level.ecore#//Elements/EndPoint"/>
     </nestedGenPackages>

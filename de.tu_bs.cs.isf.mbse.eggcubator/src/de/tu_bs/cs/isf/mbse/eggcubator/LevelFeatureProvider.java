@@ -37,9 +37,11 @@ import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementDeleteFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementInitialUpdateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementMoveFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementRemoveFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EndPointCreateFeaute;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EnemyCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ItemCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.UserBlockCreateFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.WarpPointCreateFeaute;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelCreateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.levels.LevelLayoutFeature;
@@ -82,8 +84,11 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 			}
 			createFeaturesInitialized = true;
 		}
-		// TODO pre defined blocks
+
 		features.add(new LevelCreateFeature(this));
+		features.add(new WarpPointCreateFeaute(this));
+		features.add(new EndPointCreateFeaute(this));
+		
 		createFeatures = features.toArray(new ICreateFeature[features.size()]);
 	}
 	

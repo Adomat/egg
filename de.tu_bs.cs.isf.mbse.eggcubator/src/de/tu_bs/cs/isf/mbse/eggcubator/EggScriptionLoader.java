@@ -60,7 +60,7 @@ public class EggScriptionLoader {
 				continue;
 			}
 			resource.setTrackingModification(false);
-			EList<Diagnostic> errors = resource.getErrors();
+			EList<Diagnostic> errors = resource.getErrors(); // TODO doesn't look for Constraints?
 			EList<EObject> contents;
 			if (errors.size() > 0) {
 				System.err.println("There are " + errors.size() + " errors in egg file " + projRelatedPath + "\nLoading aborted.");

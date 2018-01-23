@@ -14,6 +14,7 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -30,6 +31,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 	private Text widthText;
 	private Text heightText;
 	private Text elementSizeText;
+	private Button entryPointButton;
 	
 	private boolean listenerStopped = false;
 
@@ -45,8 +47,8 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         // name
         nameText = factory.createText(composite, "");
         data = new FormData();
-        data.left = new FormAttachment(0, STANDARD_LABEL_WIDTH);
-        data.right = new FormAttachment(100, 0);
+        data.left = new FormAttachment(0, (int) (STANDARD_LABEL_WIDTH * 1.5));
+        data.right = new FormAttachment(250, 0);
         data.top = new FormAttachment(0, VSPACE);
         nameText.setLayoutData(data);
         nameText.addListener(SWT.FocusOut, this);
@@ -112,6 +114,22 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.right = new FormAttachment(elementSizeText, -HSPACE);
         data.top = new FormAttachment(elementSizeText, 0, SWT.CENTER);
         elementSizeLabel.setLayoutData(data);
+        
+        // entry point
+        entryPointButton = factory.createButton(composite, "", SWT.CHECK);
+        data = new FormData();
+        data.left = new FormAttachment(elementSizeText, 0, SWT.LEFT);
+        data.right = new FormAttachment(elementSizeText, 0, SWT.RIGHT);
+        data.top = new FormAttachment(elementSizeText, VSPACE, SWT.BOTTOM);
+        entryPointButton.setLayoutData(data);
+        entryPointButton.addListener(SWT.MouseUp, this);
+ 
+        CLabel entryPointLabel = factory.createCLabel(composite, "Is Entry Point:");
+        data = new FormData();
+        data.left = new FormAttachment(0, 0);
+        data.right = new FormAttachment(entryPointButton, -HSPACE);
+        data.top = new FormAttachment(entryPointButton, 0, SWT.CENTER);
+        entryPointLabel.setLayoutData(data);
 	}
 
 	@Override
@@ -145,6 +163,10 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         if (elementSize < 15)
         	elementSize = 15;
         elementSizeText.setText(elementSize.toString());
+
+        // entry point
+        boolean entryPoint = level.isEntryPoint();
+        entryPointButton.setSelection(entryPoint);
         
         listenerStopped = false;
 	}
@@ -159,7 +181,8 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 	public void handleEvent(Event event) {
 		if (listenerStopped)
 			return;
-		if (event.type == SWT.FocusOut || (event.type == SWT.KeyDown && event.character == SWT.CR)) { // Focus left or enter
+		if (event.type == SWT.FocusOut || (event.type == SWT.KeyDown && event.character == SWT.CR) ||
+				event.type == SWT.MouseUp) { // Focus left, enter or mouse up
 			// Properties changed
 			PictogramElement pe = getSelectedPictogramElement();
 	        Level level = (Level) pe.getLink().getBusinessObjects().get(0); // Filter assured this is set
@@ -250,6 +273,17 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
 				        if (updateFeature != null)
 				        	updateFeature.update(context);
+					}
+		        });
+	        } else if (event.widget == entryPointButton) {
+	        	final boolean entryPointVal = entryPointButton.getSelection();
+		        if (entryPointVal == level.isEntryPoint())
+		        	return;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, entryPointVal ? "Set entry point flag in level" : "Removed entry point flag from level") {
+					@Override
+					protected void doExecute() {
+				        level.setEntryPoint(entryPointVal);
+				        // no update needed
 					}
 		        });
 	        }

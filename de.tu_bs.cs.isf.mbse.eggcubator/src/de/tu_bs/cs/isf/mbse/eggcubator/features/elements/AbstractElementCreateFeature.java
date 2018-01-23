@@ -19,8 +19,12 @@ import de.tu_bs.cs.isf.mbse.eggcubator.LevelPictogramHelper;
 
 public abstract class AbstractElementCreateFeature extends AbstractCreateFeature {
 	
-	public AbstractElementCreateFeature(IFeatureProvider fp, Description desc) {
+	protected AbstractElementCreateFeature(IFeatureProvider fp, Description desc) {
 		super(fp, "Create " + desc.getName(), "Create a new " + desc.getName() + " element.");
+	}
+	
+	protected AbstractElementCreateFeature(IFeatureProvider fp, String name) {
+		super(fp, "Create " + name, "Create a new " + name + " element.");
 	}
 
 	@Override
