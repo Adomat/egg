@@ -6,6 +6,7 @@ function LevelPage() {
 	this.gravity;
 
 	this.blocks = [];
+	this.enemies = [];
 	this.exitGates = [];
 	this.hero = null;
 	this.showDeathScreen = false;
@@ -29,19 +30,51 @@ LevelPage.prototype.addBlock = function(givenBlock, x, y) {
 	this.blocks.push(newBlock);
 }
 
+LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
+	var newEnemy = new EnemyCharacter();
+    newEnemy.movable = givenEnemy.movable;
+    
+	newEnemy.positionX = x;
+	newEnemy.positionY = y;
+    
+	newEnemy.idleImages = givenEnemy.idleImages;
+	newEnemy.attackImages = givenEnemy.attackImages;
+	newEnemy.runImages = givenEnemy.runImages;
+	newEnemy.jumpImages = givenEnemy.jumpImages;
+	
+    /*for(var i=0; i<givenEnemy.idleImages.length; i++)
+	   newEnemy.idleImages.push(givenEnemy.idleImages[i]);
+    for(var i=0; i<givenEnemy.attackImages.length; i++)
+	   newEnemy.attackImages.push(givenEnemy.attackImages[i]);
+    for(var i=0; i<givenEnemy.runImages.length; i++)
+        newEnemy.addRunImage(givenEnemy.runImages[i].src);
+    for(var i=0; i<givenEnemy.jumpImages.length; i++)
+	   newEnemy.jumpImages.push(givenEnemy.jumpImages[i]);*/
+	
+	newEnemy.collisionBoxX = givenEnemy.collisionBoxX;
+	newEnemy.collisionBoxY = givenEnemy.collisionBoxY;
+	newEnemy.animationSpeed = givenEnemy.animationSpeed;
+	newEnemy.life = givenEnemy.life;
+	newEnemy.speed = givenEnemy.speed;
+	newEnemy.jumpPower = givenEnemy.jumpPower;
+    newEnemy.showCollisionBox = givenEnemy.showCollisionBox;
+    
+	this.enemies.push(newEnemy);
+}
+
 LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero = new HeroCharacter();
     
-	this.hero.position.x = x;
-	this.hero.position.y = y;
-    
+	this.hero.positionX = x;
+	this.hero.positionY = y;
 	
 	this.hero.idleImages = newHero.idleImages;
 	this.hero.attackImages = newHero.attackImages;
 	this.hero.runImages = newHero.runImages;
 	this.hero.jumpImages = newHero.jumpImages;
 	
-	this.hero.collisionBox = newHero.collisionBox;
+	this.hero.collisionBoxX = newHero.collisionBoxX;
+	this.hero.collisionBoxY = newHero.collisionBoxY;
 	this.hero.animationSpeed = newHero.animationSpeed;
 	this.hero.life = newHero.life;
 	this.hero.speed = newHero.speed;
@@ -63,12 +96,14 @@ LevelPage.prototype.draw = function() {
 	this.drawBackground(this.levelScroll.x-newScrollX, this.levelScroll.y+newScrollY);
 	
 	for(var i=0; i<this.blocks.length; i++) {
-		this.blocks[i].draw(this.levelScroll, this.mapSize, this.hero.collisionBox);
+		this.blocks[i].draw(this.levelScroll, this.mapSize);
 	}
 	
 	this.hero.draw(this.levelScroll, this.mapSize);
-	
-//	this.hero.drawCollisionBox();
+    
+    for(var i=0; i<this.enemies.length; i++) {
+		this.enemies[i].draw(this.levelScroll, this.mapSize);
+	}
 	
 	if(this.showDeathScreen) {
 		this.drawDeathScreen();
@@ -79,10 +114,16 @@ LevelPage.prototype.executeTick = function() {
 	this.calculateMapSize();
 	this.moveBackground();
 	
-	if(this.hero.health <= 0) {
+	if(this.hero.life <= 0) {
 		this.showDeathScreen = true;
 	} else {
 		this.hero.move(this.blocks, this.gravity, this.exitGates);
+	}
+    
+    for(var i=0; i<this.enemies.length; i++) {
+		if(this.enemies[i].life > 0) {
+            this.enemies[i].move(this.blocks, this.gravity, this.exitGates);
+        }
 	}
 }
 
@@ -102,8 +143,8 @@ LevelPage.prototype.calculateMapSize = function() {
 }
 
 LevelPage.prototype.moveBackground = function() {
-	this.levelScroll.x = this.hero.position.x / this.mapSize.x;
-	this.levelScroll.y = 1 - this.hero.position.y / this.mapSize.y;
+	this.levelScroll.x = this.hero.positionX / this.mapSize.x;
+	this.levelScroll.y = 1 - this.hero.positionY / this.mapSize.y;
 }
 
 LevelPage.prototype.drawDeathScreen = function() {

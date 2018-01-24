@@ -44,6 +44,44 @@ function setupPages() {
     grassBlock.addImage("images/blocks/grass.png");
     grassBlock.addImage("images/blocks/grass2.png");
     grassBlock.animationSpeed = 500;
+	
+	var hero = new HeroCharacter();
+	hero.setCollisionBox(90, 90);
+	hero.animationSpeed = 150;
+	hero.life = 100;
+	hero.speed = 5;
+	hero.jumpPower = 35;
+    //hero.showCollisionBox = true;
+	hero.addIdleImage("images/enemy/hero_idle.png");
+	hero.addJumpImage("images/enemy/hero_jump.png");
+	hero.addRunImage("images/enemy/hero01.png");
+	hero.addRunImage("images/enemy/hero02.png");
+	hero.addRunImage("images/enemy/hero03.png");
+	hero.addRunImage("images/enemy/hero04.png");
+	hero.addRunImage("images/enemy/hero05.png");
+	hero.addRunImage("images/enemy/hero06.png");
+	/*hero.addIdleImage("images/character/idle.png");
+	hero.addRunImage("images/character/run1.png");
+	hero.addRunImage("images/character/run2.png");
+	hero.addJumpImage("images/character/jump.png");*/
+	
+	var enemy = new EnemyCharacter();
+    enemy.movable = true;
+	enemy.setCollisionBox(90, 90);
+	enemy.animationSpeed = 150;
+	enemy.life = 100;
+	enemy.speed = 3;
+	enemy.jumpPower = 50;
+    //enemy.showCollisionBox = true;
+	enemy.addIdleImage("images/enemy/hero_idle.png");
+	enemy.addJumpImage("images/enemy/hero_jump.png");
+	enemy.addRunImage("images/enemy/hero01.png");
+	enemy.addRunImage("images/enemy/hero02.png");
+	enemy.addRunImage("images/enemy/hero03.png");
+	enemy.addRunImage("images/enemy/hero04.png");
+	enemy.addRunImage("images/enemy/hero05.png");
+	enemy.addRunImage("images/enemy/hero06.png");
+    
 
 	// LEVEL PAGE 1
 	var level1Page = new LevelPage();
@@ -74,20 +112,9 @@ function setupPages() {
 		level1Page.addBlock(dirtBlock, 12+j, 0);
 		level1Page.addBlock(grassBlock, 12+j, 1);
 	}
-	
-	var hero = new HeroCharacter();
-	hero.setCollisionBox(30, 130);
-	hero.animationSpeed = 200;
-	hero.life = 100;
-	hero.speed = 5;
-	hero.jumpPower = 35;
-    hero.showCollisionBox = true;
-	hero.addIdleImage("images/character/idle.png");
-	hero.addRunImage("images/character/run1.png");
-	hero.addRunImage("images/character/run2.png");
-	hero.addJumpImage("images/character/jump.png");
-	level1Page.addHero(hero, 5, 6);
-	
+    
+	level1Page.addEnemy(enemy, 21, 2);
+	level1Page.addHero(hero, 15, 2);
 	level1Page.gravity = 10,00;
 	level1Page.addExitGate("level2", 24, 15);
 
@@ -95,17 +122,22 @@ function setupPages() {
 
 	// LEVEL PAGE 2
 	var level2Page = new LevelPage();
-    level2Page.blockSize = 250;
+    level2Page.blockSize = 60;
 	level2Page.setPageKey("level2");
 	level2Page.setBackgroundImage("images/background.png");
 	level2Page.setBackgroundColor("6699ff");
 	
-	var newBlock;
-	for(var i=0; i<10; i++) {
-		level2Page.addBlock(grassBlock, i, 0);
+	for(var i=0; i<60; i++) {
+		level2Page.addBlock(dirtBlock, i, 0);
 	}
-	level2Page.addHero(hero, 1, 1);
-	
+	for(var i=0; i<60; i++) {
+		level2Page.addBlock(grassBlock, i, 1);
+	}
+    
+	for(var i=15; i<45; i++) {
+	   level2Page.addEnemy(enemy, i, 3);
+	}
+	level2Page.addHero(hero, 1, 3);
 	level2Page.gravity = 5;
 
 	pages.push(level2Page);
