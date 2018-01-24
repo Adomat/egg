@@ -72,7 +72,7 @@ Title returns guiattr::Title:
 
 BackgroundImage returns guiattr::BackgroundImage:
 	{guiattr::BackgroundImage}
-	('backgroundImage' '<' value = EString '>')
+	('backgroundImage' value = EString)
 ;
 
 BackgroundColor returns guiattr::BackgroundColor:
