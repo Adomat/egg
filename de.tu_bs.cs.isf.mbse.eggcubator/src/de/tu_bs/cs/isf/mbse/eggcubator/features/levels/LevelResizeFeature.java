@@ -20,7 +20,7 @@ public class LevelResizeFeature extends DefaultResizeShapeFeature implements ILe
 	
 	@Override
 	public boolean canResizeShape(IResizeShapeContext context) {
-		if (!(context.getShape() instanceof ContainerShape))
+		if (!(context.getShape() instanceof ContainerShape) || context.getShape().getLink() == null)
 			return false;
 		// Check that this container is linked to the level
 		EList<EObject> bos = ((ContainerShape) context.getShape()).getLink().getBusinessObjects();

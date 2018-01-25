@@ -87,4 +87,10 @@ public abstract class AbstractElementCreateFeature extends AbstractCreateFeature
 
 	protected abstract PlacedElement createInstanceWithDescription();
 	
+	/**
+	 * Check if this CreateFeature is responsible for creating elements like this.
+	 * @return true if this feature creates elements like the given element
+	 */
+	public abstract boolean createsElement(PlacedElement element);
+	
 }

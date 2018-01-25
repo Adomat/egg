@@ -36,6 +36,7 @@ import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementDeleteFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementInitialUpdateFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementMoveFeature;
+import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementMultiplyFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementRemoveFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EndPointCreateFeaute;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.EnemyCreateFeature;
@@ -64,6 +65,7 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	private ElementRemoveFeature elementRemoveFeature = new ElementRemoveFeature(this);
 	private ElementMoveFeature elementMoveFeature = new ElementMoveFeature(this);
 	private ElementInitialUpdateFeature elementInitialUpdateFeature = new ElementInitialUpdateFeature(this);
+	private ElementMultiplyFeature elementMultiplyFeature = new ElementMultiplyFeature(this);
 	
 	private WarpPointUpdateFeature warpPointUpdateFeature = new WarpPointUpdateFeature(this);
 	
@@ -115,6 +117,8 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 	public IResizeShapeFeature getResizeShapeFeature(IResizeShapeContext context) {
 		if (levelResizeFeature.canResizeShape(context))
 			return levelResizeFeature;
+		else if (elementMultiplyFeature.canResizeShape(context))
+			return elementMultiplyFeature;
 		return null;
 	}
 	
