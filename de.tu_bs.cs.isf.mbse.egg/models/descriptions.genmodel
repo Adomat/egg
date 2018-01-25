@@ -166,7 +166,7 @@
         </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/gui/NextPage">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
-              ecoreFeature="ecore:EReference descriptions.ecore#//attributes/gui/NextPage/value"/>
+              ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/NextPage/value"/>
         </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Text">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Text/value"/>
@@ -180,7 +180,7 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/gui/Button">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Button/label"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
-              ecoreFeature="ecore:EReference descriptions.ecore#//attributes/gui/Button/page"/>
+              ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/Button/page"/>
         </genClasses>
         <genClasses ecoreClass="descriptions.ecore#//attributes/gui/StartPage">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/StartPage/value"/>

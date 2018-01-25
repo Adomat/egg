@@ -87,12 +87,12 @@ Text returns guiattr::Text:
 
 Button returns guiattr::Button:
 	{guiattr::Button}
-	('button' label = EString 'to' page = [gui::PageDescription|EString])
+	('button' label = EString 'to' page = EString)
 ;
 
 NextPage returns guiattr::NextPage:
 	{guiattr::NextPage}
-	('next' value = [gui::PageDescription|EString])
+	('next' value = EString)
 ;
 
 //#######################################################################################################

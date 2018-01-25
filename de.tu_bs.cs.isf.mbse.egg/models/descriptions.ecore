@@ -202,8 +202,8 @@
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="NextPage" eSuperTypes="#//attributes/gui/TextPageAttribute">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1"
-            eType="#//gui/PageDescription"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="Text" eSuperTypes="#//attributes/gui/TextPageAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
@@ -220,8 +220,8 @@
       <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//attributes/gui/MenuPageAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="page" lowerBound="1"
-            eType="#//gui/PageDescription"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="page" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="StartPage" eSuperTypes="#//attributes/gui/MenuPageAttribute #//attributes/gui/TextPageAttribute">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
