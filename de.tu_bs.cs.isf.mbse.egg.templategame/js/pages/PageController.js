@@ -119,6 +119,7 @@ function setupPages() {
 	level1Page.addHero(hero, 15, 2);
 	level1Page.gravity = 10,00;
 	level1Page.addExitGate("level2", 24, 15);
+    level1Page.addFinishBlock(1, 1);
 
 	pages.push(level1Page);
 

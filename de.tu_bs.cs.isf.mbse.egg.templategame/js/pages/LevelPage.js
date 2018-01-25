@@ -8,14 +8,21 @@ function LevelPage() {
 	this.blocks = [];
 	this.enemies = [];
 	this.exitGates = [];
+	this.finishBlocks = [];
 	this.hero = null;
-	this.showDeathScreen = false;
+	this.showWinScreen = false;
     
     this.blockSize = 75;
     
+	this.showDeathScreen = false;
     this.deathMessage = "GAME OVER";
-    this.deathMessageParagraph = "Press \'Enter\' to enter the main menu";
+    this.deathMessageParagraph = "Press \'Enter\' to return to the main menu";
     this.deathReturnPage = startPageKey;
+    
+	this.showWinScreen = false;
+    this.winMessage = "CONGRATULIATIONS";
+    this.winMessageParagraph = "You won the Game.\nPress \'Enter\' to return to the main menu";
+    this.winReturnPage = startPageKey;
 }
 
 LevelPage.prototype.addBlock = function(givenBlock, x, y) {
@@ -87,6 +94,11 @@ LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
 	this.exitGates.push(newExitGate);
 }
 
+LevelPage.prototype.addFinishBlock = function(x, y) {
+	var newFinishBlock = new FinishBlock(x, y);
+	this.finishBlocks.push(newFinishBlock);
+}
+
 LevelPage.prototype.draw = function() {
 	var offSet = getPixelOffsetFromScroll(this.levelScroll, this.mapSize);
 
@@ -95,22 +107,28 @@ LevelPage.prototype.draw = function() {
 	
 	this.drawBackground(this.levelScroll.x-newScrollX, this.levelScroll.y+newScrollY);
 	
-	for(var i=0; i<this.blocks.length; i++) {
-		this.blocks[i].draw(this.levelScroll, this.mapSize);
-	}
-	
 	this.hero.draw(this.levelScroll, this.mapSize);
     
     for(var i=0; i<this.enemies.length; i++) {
 		this.enemies[i].draw(this.levelScroll, this.mapSize);
 	}
 	
-	if(this.showDeathScreen) {
-		this.drawDeathScreen();
+	for(var i=0; i<this.blocks.length; i++) {
+		this.blocks[i].draw(this.levelScroll, this.mapSize);
+	}
+	
+	if(this.showWinScreen) {
+		this.drawAfterScreen(this.winMessage, this.winMessageParagraph, this.winReturnPage);
+	}
+	else if(this.showDeathScreen) {
+		this.drawAfterScreen(this.deathMessage, this.deathMessageParagraph, this.deathReturnPage);
 	}
 }
 
 LevelPage.prototype.executeTick = function() {
+    if(this.showWinScreen || this.showDeathScreen)
+        return;
+    
 	this.calculateMapSize();
 	this.moveBackground();
 	
@@ -145,6 +163,18 @@ LevelPage.prototype.executeTick = function() {
             }
         }
 	}
+    
+    // Check whether the hero entered an exit gate
+	var newPageKey = this.hero.collisionWithSpecialBlocks(this.exitGates);
+	if(newPageKey != null) {
+		switchPage(newPageKey);
+	}
+    
+    // Check whether the hero finished the game!
+    var newPageKey = this.hero.collisionWithSpecialBlocks(this.finishBlocks);
+	if(newPageKey != null) {
+		this.showWinScreen = true;
+	}
 }
 
 LevelPage.prototype.calculateMapSize = function() {
@@ -167,23 +197,24 @@ LevelPage.prototype.moveBackground = function() {
 	this.levelScroll.y = 1 - this.hero.positionY / this.mapSize.y;
 }
 
-LevelPage.prototype.drawDeathScreen = function() {
+LevelPage.prototype.drawAfterScreen = function(message, messageParagraph, returnPage) {
 	ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
 	ctx.fillRect(0, 0, width, height);
 
 	ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
 	ctx.font = '100pt Arial';
 	ctx.textAlign = "center";
-	ctx.fillText(this.deathMessage, width/2, height/2+0);
+	ctx.fillText(message, width/2, height/2+0);
 
 	ctx.font = '20pt Arial';
-	ctx.fillText(this.deathMessageParagraph, width/2, height/2+100);
+	ctx.fillText(messageParagraph, width/2, height/2+100);
 	
 	if(keyDownArray.includes(13)) {
 		setupPages();
-		switchPage(this.deathReturnPage);
+		switchPage(returnPage);
 	}
 }
+
 
 
 

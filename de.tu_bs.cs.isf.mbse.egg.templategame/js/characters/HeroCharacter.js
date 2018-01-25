@@ -49,16 +49,7 @@ HeroCharacter.prototype.draw = function(scroll, mapSize) {
 
 
 
-
-HeroCharacter.prototype.postProcessMovement = function(blocks, gravity, exitGates) {
-    // Check whether the character entered an exit gate
-	var newPageKey = this.collisionWithExitGate(exitGates);
-	if(newPageKey != null) {
-		switchPage(newPageKey);
-	}
-}
-
-HeroCharacter.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
+HeroCharacter.prototype.getIntendedMove = function(blocks, gravity) {
     var intendedMove = function () {  return {  x: 0,  y: 0  };  };
 	intendedMove.x = 0;
 	intendedMove.y = 0;
@@ -86,19 +77,19 @@ HeroCharacter.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
 
 
 
-HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
-	for(var i=0; i<exitGates.length; i++) {
-		if(exitGates[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBoxX/2) {
+HeroCharacter.prototype.collisionWithSpecialBlocks = function(specialBlocks) {
+	for(var i=0; i<specialBlocks.length; i++) {
+		if(specialBlocks[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBoxX/2) {
 			// hinter linker Kante
-			if(exitGates[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBoxX/2) {
+			if(specialBlocks[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBoxX/2) {
 				// vor rechter Kante
-				if(exitGates[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBoxY/2) {
+				if(specialBlocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBoxY/2) {
 					// unter oberer Kante
-					if(exitGates[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBoxY/2) {
+					if(specialBlocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBoxY/2) {
 						// über unterer Kante
 						
 						// COLLISION
-						return exitGates[i].newPageKey;
+						return specialBlocks[i].newPageKey;
 					}
 				}
 			}
@@ -107,6 +98,4 @@ HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
 	
 	return null;
 }
-
-
 

@@ -141,71 +141,96 @@ function ExitGate(newPageKey, x, y) {
 
 
 
-function HeroCharacter() {
-	this.position = function () {  return {  x: null,  y: null  };  };
-	this.collisionBox = function () {  return {  x: null,  y: null  };  };
+FinishBlock.prototype = new Block();
+
+function FinishBlock(x, y) {
+	this.position.x = x;
+	this.position.y = y;
+	
+	this.newPageKey = "FINISHBLOCK";
+    
+    this.isSolid = false;
+}
+
+
+
+
+
+
+
+function Character() {
+	this.positionX = null;
+	this.positionY = null;
+	this.collisionBoxX = null;
+    this.collisionBoxY = null;
 	
 	this.idleImages = [];
 	this.attackImages = [];
 	this.runImages = [];
 	this.jumpImages = [];
 	
-	this.currentImage = null;
-	this.currentImageIndex = 0;
-	this.lastAnimationChange = 0;
-	
-	this.animationSpeed;
-	this.life;
-	this.speed;
-	this.jumpPower;
+	this.animationSpeed = 300;
+	this.life = 100;
+    this.strength = 10;
+	this.speed = 5;
+	this.jumpPower = 40;
+    this.showCollisionBox = false;
 	
 	this.lookingright = true;
 	this.fallingState = 0;
 	this.jumpingState = 0;
+    
+    this.currentImage = null;
+	this.currentImageIndex = 0;
+	this.lastAnimationChange = 0;
+	this.lastDamageDealt = 0;
+    
+    this.movable = false;
 }
 
 
 
-HeroCharacter.prototype.addIdleImage = function(imageURL) {
+
+Character.prototype.addIdleImage = function(imageURL) {
 	var image = new Image();
 	image.src = imageURL;
 	
 	this.idleImages.push(image);
 }
 
-HeroCharacter.prototype.addAttackImage = function(imageURL) {
+Character.prototype.addAttackImage = function(imageURL) {
 	var image = new Image();
 	image.src = imageURL;
 	
 	this.attackImages.push(image);
 }
 
-HeroCharacter.prototype.addRunImage = function(imageURL) {
+Character.prototype.addRunImage = function(imageURL) {
 	var image = new Image();
 	image.src = imageURL;
 	
 	this.runImages.push(image);
 }
 
-HeroCharacter.prototype.addJumpImage = function(imageURL) {
+Character.prototype.addJumpImage = function(imageURL) {
 	var image = new Image();
 	image.src = imageURL;
 	
 	this.jumpImages.push(image);
 }
 
-HeroCharacter.prototype.setCollisionBox = function(x, y) {
-	this.collisionBox.x = x;
-	this.collisionBox.y = y;
+Character.prototype.setCollisionBox = function(x, y) {
+	this.collisionBoxX = x;
+	this.collisionBoxY = y;
 }
 
 
-HeroCharacter.prototype.getCenter = function() {
+Character.prototype.getCenter = function() {
   if(this.currentImage == null)
     this.currentImage = this.idleImages[0];
   
-  var x = this.position.x * blockSize;
-  var y = height - blockSize - this.position.y * blockSize;
+  var x = this.positionX * blockSize;
+  var y = height - blockSize - this.positionY * blockSize;
 
   x += blockSize / 2;
   
@@ -216,10 +241,27 @@ HeroCharacter.prototype.getCenter = function() {
   return returnVector;
 }
 
-HeroCharacter.prototype.displaceByPixels = function(x, y) {
-	this.position.x += x / blockSize;
-	this.position.y += y / blockSize;
+Character.prototype.displaceByPixels = function(x, y) {
+	this.positionX += x / blockSize;
+	this.positionY += y / blockSize;
 }
+
+Character.prototype.dealDamage = function(damage) {
+    var timePassed = (new Date()).getTime() - this.lastDamageDealt;
+	
+	if(timePassed > 1000) {
+        this.life -= damage;
+        this.jump(0.5);
+		
+		this.lastDamageDealt = (new Date()).getTime();
+	}
+}
+
+
+
+
+
+
 
 
 
@@ -232,52 +274,32 @@ HeroCharacter.prototype.displaceByPixels = function(x, y) {
 
 // RENDERING
 
-HeroCharacter.prototype.draw = function(scroll, mapSize) {
-	if(this.currentImage == null)
-		this.currentImage = this.idleImages[0];
-	
-	this.switchAnimationIndex();
 
-	imageX = width/2 - this.currentImage.width / 2;
-	imageY = height/2 - this.currentImage.height / 2;
-
-	var offSet = getPixelOffsetFromScroll(scroll, mapSize);
-
-	imageX += offSet.x;
-	imageY -= offSet.y;
-    
-    // draw Collision Box
-    ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
-    ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBox.x / 2, imageY + this.currentImage.height / 2 - this.collisionBox.y / 2, this.collisionBox.x, this.collisionBox.y);
-
-	if(this.lookingright) {
-		ctx.drawImage(this.currentImage, imageX, imageY);
-	}
-	else {
-		for(var x = 0; x < this.currentImage.width; x++) {
-			ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
-		}
-	}
-}
-
-HeroCharacter.prototype.switchAnimationIndex = function() {
+Character.prototype.switchAnimationIndex = function() {
 	var timePassed = (new Date()).getTime() - this.lastAnimationChange;
 	
 	if(timePassed > this.animationSpeed) {
 		this.currentImageIndex ++;
+        this.jum
 		
 		this.lastAnimationChange = (new Date()).getTime();
 	}
 }
 
-HeroCharacter.prototype.drawCollisionBox = function() {
-	ctx.fillStyle = "rgba(255,0,0, 0.5)";
-	var x = width/2 - this.collisionBox.x / 2;
-	var y = height/2 - this.collisionBox.y / 2;
-	var w = width/2 + this.collisionBox.x / 2 - x;
-	var h = height/2 + this.collisionBox.y / 2 - y;
-	ctx.fillRect(x, y, w, h);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -289,19 +311,13 @@ HeroCharacter.prototype.drawCollisionBox = function() {
 
 // MOVEMENT
 
-HeroCharacter.prototype.move = function(blocks, gravity, exitGates) {
-	var intendedMove = function () {  return {  x: 0,  y: 0  };  };
-	intendedMove.x = 0;
-	intendedMove.y = 0;
-	
-	if(keyDownArray.includes(37))
-		intendedMove = this.moveLeft(intendedMove);
-	
-	if(keyDownArray.includes(39))
-		intendedMove = this.moveRight(intendedMove);
-	
-	if(keyDownArray.includes(38))
-		this.jump();
+Character.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
+    // Implemented in inheriting classes
+}
+
+
+Character.prototype.move = function(blocks, gravity) {
+	var intendedMove = this.getIntendedMove(blocks, gravity);
 	
 	intendedMove.y += Math.pow((gravity / 1000) * this.jumpingState, 2);
 	intendedMove.y -= Math.min(Math.pow((gravity / 1000) * this.fallingState, 2), 0.1);
@@ -315,37 +331,31 @@ HeroCharacter.prototype.move = function(blocks, gravity, exitGates) {
 	
 	for(var i=0; i<steps; i++) {
 		if(!stopMovementY) {
-			this.position.y += (i/steps) * intendedMove.y;
+			this.positionY += (i/steps) * intendedMove.y;
 			
 			if(this.collisionWithBlocks(blocks)) {
 				if(intendedMove.y < 0) {
 					this.fallingState = 0;
 				}
 				this.jumpingState = 0;
-				this.position.y -= (i/steps) * intendedMove.y;
+				this.positionY -= (i/steps) * intendedMove.y;
 				stopMovementY = true;
 			}
 		}
 
 		if(!stopMovementX) {
-			this.position.x += (i/steps) * intendedMove.x;
+			this.positionX += (i/steps) * intendedMove.x;
 			
 			if(this.collisionWithBlocks(blocks)) {
-				this.position.x -= (i/steps) * intendedMove.x;
+				this.positionX -= (i/steps) * intendedMove.x;
 				stopMovementX = true;
 			}
 		}
 	}
 	
-	// Check whether the character entered an exit gate
-	var newPageKey = this.collisionWithExitGate(exitGates);
-	if(newPageKey != null) {
-		switchPage(newPageKey);
-	}
-	
 	// Check whether the character fell to death
-	if(this.position.y < -1)
-		this.health = 0;
+	if(this.positionY < -2)
+		this.life = 0;
 	
 	// Switch Images to characters current state
 	if(this.fallingState > 5) {
@@ -353,57 +363,32 @@ HeroCharacter.prototype.move = function(blocks, gravity, exitGates) {
 			this.currentImageIndex = 0;
 		this.currentImage = this.jumpImages[this.currentImageIndex];
 	}
-	else if(!keyDownArray.includes(37) && !keyDownArray.includes(39) && !keyDownArray.includes(38)) {
+    else if(intendedMove.x == 0) {
+        if(this.currentImageIndex >= this.idleImages.length)
+			this.currentImageIndex = 0;
+		this.currentImage = this.idleImages[this.currentImageIndex];
+    }
+	/*else if(!keyDownArray.includes(37) && !keyDownArray.includes(39) && !keyDownArray.includes(38)) {
 		if(this.currentImageIndex >= this.idleImages.length)
 			this.currentImageIndex = 0;
 		this.currentImage = this.idleImages[this.currentImageIndex];
-	}
+	}*/
 }
 
 
 
-HeroCharacter.prototype.moveLeft = function(intendedMove) {
-	if(this.currentImageIndex >= this.runImages.length)
-		this.currentImageIndex = 0;
-	this.currentImage = this.runImages[this.currentImageIndex];
-	
-	this.lookingright = false;
-	intendedMove.x -= this.speed / 100;
-	
-	return intendedMove;
-}
-
-HeroCharacter.prototype.moveRight = function(intendedMove) {
-	if(this.currentImageIndex >= this.runImages.length)
-		this.currentImageIndex = 0;
-	this.currentImage = this.runImages[this.currentImageIndex];
-	
-	this.lookingright = true;
-	intendedMove.x += this.speed / 100;
-	
-	return intendedMove;
-}
-
-HeroCharacter.prototype.jump = function() {
-	if(this.fallingState <= 5) {
-		this.jumpingState = this.jumpPower;
-	}
-}
-
-
-
-HeroCharacter.prototype.collisionWithBlocks = function(blocks) {
+Character.prototype.collisionWithBlocks = function(blocks) {
 	for(var i=0; i<blocks.length; i++) {
 		if(!blocks[i].isSolid)
 			continue;
 		
-		if(blocks[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBox.x/2) {
+		if(blocks[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBoxX/2) {
 			// hinter linker Kante
-			if(blocks[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBox.x/2) {
+			if(blocks[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBoxX/2) {
 				// vor rechter Kante
-				if(blocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
+				if(blocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBoxY/2) {
 					// unter oberer Kante
-					if(blocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
+					if(blocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBoxY/2) {
 						// über unterer Kante
 						
 						// COLLISION
@@ -417,26 +402,191 @@ HeroCharacter.prototype.collisionWithBlocks = function(blocks) {
 	return false;
 }
 
-HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
-	for(var i=0; i<exitGates.length; i++) {
-		if(exitGates[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBox.x/2) {
-			// hinter linker Kante
-			if(exitGates[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBox.x/2) {
-				// vor rechter Kante
-				if(exitGates[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBox.y/2) {
-					// unter oberer Kante
-					if(exitGates[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBox.y/2) {
-						// über unterer Kante
-						
-						// COLLISION
-						return exitGates[i].newPageKey;
-					}
-				}
-			}
+
+
+Character.prototype.moveLeft = function(intendedMove) {
+	if(this.currentImageIndex >= this.runImages.length)
+		this.currentImageIndex = 0;
+	this.currentImage = this.runImages[this.currentImageIndex];
+	
+	this.lookingright = false;
+	intendedMove.x -= this.speed / 100;
+	
+	return intendedMove;
+}
+
+Character.prototype.moveRight = function(intendedMove) {
+	if(this.currentImageIndex >= this.runImages.length)
+		this.currentImageIndex = 0;
+	this.currentImage = this.runImages[this.currentImageIndex];
+	
+	this.lookingright = true;
+	intendedMove.x += this.speed / 100;
+	
+	return intendedMove;
+}
+
+Character.prototype.jump = function(height) {
+	if(this.fallingState <= 5) {
+		this.jumpingState = this.jumpPower * height;
+	}
+}
+
+
+
+
+
+
+
+EnemyCharacter.prototype = new Character();
+
+function EnemyCharacter() {
+    this.movable = false;
+    
+    this.currentMove = 0;
+}
+
+
+
+
+
+
+
+
+EnemyCharacter.prototype.draw = function(scroll, mapSize) {
+	if(this.currentImage == null)
+		this.currentImage = this.idleImages[0];
+	
+	this.switchAnimationIndex();
+    
+	var imageX = this.positionX * blockSize;
+	var imageY = height - this.positionY * blockSize;
+
+	imageX -= scroll.x * mapSize.x * blockSize - width/2 + blockSize/2;
+	imageY -= height/2 - (1-scroll.y) * mapSize.y * blockSize;
+	
+	var offSet = getPixelOffsetFromScroll(scroll, mapSize);
+	
+	imageX += offSet.x;
+	imageY -= offSet.y;
+    
+    imageY -= this.currentImage.height/2;
+
+	if(this.lookingright) {
+		ctx.drawImage(this.currentImage, imageX, imageY);
+	}
+	else {
+		for(var x = 0; x < this.currentImage.width; x++) {
+			ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
 		}
 	}
+    
+    // draw Collision Box
+    if(this.showCollisionBox) {
+        ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
+        ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBoxX / 2, imageY + this.currentImage.height / 2 - this.collisionBoxY / 2, this.collisionBoxX, this.collisionBoxY);
+    }
+}
+
+
+
+EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity) {
+    var intendedMove = function () {  return {  x: 0,  y: 0  };  };
+	intendedMove.x = 0;
+	intendedMove.y = 0;
 	
-	return null;
+    if(this.currentMove == 0) {
+        if(Math.random() * 100 < 1) {
+            this.currentMove = Math.round((Math.random() - 0.5) * 150);
+        }
+    }
+    else if(this.currentMove > 0) {
+        this.moveRight(intendedMove);
+        this.currentMove --;
+    }
+    else if(this.currentMove < 0) {
+        this.moveLeft(intendedMove);
+        this.currentMove ++;
+    }
+    
+    if(Math.random() * 100 < 1)
+        this.jump(Math.random());
+    
+    return intendedMove;
+}
+
+
+
+
+
+
+
+HeroCharacter.prototype = new Character();
+
+function HeroCharacter() {
+    this.movable = true;
+}
+
+
+
+
+
+HeroCharacter.prototype.draw = function(scroll, mapSize) {
+	if(this.currentImage == null)
+		this.currentImage = this.idleImages[0];
+	
+	this.switchAnimationIndex();
+
+	var imageX = width/2 - this.currentImage.width / 2;
+	var imageY = height/2 - this.currentImage.height / 2;
+
+	var offSet = getPixelOffsetFromScroll(scroll, mapSize);
+
+	imageX += offSet.x;
+	imageY -= offSet.y;
+    
+    // This handsome bugger will only calculate the blinking of your hero when he gets damaged
+    var magicBlinkNumber = Math.round((Math.sin(((1000 - Math.max(0, 1000 - ((new Date()).getTime() - this.lastDamageDealt))) / 1000) * Math.PI*10)+1)/2);
+    if(this.life <= 0)
+        magicBlinkNumber = 0;
+
+    if(magicBlinkNumber === 0) {
+        if(this.lookingright) {
+            ctx.drawImage(this.currentImage, imageX, imageY);
+        }
+        else {
+            for(var x = 0; x < this.currentImage.width; x++) {
+                ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
+            }
+        }
+    }
+    
+    // draw Collision Box
+    if(this.showCollisionBox) {
+        ctx.fillStyle = "rgba(255, 100, 100, 0.5)";
+        ctx.fillRect(imageX + this.currentImage.width / 2 - this.collisionBoxX / 2, imageY + this.currentImage.height / 2 - this.collisionBoxY / 2, this.collisionBoxX, this.collisionBoxY);
+    }
+}
+
+
+
+
+
+HeroCharacter.prototype.getIntendedMove = function(blocks, gravity) {
+    var intendedMove = function () {  return {  x: 0,  y: 0  };  };
+	intendedMove.x = 0;
+	intendedMove.y = 0;
+	
+	if(keyDownArray.includes(37))
+		intendedMove = this.moveLeft(intendedMove);
+	
+	if(keyDownArray.includes(39))
+		intendedMove = this.moveRight(intendedMove);
+	
+	if(keyDownArray.includes(38))
+		this.jump(1);
+    
+    return intendedMove;
 }
 
 
@@ -450,13 +600,27 @@ HeroCharacter.prototype.collisionWithExitGate = function(exitGates) {
 
 
 
-
-
-
-
-
-
-
+HeroCharacter.prototype.collisionWithSpecialBlocks = function(specialBlocks) {
+	for(var i=0; i<specialBlocks.length; i++) {
+		if(specialBlocks[i].getCenter().x-blockSize/2 < this.getCenter().x+this.collisionBoxX/2) {
+			// hinter linker Kante
+			if(specialBlocks[i].getCenter().x+blockSize/2 > this.getCenter().x-this.collisionBoxX/2) {
+				// vor rechter Kante
+				if(specialBlocks[i].getCenter().y-blockSize/2 < this.getCenter().y+this.collisionBoxY/2) {
+					// unter oberer Kante
+					if(specialBlocks[i].getCenter().y+blockSize/2 > this.getCenter().y-this.collisionBoxY/2) {
+						// über unterer Kante
+						
+						// COLLISION
+						return specialBlocks[i].newPageKey;
+					}
+				}
+			}
+		}
+	}
+	
+	return null;
+}
 
 
 
@@ -624,15 +788,23 @@ function LevelPage() {
 	this.gravity;
 
 	this.blocks = [];
+	this.enemies = [];
 	this.exitGates = [];
+	this.finishBlocks = [];
 	this.hero = null;
-	this.showDeathScreen = false;
+	this.showWinScreen = false;
     
     this.blockSize = 75;
     
+	this.showDeathScreen = false;
     this.deathMessage = "GAME OVER";
-    this.deathMessageParagraph = "Press \'Enter\' to enter the main menu";
+    this.deathMessageParagraph = "Press \'Enter\' to return to the main menu";
     this.deathReturnPage = startPageKey;
+    
+	this.showWinScreen = false;
+    this.winMessage = "CONGRATULIATIONS";
+    this.winMessageParagraph = "You won the Game.\nPress \'Enter\' to return to the main menu";
+    this.winReturnPage = startPageKey;
 }
 
 LevelPage.prototype.addBlock = function(givenBlock, x, y) {
@@ -647,15 +819,66 @@ LevelPage.prototype.addBlock = function(givenBlock, x, y) {
 	this.blocks.push(newBlock);
 }
 
+LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
+	var newEnemy = new EnemyCharacter();
+    newEnemy.movable = givenEnemy.movable;
+    
+	newEnemy.positionX = x;
+	newEnemy.positionY = y;
+    
+	newEnemy.idleImages = givenEnemy.idleImages;
+	newEnemy.attackImages = givenEnemy.attackImages;
+	newEnemy.runImages = givenEnemy.runImages;
+	newEnemy.jumpImages = givenEnemy.jumpImages;
+	
+    /*for(var i=0; i<givenEnemy.idleImages.length; i++)
+	   newEnemy.idleImages.push(givenEnemy.idleImages[i]);
+    for(var i=0; i<givenEnemy.attackImages.length; i++)
+	   newEnemy.attackImages.push(givenEnemy.attackImages[i]);
+    for(var i=0; i<givenEnemy.runImages.length; i++)
+        newEnemy.addRunImage(givenEnemy.runImages[i].src);
+    for(var i=0; i<givenEnemy.jumpImages.length; i++)
+	   newEnemy.jumpImages.push(givenEnemy.jumpImages[i]);*/
+	
+	newEnemy.collisionBoxX = givenEnemy.collisionBoxX;
+	newEnemy.collisionBoxY = givenEnemy.collisionBoxY;
+	newEnemy.animationSpeed = givenEnemy.animationSpeed;
+	newEnemy.life = givenEnemy.life;
+	newEnemy.speed = givenEnemy.speed;
+	newEnemy.jumpPower = givenEnemy.jumpPower;
+    newEnemy.showCollisionBox = givenEnemy.showCollisionBox;
+    
+	this.enemies.push(newEnemy);
+}
+
 LevelPage.prototype.addHero = function(newHero, x, y) {
-	this.hero = newHero;
-	this.hero.position.x = x;
-	this.hero.position.y = y;
+	this.hero = new HeroCharacter();
+    
+	this.hero.positionX = x;
+	this.hero.positionY = y;
+	
+	this.hero.idleImages = newHero.idleImages;
+	this.hero.attackImages = newHero.attackImages;
+	this.hero.runImages = newHero.runImages;
+	this.hero.jumpImages = newHero.jumpImages;
+	
+	this.hero.collisionBoxX = newHero.collisionBoxX;
+	this.hero.collisionBoxY = newHero.collisionBoxY;
+	this.hero.animationSpeed = newHero.animationSpeed;
+	this.hero.life = newHero.life;
+	this.hero.speed = newHero.speed;
+	this.hero.jumpPower = newHero.jumpPower;
+    this.hero.showCollisionBox = newHero.showCollisionBox;
 }
 
 LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
 	var newExitGate = new ExitGate(newPageKey, x, y);
 	this.exitGates.push(newExitGate);
+}
+
+LevelPage.prototype.addFinishBlock = function(x, y) {
+	var newFinishBlock = new FinishBlock(x, y);
+	this.finishBlocks.push(newFinishBlock);
 }
 
 LevelPage.prototype.draw = function() {
@@ -666,27 +889,73 @@ LevelPage.prototype.draw = function() {
 	
 	this.drawBackground(this.levelScroll.x-newScrollX, this.levelScroll.y+newScrollY);
 	
-	for(var i=0; i<this.blocks.length; i++) {
-		this.blocks[i].draw(this.levelScroll, this.mapSize, this.hero.collisionBox);
+	this.hero.draw(this.levelScroll, this.mapSize);
+    
+    for(var i=0; i<this.enemies.length; i++) {
+		this.enemies[i].draw(this.levelScroll, this.mapSize);
 	}
 	
-	this.hero.draw(this.levelScroll, this.mapSize);
+	for(var i=0; i<this.blocks.length; i++) {
+		this.blocks[i].draw(this.levelScroll, this.mapSize);
+	}
 	
-//	this.hero.drawCollisionBox();
-	
-	if(this.showDeathScreen) {
-		this.drawDeathScreen();
+	if(this.showWinScreen) {
+		this.drawAfterScreen(this.winMessage, this.winMessageParagraph, this.winReturnPage);
+	}
+	else if(this.showDeathScreen) {
+		this.drawAfterScreen(this.deathMessage, this.deathMessageParagraph, this.deathReturnPage);
 	}
 }
 
 LevelPage.prototype.executeTick = function() {
+    if(this.showWinScreen || this.showDeathScreen)
+        return;
+    
 	this.calculateMapSize();
 	this.moveBackground();
 	
-	if(this.hero.health <= 0) {
+	if(this.hero.life <= 0) {
 		this.showDeathScreen = true;
 	} else {
 		this.hero.move(this.blocks, this.gravity, this.exitGates);
+	}
+    
+    var heroX = this.hero.positionX * blockSize;
+    var heroY = this.hero.positionY * blockSize;
+    
+    for(var i=0; i<this.enemies.length; i++) {
+		if(this.enemies[i].life > 0) {
+            this.enemies[i].move(this.blocks, this.gravity, this.exitGates);
+            
+            // Check if this enemy touches the hero!
+            var enemyX = this.enemies[i].positionX * blockSize;
+            var enemyY = this.enemies[i].positionY * blockSize;
+            
+            if(heroX + this.hero.collisionBoxX/2 > enemyX - this.enemies[i].collisionBoxX/2) {
+                if(heroX - this.hero.collisionBoxX/2 < enemyX + this.enemies[i].collisionBoxX/2) {
+                    // collision on X axes
+                    
+                    if(heroY + this.hero.collisionBoxY/2 > enemyY - this.enemies[i].collisionBoxY/2) {
+                        if(heroY - this.hero.collisionBoxY/2 < enemyY + this.enemies[i].collisionBoxY/2) {
+                            // COLLISION WITH ENEMY DETECTED
+                            this.hero.dealDamage(this.enemies[i].strength);
+                        }
+                    }
+                }
+            }
+        }
+	}
+    
+    // Check whether the hero entered an exit gate
+	var newPageKey = this.hero.collisionWithSpecialBlocks(this.exitGates);
+	if(newPageKey != null) {
+		switchPage(newPageKey);
+	}
+    
+    // Check whether the hero finished the game!
+    var newPageKey = this.hero.collisionWithSpecialBlocks(this.finishBlocks);
+	if(newPageKey != null) {
+		this.showWinScreen = true;
 	}
 }
 
@@ -706,27 +975,28 @@ LevelPage.prototype.calculateMapSize = function() {
 }
 
 LevelPage.prototype.moveBackground = function() {
-	this.levelScroll.x = this.hero.position.x / this.mapSize.x;
-	this.levelScroll.y = 1 - this.hero.position.y / this.mapSize.y;
+	this.levelScroll.x = this.hero.positionX / this.mapSize.x;
+	this.levelScroll.y = 1 - this.hero.positionY / this.mapSize.y;
 }
 
-LevelPage.prototype.drawDeathScreen = function() {
+LevelPage.prototype.drawAfterScreen = function(message, messageParagraph, returnPage) {
 	ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
 	ctx.fillRect(0, 0, width, height);
 
 	ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
 	ctx.font = '100pt Arial';
 	ctx.textAlign = "center";
-	ctx.fillText(this.deathMessage, width/2, height/2+0);
+	ctx.fillText(message, width/2, height/2+0);
 
 	ctx.font = '20pt Arial';
-	ctx.fillText(this.deathMessageParagraph, width/2, height/2+100);
+	ctx.fillText(messageParagraph, width/2, height/2+100);
 	
 	if(keyDownArray.includes(13)) {
 		setupPages();
-		switchPage(this.deathReturnPage);
+		switchPage(returnPage);
 	}
 }
+
 
 
 

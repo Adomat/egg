@@ -38,16 +38,13 @@ public class GenerateAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		if(MessageDialog.openQuestion(shell, "EGG - Generate JavaScript Code?",
-				"Do you want EGG to generate your game now?\n\nThis might override older versions of the generated html-file.")) {
-			try {
-				//IFile targetFile = action.;
-				JavaScriptGenerator.generateCode(selectedFile, shell);
-			} catch (Exception e) {
-				e.printStackTrace();
-				MessageDialog.openError(shell, "Generating went wrong!", "Something went wrong while generating your Code:\n\n"
-						+ e.getMessage());
-			}
+		try {
+			//IFile targetFile = action.;
+			JavaScriptGenerator.generateCode(selectedFile, shell);
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageDialog.openError(shell, "Generating went wrong!", "Something went wrong while generating your Code:\n\n"
+					+ e.getMessage());
 		}
 	}
 

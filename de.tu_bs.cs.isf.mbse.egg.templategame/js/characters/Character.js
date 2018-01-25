@@ -151,17 +151,13 @@ Character.prototype.switchAnimationIndex = function() {
 
 // MOVEMENT
 
-Character.prototype.postProcessMovement = function(blocks, gravity, exitGates) {
-    // Implemented in inheriting classes
-}
-
 Character.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
     // Implemented in inheriting classes
 }
 
 
-Character.prototype.move = function(blocks, gravity, exitGates) {
-	var intendedMove = this.getIntendedMove(blocks, gravity, exitGates);
+Character.prototype.move = function(blocks, gravity) {
+	var intendedMove = this.getIntendedMove(blocks, gravity);
 	
 	intendedMove.y += Math.pow((gravity / 1000) * this.jumpingState, 2);
 	intendedMove.y -= Math.min(Math.pow((gravity / 1000) * this.fallingState, 2), 0.1);
@@ -217,8 +213,6 @@ Character.prototype.move = function(blocks, gravity, exitGates) {
 			this.currentImageIndex = 0;
 		this.currentImage = this.idleImages[this.currentImageIndex];
 	}*/
-	
-	this.postProcessMovement(blocks, gravity, exitGates);
 }
 
 

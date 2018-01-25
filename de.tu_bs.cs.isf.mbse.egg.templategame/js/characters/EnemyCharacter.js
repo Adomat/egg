@@ -50,15 +50,7 @@ EnemyCharacter.prototype.draw = function(scroll, mapSize) {
 
 
 
-
-
-
-
-EnemyCharacter.prototype.postProcessMovement = function(blocks, gravity, exitGates) {
-    // TODO detect collision with hero?
-}
-
-EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
+EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity) {
     var intendedMove = function () {  return {  x: 0,  y: 0  };  };
 	intendedMove.x = 0;
 	intendedMove.y = 0;

@@ -12,7 +12,12 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
@@ -22,6 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.Bundle;
 
@@ -55,17 +61,18 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.MenuPageDescription;
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.PageDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.egg.level.LevelPackage;
-import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.EndPoint;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.WarpPoint;
 
 public class JavaScriptGenerator {
 	private static String _GENERATED_CODE;
 	
-	public static void generateCode(File selectedFile, Shell shell) throws IOException, URISyntaxException {
+	public static void generateCode(File selectedFile, Shell shell) throws IOException, URISyntaxException, CoreException {
 		if(!selectedFile.getParentFile().isDirectory()) {
 			System.out.println("Generator messed up...");
 			return;
@@ -113,10 +120,8 @@ public class JavaScriptGenerator {
 		File targetFile = new File(selectedFile.getParentFile() + "/index.html");
 		
 		if (targetFile.exists()) {
-//			if (MessageDialog.openQuestion(shell, "EGG - Override old version?",
-//					"You are about to override your latest game version.\n\nContinue anyway?"))
-//				targetFile.delete();
-//			else return;
+			if(!MessageDialog.openQuestion(shell, "EGG - Override old JavaScript Code?", "Do you want EGG to generate your game now?\n\nThis will override an older version of the generated html-file."))
+				return;
 			targetFile.delete();
 		}
 		targetFile.createNewFile();
@@ -126,6 +131,10 @@ public class JavaScriptGenerator {
 //		out.println(_GENERATED_CODE);
 		out.println(modifiedContent);
 		out.close();
+		
+		for(IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()){
+		    project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		}
 	}
 	
 	private static void generateCodeFromModels(ResourceSet resourceSet) {
@@ -164,25 +173,46 @@ public class JavaScriptGenerator {
 	}
 
 	private static void generateCodeForLevel(Level level) {
-		String variableName = generateVariableNameFromDescription(level);
+		String variableName = level.getName();
 		addCodeLine("// Level \"%s\"", level.getName());
 		addCodeLine("var %s = new LevelPage();", variableName);
 		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
 		addCodeLine("%s.blockSize = %d;", variableName, level.getElementSize());
 		addCodeLine("%s.gravity = %f;", variableName, level.getGravity());
+		addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, level.getBackgroundColor());
+		addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, level.getBackgroundImage());
 		
 		for(Entry<Integer, EMap<Integer, PlacedElement>> column : level.getElements()) {
 			for(Entry<Integer, PlacedElement> row : column.getValue()) {
 				if(row.getValue() != null) {
 					PlacedElement element = row.getValue();
+
+					int x = column.getKey();
+					int y = row.getKey();
 					
 					if(element instanceof PlacedBlock) {
 						BlockDescription desc = ((PlacedBlock) element).getProperties();
-						String blockVariableName = generateVariableNameFromDescription(desc);
-						int x = column.getKey();
-						int y = row.getKey();
+						String blockVariableName = desc.getName();
 						
 						addCodeLine("%s.addBlock(%s, %d, %d);", variableName, blockVariableName, x, y);
+					}
+					else if(element instanceof WarpPoint) {
+						if(((WarpPoint) element).isEntry()) {
+							// This is the entry to our level
+							// The last entry point will implicitely be applied to the generated game
+							String heroName = ((WarpPoint) element).getChangeHeroTo().getName();
+							
+							addCodeLine("%s.addHero(%s, %d, %d);", variableName, heroName, x, y);
+						}
+						else {
+							// This is an exit block to another page
+							String newPage = ((WarpPoint) element).getWarpTo();
+
+							addCodeLine("%s.addExitGate(%s, %d, %d);", variableName, newPage, x, y);
+						}
+					}
+					else if(element instanceof EndPoint) {
+						addCodeLine("%s.addFinishBlock(%s, %d, %d);", variableName, x, y);
 					}
 					else {
 						System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n  > " + element.getClass().getSimpleName().replace("Impl", ""));
@@ -190,13 +220,12 @@ public class JavaScriptGenerator {
 				}
 			}
 		}
-
-		addCodeLine("// TODO Hiiiiii, I need a hero to make sense \\o thaaaaaanks!");
+		
 		addCodeLine("");
 	}
 
 	private static void generateCodeForBlock(BlockDescription description) {
-		String variableName = generateVariableNameFromDescription(description);
+		String variableName = description.getName();
 		addCodeLine("// Block to the description with name \"%s\"", description.getName());
 
 		addCodeLine("var %s = new Block();", variableName);
@@ -226,7 +255,7 @@ public class JavaScriptGenerator {
 	}
 
 	private static void generateCodeForHero(HeroDescription description) {
-		String variableName = generateVariableNameFromDescription(description);
+		String variableName = description.getName();
 		addCodeLine("// Hero to the description with name \"%s\"", description.getName());
 
 		addCodeLine("var %s = new HeroCharacter();", variableName);
@@ -302,9 +331,10 @@ public class JavaScriptGenerator {
 	}
 
 	private static void generateCodeForTextPage(TextPageDescription description) {
-		String variableName = generateVariableNameFromDescription(description);
+		String variableName = description.getName();
 
 		addCodeLine("// Text Page to the description with name \"%s\"", description.getName());
+		addCodeLine("var %s = new TextPage();", variableName);
 		for(TextPageAttribute property : description.getProperties()) {
 			if(property instanceof Title) {
 				addCodeLine("var %s = new TextPage(\"%s\");", variableName, ((Title) property).getValue());
@@ -314,8 +344,7 @@ public class JavaScriptGenerator {
 		
 		for(TextPageAttribute property : description.getProperties()) {
 			if(property instanceof NextPage) {
-				PageDescription nextPage = ((NextPage) property).getValue();
-				String nextPageKey = generateVariableNameFromDescription(nextPage);
+				String nextPageKey = ((NextPage) property).getValue();
 				addCodeLine("%s.newPageKey = \"%s\";", variableName, nextPageKey);
 				break;
 			}
@@ -349,7 +378,7 @@ public class JavaScriptGenerator {
 	}
 
 	private static void generateCodeForMenuPage(MenuPageDescription description) {
-		String variableName = generateVariableNameFromDescription(description);
+		String variableName = description.getName();
 
 		addCodeLine("// Menu Page to the description with name \"%s\"", description.getName());
 		addCodeLine("var %s = new MenuPage();", variableName);
@@ -369,8 +398,8 @@ public class JavaScriptGenerator {
 				}
 			}
 			else if(property instanceof Button) {
-				String newPageKey = generateVariableNameFromDescription(((Button) property).getPage());
-				addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, ((Button) property).getLabel(), newPageKey);
+				String nextPageKey = ((Button) property).getPage();
+				addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, ((Button) property).getLabel(), nextPageKey);
 			}
 			else if(property instanceof BackgroundImage) {
 				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, ((BackgroundImage) property).getValue());
@@ -378,10 +407,6 @@ public class JavaScriptGenerator {
 			else if(property instanceof BackgroundColor) {
 				addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, ((BackgroundColor) property).getValue());
 			}
-//			else if(property instanceof Title) {
-//				// TODO what are we gonna do with this?
-//				addCodeLine("// %s.doSomeThingWithTheDamnTitle(\"%s\");", variableName, ((Title) property).getValue());
-//			}
 			else if(property instanceof StartPage) {
 				addCodeLine("startPageKey = \"%s\";", variableName);
 			}
@@ -400,12 +425,6 @@ public class JavaScriptGenerator {
 	
 	private static void addCodeLine(String line, Object ... args) {
 		_GENERATED_CODE += "\t" + String.format(line, args) + "\n";
-	}
-	
-	private static String generateVariableNameFromDescription(Description desc) {
-		String metaClassName = desc.getClass().getSimpleName();
-		metaClassName = metaClassName.toLowerCase().replaceAll("impl", "").replaceAll("description", "");
-		return metaClassName + "_" + desc.getName();
 	}
 
 	private static File getFileFromBundle(String bundleString, String filePath) throws URISyntaxException, IOException {
