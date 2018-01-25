@@ -216,8 +216,6 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         if (name == null || name.isEmpty())
         	name = "Level";
         nameText.setText(name);
-        if (!getDiagram().getName().equals(name)) // TODO should be possibly somewhere else, but where?
-        	getDiagram().setName(name);
         
         // width
         Integer width = level.getWidth();
@@ -310,6 +308,8 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 					@Override
 					protected void doExecute() {
 				        level.setName(cName);
+				        if (!getDiagram().getName().equals(cName)) // TODO should be possibly somewhere else, but where?
+				        	getDiagram().setName(cName);
 				        // trigger Update
 				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
 				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
@@ -317,8 +317,6 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        	updateFeature.update(context);
 					}
 		        });
-		        if (!getDiagram().getName().equals(name)) // TODO should be possibly somewhere else, but where?
-		        	getDiagram().setName(name);
 	        } else if (event.widget == widthText) {
 		        Integer width = Integer.parseInt(widthText.getText());
 		        if (width < 3) {
