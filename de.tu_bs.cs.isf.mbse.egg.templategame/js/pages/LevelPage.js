@@ -120,9 +120,29 @@ LevelPage.prototype.executeTick = function() {
 		this.hero.move(this.blocks, this.gravity, this.exitGates);
 	}
     
+    var heroX = this.hero.positionX * blockSize;
+    var heroY = this.hero.positionY * blockSize;
+    
     for(var i=0; i<this.enemies.length; i++) {
 		if(this.enemies[i].life > 0) {
             this.enemies[i].move(this.blocks, this.gravity, this.exitGates);
+            
+            // Check if this enemy touches the hero!
+            var enemyX = this.enemies[i].positionX * blockSize;
+            var enemyY = this.enemies[i].positionY * blockSize;
+            
+            if(heroX + this.hero.collisionBoxX/2 > enemyX - this.enemies[i].collisionBoxX/2) {
+                if(heroX - this.hero.collisionBoxX/2 < enemyX + this.enemies[i].collisionBoxX/2) {
+                    // collision on X axes
+                    
+                    if(heroY + this.hero.collisionBoxY/2 > enemyY - this.enemies[i].collisionBoxY/2) {
+                        if(heroY - this.hero.collisionBoxY/2 < enemyY + this.enemies[i].collisionBoxY/2) {
+                            // COLLISION WITH ENEMY DETECTED
+                            this.hero.dealDamage(this.enemies[i].strength);
+                        }
+                    }
+                }
+            }
         }
 	}
 }

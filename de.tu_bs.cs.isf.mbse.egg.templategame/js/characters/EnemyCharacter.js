@@ -59,8 +59,6 @@ EnemyCharacter.prototype.postProcessMovement = function(blocks, gravity, exitGat
 }
 
 EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
-    console.log(this.positionY);
-    
     var intendedMove = function () {  return {  x: 0,  y: 0  };  };
 	intendedMove.x = 0;
 	intendedMove.y = 0;
@@ -80,13 +78,7 @@ EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity, exitGates) 
     }
     
     if(Math.random() * 100 < 1)
-        this.jump();
+        this.jump(Math.random());
     
     return intendedMove;
-}
-
-EnemyCharacter.prototype.jump = function() {
-	if(this.fallingState <= 5) {
-		this.jumpingState = this.jumpPower * Math.random();
-	}
 }

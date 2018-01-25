@@ -9,10 +9,11 @@ function Character() {
 	this.runImages = [];
 	this.jumpImages = [];
 	
-	this.animationSpeed;
-	this.life;
-	this.speed;
-	this.jumpPower;
+	this.animationSpeed = 300;
+	this.life = 100;
+    this.strength = 10;
+	this.speed = 5;
+	this.jumpPower = 40;
     this.showCollisionBox = false;
 	
 	this.lookingright = true;
@@ -22,6 +23,7 @@ function Character() {
     this.currentImage = null;
 	this.currentImageIndex = 0;
 	this.lastAnimationChange = 0;
+	this.lastDamageDealt = 0;
     
     this.movable = false;
 }
@@ -84,6 +86,17 @@ Character.prototype.displaceByPixels = function(x, y) {
 	this.positionY += y / blockSize;
 }
 
+Character.prototype.dealDamage = function(damage) {
+    var timePassed = (new Date()).getTime() - this.lastDamageDealt;
+	
+	if(timePassed > 1000) {
+        this.life -= damage;
+        this.jump(0.5);
+		
+		this.lastDamageDealt = (new Date()).getTime();
+	}
+}
+
 
 
 
@@ -107,6 +120,7 @@ Character.prototype.switchAnimationIndex = function() {
 	
 	if(timePassed > this.animationSpeed) {
 		this.currentImageIndex ++;
+        this.jum
 		
 		this.lastAnimationChange = (new Date()).getTime();
 	}
@@ -256,4 +270,10 @@ Character.prototype.moveRight = function(intendedMove) {
 	intendedMove.x += this.speed / 100;
 	
 	return intendedMove;
+}
+
+Character.prototype.jump = function(height) {
+	if(this.fallingState <= 5) {
+		this.jumpingState = this.jumpPower * height;
+	}
 }

@@ -49,6 +49,7 @@ function setupPages() {
 	hero.setCollisionBox(90, 90);
 	hero.animationSpeed = 150;
 	hero.life = 100;
+    hero.strength = 10;
 	hero.speed = 5;
 	hero.jumpPower = 35;
     //hero.showCollisionBox = true;
@@ -70,6 +71,7 @@ function setupPages() {
 	enemy.setCollisionBox(90, 90);
 	enemy.animationSpeed = 150;
 	enemy.life = 100;
+    enemy.strength = 10;
 	enemy.speed = 3;
 	enemy.jumpPower = 50;
     //enemy.showCollisionBox = true;

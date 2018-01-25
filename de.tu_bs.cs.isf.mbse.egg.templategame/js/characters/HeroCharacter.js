@@ -21,15 +21,22 @@ HeroCharacter.prototype.draw = function(scroll, mapSize) {
 
 	imageX += offSet.x;
 	imageY -= offSet.y;
+    
+    // This handsome bugger will only calculate the blinking of your hero when he gets damaged
+    var magicBlinkNumber = Math.round((Math.sin(((1000 - Math.max(0, 1000 - ((new Date()).getTime() - this.lastDamageDealt))) / 1000) * Math.PI*10)+1)/2);
+    if(this.life <= 0)
+        magicBlinkNumber = 0;
 
-	if(this.lookingright) {
-		ctx.drawImage(this.currentImage, imageX, imageY);
-	}
-	else {
-		for(var x = 0; x < this.currentImage.width; x++) {
-			ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
-		}
-	}
+    if(magicBlinkNumber === 0) {
+        if(this.lookingright) {
+            ctx.drawImage(this.currentImage, imageX, imageY);
+        }
+        else {
+            for(var x = 0; x < this.currentImage.width; x++) {
+                ctx.drawImage(this.currentImage, x, 0, 1, this.currentImage.height, this.currentImage.width - x + imageX, imageY, 1, this.currentImage.height);
+            }
+        }
+    }
     
     // draw Collision Box
     if(this.showCollisionBox) {
@@ -63,15 +70,9 @@ HeroCharacter.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
 		intendedMove = this.moveRight(intendedMove);
 	
 	if(keyDownArray.includes(38))
-		this.jump();
+		this.jump(1);
     
     return intendedMove;
-}
-
-HeroCharacter.prototype.jump = function() {
-	if(this.fallingState <= 5) {
-		this.jumpingState = this.jumpPower;
-	}
 }
 
 
