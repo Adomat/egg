@@ -33,9 +33,13 @@ public class ElementMoveFeature extends AbstractMoveShapeFeature implements IEle
 
 	@Override
 	public boolean canMoveShape(IMoveShapeContext context) {
-		if (!(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof LevelEditor)) // only our editor is usable
+		PictogramElement[] currentSelection = getDiagramBehavior().getDiagramContainer().getSelectedPictogramElements();
+		if (currentSelection == null || currentSelection.length > 1) // only one element can be moved at a time
 			return false;
 		
+		if (!(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof LevelEditor)) // only our editor is usable
+			return false;
+
 		PictogramLink sourceLink = context.getPictogramElement().getLink();
 		if (sourceLink == null || sourceLink.getBusinessObjects().size() != 1 || // only PlacedElements
 				!(sourceLink.getBusinessObjects().get(0) instanceof PlacedElement))
