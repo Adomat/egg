@@ -31,7 +31,6 @@ import org.eclipse.graphiti.features.impl.AbstractFeatureProvider;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.ItemDescription;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementAddFeature;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.elements.ElementDeleteFeature;
@@ -83,10 +82,8 @@ public class LevelFeatureProvider extends AbstractFeatureProvider {
 					features.add(new ItemCreateFeature(this, (ItemDescription) desc));
 				else if (desc instanceof EnemyDescription)
 					features.add(new EnemyCreateFeature(this, (EnemyDescription) desc));
-				else if (desc instanceof HeroDescription) {
+				//else
 					// ignore
-				} else
-					System.err.println("[WARN] Unknown description type: " + desc.getClass().getName());
 			}
 			createFeaturesInitialized = true;
 		}

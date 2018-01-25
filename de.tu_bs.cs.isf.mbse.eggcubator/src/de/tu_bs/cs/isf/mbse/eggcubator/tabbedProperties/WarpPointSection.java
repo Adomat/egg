@@ -60,7 +60,7 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
         warpToText = factory.createText(composite, "");
         data = new FormData();
         data.left = new FormAttachment(0, (int) (STANDARD_LABEL_WIDTH * 1.5));
-        data.right = new FormAttachment(250, 0);
+        data.right = new FormAttachment(100, 0);
         data.top = new FormAttachment(0, VSPACE);
         warpToText.setLayoutData(data);
         warpToText.addListener(SWT.FocusOut, this);
@@ -97,7 +97,7 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
 		data.top = new FormAttachment(entryButton, VSPACE, SWT.BOTTOM);
 		changeHeroToCombo.setLayoutData(data);
 		changeHeroToCombo.setItems(heros.keySet().toArray(new String[heros.keySet().size()]));
-		changeHeroToCombo.addListener(SWT.MouseUp, this);
+		changeHeroToCombo.addListener(SWT.FocusOut, this);
 		
 		CLabel changeHeroToLabel = factory.createCLabel(composite, "Switch to hero:");
 		data = new FormData();
@@ -126,13 +126,12 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
         entryButton.setSelection(entry);
 
         // changeHeroTo
-        // TODO bug
         HeroDescription heroDesc = warpPoint.getChangeHeroTo();
         changeHeroToCombo.deselectAll();
         int heroSelect = 0;
-        if (heroDesc != null && heroDesc.getName() != null) {
+        if (heroDesc != null && heroDesc.getName() != null) { // could be null or set but not found
         	for (int i = 0; i < changeHeroToCombo.getItemCount(); i++) {
-        		if (changeHeroToCombo.getItems()[i] == heroDesc.getName()) {
+        		if (heroDesc.getName().equals(changeHeroToCombo.getItems()[i])) {
         			heroSelect = i;
         			break;
         		}
@@ -197,9 +196,9 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
 		        });
 		        changeHeroToCombo.setEnabled(entryVal); // enable only if needed
 	        } else if (event.widget == changeHeroToCombo) {
-	            // TODO bug
 		        String hero = changeHeroToCombo.getItem(changeHeroToCombo.getSelectionIndex());
 		        HeroDescription heroDesc = heros.get(hero);
+		        // compare objects (don't change anything if old heroDesc not found and non was selected)
 		        if (heroDesc == warpPoint.getChangeHeroTo() || (heroDesc == null && warpPoint.getChangeHeroTo().getName() == null))
 		        	return;
 		        final HeroDescription cHeroDesc = heroDesc;

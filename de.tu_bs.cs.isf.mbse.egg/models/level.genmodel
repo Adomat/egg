@@ -18,6 +18,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/elementSize"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference level.ecore#//Level/elements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/entryPoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/backgroundImage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/backgroundColor"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference level.ecore#//Level/deathScreen"/>
       <genOperations ecoreOperation="level.ecore#//Level/getElement">
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionX"/>
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionY"/>

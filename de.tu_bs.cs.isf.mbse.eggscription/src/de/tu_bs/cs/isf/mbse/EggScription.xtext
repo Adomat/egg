@@ -31,7 +31,7 @@ Description returns descriptions::Description:
 
 MenuPageDescription returns gui::MenuPageDescription:
 	{gui::MenuPageDescription}
-	'MenuPageDescription'
+	'MenuPage'
 	name=EString
 	'{'
 		(properties += MenuPageAttribute ';')*
@@ -40,7 +40,7 @@ MenuPageDescription returns gui::MenuPageDescription:
 
 TextPageDescription returns gui::TextPageDescription:
 	{gui::TextPageDescription}
-	'TextPageDescription'
+	'TextPage'
 	name=EString
 	'{'
 		(properties += TextPageAttribute ';')*
