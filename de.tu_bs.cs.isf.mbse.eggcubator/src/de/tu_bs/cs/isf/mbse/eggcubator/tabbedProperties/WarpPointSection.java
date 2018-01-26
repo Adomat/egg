@@ -15,7 +15,6 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -32,26 +31,30 @@ import de.tu_bs.cs.isf.mbse.eggcubator.EggScriptionLoader;
 public class WarpPointSection extends GFPropertySection implements ITabbedPropertyConstants, Listener {
 
 	private Text warpToText;
-	private Button entryButton;
-	private CCombo changeHeroToCombo;
+	private CCombo heroOnEntryCombo;
 	
 	private boolean listenerStopped = false;
 	
+	private boolean heroNotFound = false;
 	private HashMap<String, HeroDescription> heros = new HashMap<>();
 	
 	public WarpPointSection() { }
 	
-	@Override
-	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
-		super.createControls(parent, aTabbedPropertySheetPage);
-		
+	protected void getHeros(HeroDescription addHeroNotFound) {
 		// hero descriptions
 		heros.clear();
-		heros.put("", null); // none element
+		heroNotFound = addHeroNotFound != null;
+		if (heroNotFound)
+			heros.put("(Hero not found)", addHeroNotFound);
+		heros.put("No entry", null); // none element
 		for (Description desc : EggScriptionLoader.getDescriptions())
 			if (desc instanceof HeroDescription)
 				heros.put(((HeroDescription) desc).getName(), (HeroDescription) desc);
-		
+	}
+	
+	@Override
+	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
+		super.createControls(parent, aTabbedPropertySheetPage);
 		TabbedPropertySheetWidgetFactory factory = getWidgetFactory();
         Composite composite = factory.createFlatFormComposite(parent);
         FormData data;
@@ -72,38 +75,22 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
         data.right = new FormAttachment(warpToText, -HSPACE);
         data.top = new FormAttachment(warpToText, 0, SWT.CENTER);
         warpToLabel.setLayoutData(data);
-                
-        // entry
-        entryButton = factory.createButton(composite, "", SWT.CHECK);
-        data = new FormData();
-        data.left = new FormAttachment(warpToText, 0, SWT.LEFT);
-        data.right = new FormAttachment(warpToText, 0, SWT.RIGHT);
-        data.top = new FormAttachment(warpToText, VSPACE, SWT.BOTTOM);
-        entryButton.setLayoutData(data);
-        entryButton.addListener(SWT.MouseUp, this);
- 
-        CLabel entryLabel = factory.createCLabel(composite, "Is Entry:");
-        data = new FormData();
-        data.left = new FormAttachment(0, 0);
-        data.right = new FormAttachment(entryButton, -HSPACE);
-        data.top = new FormAttachment(entryButton, 0, SWT.CENTER);
-        entryLabel.setLayoutData(data);
         
-		// changeHeroTo
-        changeHeroToCombo = factory.createCCombo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		// heroOnEntry
+        heroOnEntryCombo = factory.createCCombo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		data = new FormData();
-		data.left = new FormAttachment(entryButton, 0, SWT.LEFT);
-		data.right = new FormAttachment(entryButton, 0, SWT.RIGHT);
-		data.top = new FormAttachment(entryButton, VSPACE, SWT.BOTTOM);
-		changeHeroToCombo.setLayoutData(data);
-		changeHeroToCombo.setItems(heros.keySet().toArray(new String[heros.keySet().size()]));
-		changeHeroToCombo.addListener(SWT.FocusOut, this);
+		data.left = new FormAttachment(warpToText, 0, SWT.LEFT);
+		data.right = new FormAttachment(warpToText, 0, SWT.RIGHT);
+		data.top = new FormAttachment(warpToText, VSPACE, SWT.BOTTOM);
+		heroOnEntryCombo.setLayoutData(data);
+		heroOnEntryCombo.setItems(heros.keySet().toArray(new String[heros.keySet().size()]));
+		heroOnEntryCombo.addListener(SWT.FocusOut, this);
 		
-		CLabel changeHeroToLabel = factory.createCLabel(composite, "Switch to hero:");
+		CLabel changeHeroToLabel = factory.createCLabel(composite, "Use hero on entry:");
 		data = new FormData();
 		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(changeHeroToCombo, -HSPACE);
-		data.top = new FormAttachment(changeHeroToCombo, 0, SWT.CENTER);
+		data.right = new FormAttachment(heroOnEntryCombo, -HSPACE);
+		data.top = new FormAttachment(heroOnEntryCombo, 0, SWT.CENTER);
 		changeHeroToLabel.setLayoutData(data);
 	}
 	
@@ -120,25 +107,26 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
         if (warpTo == null)
         	warpTo = "";
         warpToText.setText(warpTo);
-        
-        // entry
-        boolean entry = warpPoint.isEntry();
-        entryButton.setSelection(entry);
 
-        // changeHeroTo
-        HeroDescription heroDesc = warpPoint.getChangeHeroTo();
-        changeHeroToCombo.deselectAll();
+        // heroOnEntry
+        HeroDescription heroDesc = warpPoint.getHeroOnEntry();
+        heroOnEntryCombo.deselectAll();
         int heroSelect = 0;
+        if (heroDesc != null && heroDesc.getName() == null)
+        	getHeros(heroDesc);
+        else
+        	getHeros(null);
+        heroOnEntryCombo.setItems(heros.keySet().toArray(new String[heros.keySet().size()]));
+        
         if (heroDesc != null && heroDesc.getName() != null) { // could be null or set but not found
-        	for (int i = 0; i < changeHeroToCombo.getItemCount(); i++) {
-        		if (heroDesc.getName().equals(changeHeroToCombo.getItems()[i])) {
+        	for (int i = 0; i < heroOnEntryCombo.getItemCount(); i++) {
+        		if (heroDesc.getName().equals(heroOnEntryCombo.getItems()[i])) {
         			heroSelect = i;
         			break;
         		}
         	}
         }
-        changeHeroToCombo.select(heroSelect);
-        changeHeroToCombo.setEnabled(entry); // enable only if needed
+        heroOnEntryCombo.select(heroSelect);
         
         listenerStopped = false;
 	}
@@ -158,7 +146,7 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
 		        String warpTo = warpToText.getText();
 		        if (warpTo.isEmpty())
 		        	warpTo = null;
-		        if (warpTo == null && !warpPoint.isEntry()) { // cannot unset both!
+		        if (warpTo == null && warpPoint.getHeroOnEntry() == null && warpPoint.getWarpTo() != null) { // cannot unset both!
 		        	warpToText.setText(warpPoint.getWarpTo());
 		        	return;
 		        } else if (warpTo == warpPoint.getWarpTo() || (warpTo != null && warpTo.equals(warpPoint.getWarpTo())))
@@ -176,38 +164,34 @@ public class WarpPointSection extends GFPropertySection implements ITabbedProper
 				        	updateFeature.update(context);
 					}
 		        });
-	        } else if (event.widget == entryButton) {
-	        	final boolean entryVal = entryButton.getSelection();
-		        if (!entryVal && warpPoint.getWarpTo() == null) { // cannot unset both!
-		        	entryButton.setSelection(warpPoint.isEntry());
-		        	return;
-		        } else if (entryVal == warpPoint.isEntry())
-		        	return;
-		        domain.getCommandStack().execute(new RecordingCommand(domain, entryVal ? "Set entry flag for warp point" : "Removed entry flag from warp point") {
-					@Override
-					protected void doExecute() {
-						warpPoint.setEntry(entryVal);
-				        // trigger Update
-				        IUpdateContext context = new UpdateContext(getSelectedPictogramElement());
-				        IUpdateFeature updateFeature = getDiagramTypeProvider().getFeatureProvider().getUpdateFeature(context);
-				        if (updateFeature != null)
-				        	updateFeature.update(context);
-					}
-		        });
-		        changeHeroToCombo.setEnabled(entryVal); // enable only if needed
-	        } else if (event.widget == changeHeroToCombo) {
-		        String hero = changeHeroToCombo.getItem(changeHeroToCombo.getSelectionIndex());
+	        } else if (event.widget == heroOnEntryCombo) {
+		        String hero = heroOnEntryCombo.getItem(heroOnEntryCombo.getSelectionIndex());
 		        HeroDescription heroDesc = heros.get(hero);
-		        // compare objects (don't change anything if old heroDesc not found and non was selected)
-		        if (heroDesc == warpPoint.getChangeHeroTo() || (heroDesc == null && warpPoint.getChangeHeroTo().getName() == null))
+		        if (heroDesc == null && warpPoint.getWarpTo() == null && warpPoint.getHeroOnEntry() != null) { // cannot unset both!
+		        	heroOnEntryCombo.deselectAll();
+		        	int heroSelect = 0;
+		        	if (warpPoint.getHeroOnEntry().getName() != null) {
+			        	for (int i = 0; i < heroOnEntryCombo.getItemCount(); i++) {
+			        		if (warpPoint.getHeroOnEntry().getName().equals(heroOnEntryCombo.getItems()[i])) {
+			        			heroSelect = i;
+			        			break;
+			        		}
+			        	}
+		        	}
+		        	heroOnEntryCombo.select(heroSelect);
 		        	return;
+		        } else if (heroDesc == warpPoint.getHeroOnEntry() || (heroDesc == null && warpPoint.getHeroOnEntry().getName() == null)) // compare objects
+		        	return;
+		        if (heroNotFound)
+		        	getHeros(null); // remove after first change
 		        final HeroDescription cHeroDesc = heroDesc;
 		        domain.getCommandStack().execute(new RecordingCommand(domain, "Hero of warp point changed: " +
-				        (warpPoint.getChangeHeroTo() != null && warpPoint.getChangeHeroTo().getName() != null ? warpPoint.getChangeHeroTo().getName() : "") +
+				        (warpPoint.getHeroOnEntry() != null && warpPoint.getHeroOnEntry().getName() != null ? warpPoint.getHeroOnEntry().getName() :
+				        	(warpPoint.getHeroOnEntry() != null ? "(Hero not found)" : "")) +
 				        "->" + (cHeroDesc != null ? cHeroDesc.getName() : "")) {
 					@Override
 					protected void doExecute() {
-						warpPoint.setChangeHeroTo(cHeroDesc);
+						warpPoint.setHeroOnEntry(cHeroDesc);
 				        // no update needed
 					}
 		        });

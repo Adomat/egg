@@ -32,6 +32,7 @@ public class LevelCreateFeature extends AbstractCreateFeature implements ILevelF
 	@Override
 	public Object[] create(ICreateContext context) {
 		Level level = LevelFactory.eINSTANCE.createLevel();
+		level.setName(getDiagram().getName()); // set the initial name
 
 		Resource resource = context.getTargetContainer().eResource();
 		resource.getContents().add(level);

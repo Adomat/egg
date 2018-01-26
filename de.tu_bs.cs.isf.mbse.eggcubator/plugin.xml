@@ -87,6 +87,12 @@
                id="de.tu_bs.cs.isf.mbse.eggcubator.elementTab.warpPoint"
                tab="de.tu_bs.cs.isf.mbse.eggcubator.elementTab">
          </propertySection>
+         <propertySection
+               class="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.EndPointSection"
+               filter="de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties.EndPointFilter"
+               id="de.tu_bs.cs.isf.mbse.eggcubator.elementTab.endPoint"
+               tab="de.tu_bs.cs.isf.mbse.eggcubator.elementTab">
+         </propertySection>
       </propertySections>
    </extension>
 

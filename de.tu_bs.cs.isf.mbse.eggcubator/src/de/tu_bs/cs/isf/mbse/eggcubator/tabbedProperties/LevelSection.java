@@ -1,7 +1,5 @@
 package de.tu_bs.cs.isf.mbse.eggcubator.tabbedProperties;
 
-import java.util.HashMap;
-
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -11,7 +9,6 @@ import org.eclipse.graphiti.features.context.impl.UpdateContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -26,10 +23,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
-import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription;
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
-import de.tu_bs.cs.isf.mbse.eggcubator.EggScriptionLoader;
 
 public class LevelSection extends GFPropertySection implements ITabbedPropertyConstants, VerifyListener, Listener {
 	
@@ -38,27 +32,19 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 	private Text heightText;
 	private Text elementSizeText;
 	private Button entryPointButton;
+	private Text gravityText;
 	private Text backgroundImageText;
 	private Text backgroundColorText;
-	private CCombo deathScreenCombo;
+	private Text deathScreenTitleText;
+	private Text deathScreenTextText;
 	
 	private boolean listenerStopped = false;
-	
-	private HashMap<String, TextPageDescription> textPages = new HashMap<>();
 
 	public LevelSection() { }
 	
 	@Override
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
-		
-		// text page descriptions
-		textPages.clear();
-		textPages.put("", null); // none/default element
-		for (Description desc : EggScriptionLoader.getDescriptions())
-			if (desc instanceof TextPageDescription)
-				textPages.put(((TextPageDescription) desc).getName(), (TextPageDescription) desc);
-		
 		TabbedPropertySheetWidgetFactory factory = getWidgetFactory();
         Composite composite = factory.createFlatFormComposite(parent);
         FormData data;
@@ -116,7 +102,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.top = new FormAttachment(heightText, 0, SWT.CENTER);
         heightLabel.setLayoutData(data);
         
-        // element size
+        // elementSize
         elementSizeText = factory.createText(composite, "");
         data = new FormData();
         data.left = new FormAttachment(heightText, 0, SWT.LEFT);
@@ -134,7 +120,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.top = new FormAttachment(elementSizeText, 0, SWT.CENTER);
         elementSizeLabel.setLayoutData(data);
         
-        // entry point
+        // entryPoint
         entryPointButton = factory.createButton(composite, "", SWT.CHECK);
         data = new FormData();
         data.left = new FormAttachment(elementSizeText, 0, SWT.LEFT);
@@ -150,12 +136,30 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.top = new FormAttachment(entryPointButton, 0, SWT.CENTER);
         entryPointLabel.setLayoutData(data);
         
-    	// background image
-        backgroundImageText = factory.createText(composite, "");
+    	// gravity
+        gravityText = factory.createText(composite, "");
         data = new FormData();
         data.left = new FormAttachment(entryPointButton, 0, SWT.LEFT);
         data.right = new FormAttachment(entryPointButton, 0, SWT.RIGHT);
         data.top = new FormAttachment(entryPointButton, VSPACE, SWT.BOTTOM);
+        gravityText.setLayoutData(data);
+        gravityText.addVerifyListener(this);
+        gravityText.addListener(SWT.FocusOut, this);
+        gravityText.addListener(SWT.KeyDown, this);
+ 
+        CLabel gravityLabel = factory.createCLabel(composite, "Gravity:");
+        data = new FormData();
+        data.left = new FormAttachment(0, 0);
+        data.right = new FormAttachment(gravityText, -HSPACE);
+        data.top = new FormAttachment(gravityText, 0, SWT.CENTER);
+        gravityLabel.setLayoutData(data);
+        
+    	// backgroundImage
+        backgroundImageText = factory.createText(composite, "");
+        data = new FormData();
+        data.left = new FormAttachment(gravityText, 0, SWT.LEFT);
+        data.right = new FormAttachment(gravityText, 0, SWT.RIGHT);
+        data.top = new FormAttachment(gravityText, VSPACE, SWT.BOTTOM);
         backgroundImageText.setLayoutData(data);
         backgroundImageText.addListener(SWT.FocusOut, this);
         backgroundImageText.addListener(SWT.KeyDown, this);
@@ -167,7 +171,7 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.top = new FormAttachment(backgroundImageText, 0, SWT.CENTER);
         backgroundImageLabel.setLayoutData(data);
         
-    	//  background color
+    	//  backgroundColor
         backgroundColorText = factory.createText(composite, "");
         data = new FormData();
         data.left = new FormAttachment(backgroundImageText, 0, SWT.LEFT);
@@ -185,22 +189,39 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         data.top = new FormAttachment(backgroundColorText, 0, SWT.CENTER);
         backgroundColorLabel.setLayoutData(data);
         
-    	// death screen
-        deathScreenCombo = factory.createCCombo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		data = new FormData();
-		data.left = new FormAttachment(backgroundColorText, 0, SWT.LEFT);
-		data.right = new FormAttachment(backgroundColorText, 0, SWT.RIGHT);
-		data.top = new FormAttachment(backgroundColorText, VSPACE, SWT.BOTTOM);
-		deathScreenCombo.setLayoutData(data);
-		deathScreenCombo.setItems(textPages.keySet().toArray(new String[textPages.keySet().size()]));
-		deathScreenCombo.addListener(SWT.FocusOut, this);
-		
-		CLabel deathScreenLabel = factory.createCLabel(composite, "Death screen:");
-		data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(deathScreenCombo, -HSPACE);
-		data.top = new FormAttachment(deathScreenCombo, 0, SWT.CENTER);
-		deathScreenLabel.setLayoutData(data);
+    	// deathScreenTitle
+        deathScreenTitleText = factory.createText(composite, "");
+        data = new FormData();
+        data.left = new FormAttachment(backgroundColorText, 0, SWT.LEFT);
+        data.right = new FormAttachment(backgroundColorText, 0, SWT.RIGHT);
+        data.top = new FormAttachment(backgroundColorText, VSPACE, SWT.BOTTOM);
+        deathScreenTitleText.setLayoutData(data);
+        deathScreenTitleText.addListener(SWT.FocusOut, this);
+        deathScreenTitleText.addListener(SWT.KeyDown, this);
+ 
+        CLabel deathScreenTitleLabel = factory.createCLabel(composite, "Death screen title:");
+        data = new FormData();
+        data.left = new FormAttachment(0, 0);
+        data.right = new FormAttachment(deathScreenTitleText, -HSPACE);
+        data.top = new FormAttachment(deathScreenTitleText, 0, SWT.CENTER);
+        deathScreenTitleLabel.setLayoutData(data);
+        
+    	// deathScreenText
+        deathScreenTextText = factory.createText(composite, "", SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+        data = new FormData();
+        data.left = new FormAttachment(deathScreenTitleText, 0, SWT.LEFT);
+        data.right = new FormAttachment(deathScreenTitleText, 0, SWT.RIGHT);
+        data.top = new FormAttachment(deathScreenTitleText, VSPACE, SWT.BOTTOM);
+        data.height = 16 * 6; // 6 times default lines
+        deathScreenTextText.setLayoutData(data);
+        deathScreenTextText.addListener(SWT.FocusOut, this);
+ 
+        CLabel deathScreenTextLabel = factory.createCLabel(composite, "Death screen text:");
+        data = new FormData();
+        data.left = new FormAttachment(0, 0);
+        data.right = new FormAttachment(deathScreenTextText, -HSPACE);
+        data.top = new FormAttachment(deathScreenTextText, 0, SWT.TOP);
+        deathScreenTextLabel.setLayoutData(data);
 	}
 
 	@Override
@@ -229,41 +250,45 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
         	height = 3;
         heightText.setText(height.toString());
         
-        // element size
+        // elementSize
         Integer elementSize = level.getElementSize();
         if (elementSize < 15)
         	elementSize = 15;
         elementSizeText.setText(elementSize.toString());
 
-        // entry point
+        // entryPoint
         boolean entryPoint = level.isEntryPoint();
         entryPointButton.setSelection(entryPoint);
         
-        // background image
+        // gravity
+        Float gravity = level.getGravity();
+        if (gravity <= 0)
+        	gravity = 0.1f;
+        gravityText.setText(gravity.toString());
+        
+        // backgroundImage
         String backgroundImage = level.getBackgroundImage();
         if (backgroundImage == null)
         	backgroundImage = "";
         backgroundImageText.setText(backgroundImage);
         
-        // background color
+        // backgroundColor
         String backgroundColor = level.getBackgroundColor();
         if (backgroundColor == null)
         	backgroundColor = "";
         backgroundColorText.setText(backgroundColor);
-
-        // death screen
-        TextPageDescription deathScreenDesc = level.getDeathScreen();
-        deathScreenCombo.deselectAll();
-        int deathScreenSelect = 0;
-        if (deathScreenDesc != null && deathScreenDesc.getName() != null) { // could be null or set but not found
-        	for (int i = 0; i < deathScreenCombo.getItemCount(); i++) {
-        		if (deathScreenDesc.getName().equals(deathScreenCombo.getItems()[i])) {
-        			deathScreenSelect = i;
-        			break;
-        		}
-        	}
-        }
-        deathScreenCombo.select(deathScreenSelect);
+        
+        // deathScreenTitle
+        String deathScreenTitle = level.getDeathScreenTitle();
+        if (deathScreenTitle == null)
+        	deathScreenTitle = "";
+        deathScreenTitleText.setText(deathScreenTitle);
+        
+        // deathScreenText
+        String deathScreenText = level.getDeathScreenText();
+        if (deathScreenText == null)
+        	deathScreenText = "";
+        deathScreenTextText.setText(deathScreenText);
         
         listenerStopped = false;
 	}
@@ -273,6 +298,8 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 		if (!listenerStopped) {
 			if ((e.widget == widthText || e.widget == heightText || e.widget == elementSizeText))
 				e.text = e.text.replaceAll("[^\\d]", ""); // only allow numbers/digits
+			else if (e.widget == gravityText)
+				e.text = e.text.replaceAll("[^\\d\\.]", ""); // only allow numbers/digits with dot
 			else if (e.widget == backgroundColorText) {
 				 // only allow hex values (max 6)
 				e.text = e.text.replaceAll("[^\\dA-Fa-f]", "");
@@ -394,7 +421,25 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        // no update needed
 					}
 		        });
-	        } else if (event.widget == backgroundImageText) {
+	        } else if (event.widget == gravityText) {
+		        Float gravity = Float.parseFloat(gravityText.getText());
+		        if (gravity <= 0) {
+		            listenerStopped = true;
+		            gravity = 0.1f;
+		            gravityText.setText(String.valueOf(gravity));
+		            listenerStopped = false;
+		        }
+		        if (gravity == level.getGravity())
+		        	return;
+		        final Float cGravity = gravity;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level gravity changed: " + String.valueOf(level.getGravity()) + "->" + cGravity.toString()) {
+					@Override
+					protected void doExecute() {
+				        level.setGravity(cGravity);
+				        // no update needed
+					}
+		        });
+	        }  else if (event.widget == backgroundImageText) {
 		        String backgroundImage = backgroundImageText.getText();
 		        if (backgroundImage.isEmpty())
 		        	backgroundImage = null;
@@ -424,19 +469,33 @@ public class LevelSection extends GFPropertySection implements ITabbedPropertyCo
 				        // no update needed
 					}
 		        });
-	        } else if (event.widget == deathScreenCombo) {
-		        String deathScreen = deathScreenCombo.getItem(deathScreenCombo.getSelectionIndex());
-		        TextPageDescription deathScreenDesc = textPages.get(deathScreen);
-		        // compare objects (don't change anything if old deathScreenDesc not found and non was selected)
-		        if (deathScreenDesc == level.getDeathScreen() || (deathScreenDesc == null && level.getDeathScreen().getName() == null))
+	        } else if (event.widget == deathScreenTitleText) {
+		        String deathScreenTitle = deathScreenTitleText.getText();
+		        if (deathScreenTitle.isEmpty())
+		        	deathScreenTitle = null;
+		        if (deathScreenTitle == level.getDeathScreenTitle() || (deathScreenTitle != null && deathScreenTitle.equals(level.getDeathScreenTitle())))
 		        	return;
-		        final TextPageDescription cDeathScreenDesc = deathScreenDesc;
-		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level death screen changed: " +
-				        (level.getDeathScreen() != null && level.getDeathScreen().getName() != null ? level.getDeathScreen().getName() : "") +
-				        "->" + (cDeathScreenDesc != null ? cDeathScreenDesc.getName() : "")) {
+		        final String cDeathScreenTitle = deathScreenTitle;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level death screen title changed: " +
+		        		(level.getDeathScreenTitle() != null ? level.getDeathScreenTitle() : "default") + "->" + (cDeathScreenTitle != null ? cDeathScreenTitle : "default")) {
 					@Override
 					protected void doExecute() {
-						level.setDeathScreen(cDeathScreenDesc);
+				        level.setDeathScreenTitle(cDeathScreenTitle);
+				        // no update needed
+					}
+		        });
+	        } else if (event.widget == deathScreenTextText) {
+		        String deathScreenText = deathScreenTextText.getText();
+		        if (deathScreenText.isEmpty())
+		        	deathScreenText = null;
+		        if (deathScreenText == level.getDeathScreenText() || (deathScreenText != null && deathScreenText.equals(level.getDeathScreenText())))
+		        	return;
+		        final String cDeathScreenText = deathScreenText;
+		        domain.getCommandStack().execute(new RecordingCommand(domain, "Level death screen text changed: " +
+		        		(level.getDeathScreenText() != null ? level.getDeathScreenText() : "default") + "->" + (cDeathScreenText != null ? cDeathScreenText : "default")) {
+					@Override
+					protected void doExecute() {
+				        level.setDeathScreenText(cDeathScreenText);
 				        // no update needed
 					}
 		        });

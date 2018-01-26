@@ -18,6 +18,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import de.tu_bs.cs.isf.mbse.egg.level.Level;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.EndPoint;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.WarpPoint;
 import de.tu_bs.cs.isf.mbse.eggcubator.LevelPictogramHelper.ElementPosition;
 import de.tu_bs.cs.isf.mbse.eggcubator.features.ILevelFeature;
@@ -112,17 +113,18 @@ public class ElementMultiplyFeature extends DefaultResizeShapeFeature implements
 			createContext.setTargetContainer(contextContainer);
 			if (createFeature.canCreate(createContext)) {
 				Object[] res = createFeature.create(createContext); // this does replacing by itself, no need to worry
-				if (element instanceof WarpPoint) { // special case: WarpPoint need copy of properties
-					for (Object o : res) {
-						if (o instanceof WarpPoint) {
-							((WarpPoint) o).setEntry(((WarpPoint) element).isEntry());
-							((WarpPoint) o).setWarpTo(((WarpPoint) element).getWarpTo());
-							((WarpPoint) o).setChangeHeroTo(((WarpPoint) element).getChangeHeroTo());
-							IUpdateContext updateContext = new UpdateContext(((ContainerShape) shape).getChildren().get(0)); // should be set now
-							IUpdateFeature updateFeature = getFeatureProvider().getUpdateFeature(updateContext);
-							if (updateFeature != null)
-								updateFeature.update(updateContext); // change image
-						}
+				// special case: WarpPoint and EndPoint need copy of properties
+				for (Object o : res) {
+					if (element instanceof WarpPoint && o instanceof WarpPoint) {
+						((WarpPoint) o).setWarpTo(((WarpPoint) element).getWarpTo());
+						((WarpPoint) o).setHeroOnEntry(((WarpPoint) element).getHeroOnEntry());
+						IUpdateContext updateContext = new UpdateContext(((ContainerShape) shape).getChildren().get(0)); // should be set now
+						IUpdateFeature updateFeature = getFeatureProvider().getUpdateFeature(updateContext);
+						if (updateFeature != null)
+							updateFeature.update(updateContext); // change image
+					} else if (element instanceof EndPoint && o instanceof EndPoint) {
+						((EndPoint) o).setWinScreenTitle(((EndPoint) element).getWinScreenTitle());
+						((EndPoint) o).setWinScreenText(((EndPoint) element).getWinScreenText());
 					}
 				}
 			}

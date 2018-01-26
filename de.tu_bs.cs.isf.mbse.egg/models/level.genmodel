@@ -20,7 +20,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/entryPoint"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/backgroundImage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/backgroundColor"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference level.ecore#//Level/deathScreen"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/deathScreenTitle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Level/deathScreenText"/>
       <genOperations ecoreOperation="level.ecore#//Level/getElement">
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionX"/>
         <genParameters ecoreParameter="level.ecore#//Level/getElement/positionY"/>
@@ -62,11 +63,13 @@
       </genClasses>
       <genClasses ecoreClass="level.ecore#//Elements/WarpPoint">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/warpTo"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/WarpPoint/entry"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference level.ecore#//Elements/WarpPoint/changeHeroTo"/>
+            ecoreFeature="ecore:EReference level.ecore#//Elements/WarpPoint/heroOnEntry"/>
       </genClasses>
-      <genClasses ecoreClass="level.ecore#//Elements/EndPoint"/>
+      <genClasses ecoreClass="level.ecore#//Elements/EndPoint">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/EndPoint/winScreenTitle"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute level.ecore#//Elements/EndPoint/winScreenText"/>
+      </genClasses>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>

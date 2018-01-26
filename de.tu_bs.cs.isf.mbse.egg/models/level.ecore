@@ -21,7 +21,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="4"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="gravity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="1"/>
+        defaultValueLiteral="10.0"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="75"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
@@ -30,7 +30,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundImage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deathScreen" eType="ecore:EClass descriptions.ecore#//gui/TextPageDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deathScreenTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deathScreenText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RowEntry" instanceClassName="java.util.Map$Entry">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
@@ -60,11 +61,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="WarpPoint" eSuperTypes="#//PlacedEggBlock">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="warpTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="entry" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-          defaultValueLiteral="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="changeHeroTo" eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="heroOnEntry" eType="ecore:EClass descriptions.ecore#//gameelements/HeroDescription"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="EndPoint" eSuperTypes="#//PlacedEggBlock"/>
+    <eClassifiers xsi:type="ecore:EClass" name="EndPoint" eSuperTypes="#//PlacedEggBlock">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="winScreenTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="winScreenText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
