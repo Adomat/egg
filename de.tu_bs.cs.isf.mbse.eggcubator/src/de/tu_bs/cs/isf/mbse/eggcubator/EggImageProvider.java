@@ -16,6 +16,7 @@ import org.eclipse.graphiti.ui.services.IImageService;
 
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IdleAnimation;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.item.ItemAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription;
@@ -196,8 +197,8 @@ public class EggImageProvider extends AbstractExtension implements IImageProvide
 		
 		String imagePath = IMG_NOT_FOUND_ID;
 		for (EnemyAttribute attr : enemyDesc.getProperties()) {
-			if (attr instanceof AnimationDescription) {
-				for (AnimationAttribute animation : ((AnimationDescription) attr).getProperties()) {
+			if (attr instanceof IdleAnimation) {
+				for (AnimationAttribute animation : ((IdleAnimation) attr).getValue().getProperties()) {
 					if (animation instanceof Pictures) {
 						if (((Pictures) animation).getValue().size() > 0)
 							imagePath = getInstance().getImageId(project, ((Pictures) animation).getValue().get(0));
