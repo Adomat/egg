@@ -1,11 +1,9 @@
 TextPage.prototype = new DisplayPage();
 
-function TextPage(title) {
-	this.title = title;
+function TextPage() {
+	this.title = "";
 	this.paragraphs = [];
 	
-	this.textSize = 15;
-	this.textStyle = "rgba(255, 255, 255, 1)";
 	this.newPageKey;
 	
 	this.scroll = 0;
@@ -19,7 +17,7 @@ TextPage.prototype.addParagraph = function(text) {
 
 
 TextPage.prototype.draw = function() {
-	this.drawBackground(0.5, 1);
+	this.drawBackground(0.5, 0.5);
 
 	ctx.fillStyle = this.textStyle;
 
@@ -54,10 +52,9 @@ TextPage.prototype.draw = function() {
 		}
 	}
 	
-	currentLineIndex +=4;
+	/*currentLineIndex +=4;
 	ctx.font = this.textSize*2+'pt Arial';
-	
-	ctx.fillText("Press Enter to Continue", width/2, 150 + this.textSize * 1.5 * currentLineIndex + this.scroll);
+	ctx.fillText("Press Enter to Continue", width/2, 150 + this.textSize * 1.5 * currentLineIndex + this.scroll);*/
 	
 	this.lastLineCount = currentLineIndex;
 }

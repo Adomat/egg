@@ -48,11 +48,11 @@ TextPageDescription returns gui::TextPageDescription:
 ;
 
 MenuPageAttribute returns guiattr::MenuPageAttribute:
-	Logo | Title | BackgroundImage | BackgroundColor | Button | StartPage
+	Logo | Title | BackgroundImage | BackgroundColor | Button | StartPage | FontColor | FontSize
 ;
 
 TextPageAttribute returns guiattr::TextPageAttribute:
-	NextPage | Title | Text | BackgroundImage | BackgroundColor | StartPage
+	NextPage | Title | Text | BackgroundImage | BackgroundColor | StartPage | FontColor | FontSize
 ;
 
 StartPage returns guiattr::StartPage:
@@ -77,7 +77,17 @@ BackgroundImage returns guiattr::BackgroundImage:
 
 BackgroundColor returns guiattr::BackgroundColor:
 	{guiattr::BackgroundColor}
-	('backgroundColor' '#' value = EString)
+	('backgroundColor' value = HASH_COLOR)
+;
+
+FontColor returns guiattr::FontColor:
+	{guiattr::FontColor}
+	('fontColor' value = HASH_COLOR)
+;
+
+FontSize returns guiattr::FontSize:
+	{guiattr::FontSize}
+	('fontSize' value = INT)
 ;
 
 Text returns guiattr::Text:
@@ -314,6 +324,12 @@ EString returns ecore::EString:
 
 WHOLEINT returns ecore::EInt:
 	('-'|'+') INT
+;
+	
+terminal HASH_COLOR returns ecore::EString:
+	'#'
+	('a'..'z'|'A'..'Z'|'0'..'9') ('a'..'z'|'A'..'Z'|'0'..'9') ('a'..'z'|'A'..'Z'|'0'..'9')
+	( ('a'..'z'|'A'..'Z'|'0'..'9') ('a'..'z'|'A'..'Z'|'0'..'9') ('a'..'z'|'A'..'Z'|'0'..'9') )?
 ;
 
 terminal PICTURESTRING returns ecore::EString:

@@ -18,7 +18,8 @@ import de.tu_bs.cs.isf.mbse.egg.modeltranformation.JavaScriptGenerator;
 public class GenerateAction implements IObjectActionDelegate {
 
 	private Shell shell;
-	public static File selectedFile;
+	private static File selectedFile;
+	private static String projectName;
 	
 	/**
 	 * Constructor for Action1.
@@ -40,7 +41,7 @@ public class GenerateAction implements IObjectActionDelegate {
 	public void run(IAction action) {
 		try {
 			//IFile targetFile = action.;
-			JavaScriptGenerator.generateCode(selectedFile, shell);
+			JavaScriptGenerator.generateCode(selectedFile, projectName, shell);
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(shell, "Generating went wrong!", "Something went wrong while generating your Code:\n\n"
@@ -59,6 +60,7 @@ public class GenerateAction implements IObjectActionDelegate {
 				fileName = fileName.substring(0, fileName.length()-1);
 				IFile file = project.getFile(fileName);
 				
+				projectName = project.getName();
 				selectedFile = new File(file.getLocation().toString());
 			}
 		}

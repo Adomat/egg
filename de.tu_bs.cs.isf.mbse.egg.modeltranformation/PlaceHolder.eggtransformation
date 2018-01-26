@@ -2,7 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>  
-        <title>Jump'n'Run Template Game</title>
+        <title>%s</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
 
@@ -45,6 +45,27 @@ function getPixelOffsetFromScroll(scroll, mapSize) {
 //	}
 	
 	return returnVector;
+}
+
+
+
+
+
+
+
+
+
+function hexToRgbA(hex, opacity){
+    var c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c= hex.substring(1).split('');
+        if(c.length== 3){
+            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+','+opacity+')';
+    }
+    throw new Error('Bad Hex');
 }
 
 
@@ -319,8 +340,8 @@ Character.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
 Character.prototype.move = function(blocks, gravity) {
 	var intendedMove = this.getIntendedMove(blocks, gravity);
 	
-	intendedMove.y += Math.pow((gravity / 1000) * this.jumpingState, 2);
-	intendedMove.y -= Math.min(Math.pow((gravity / 1000) * this.fallingState, 2), 0.1);
+	intendedMove.y += Math.pow((10 / 1000) * this.jumpingState, 2);
+	intendedMove.y -= Math.min(Math.pow((1 / gravity) * this.fallingState, 2), 0.2);
 	
 	this.fallingState++;
 	this.jumpingState = Math.max(this.jumpingState-1, 0);
@@ -331,23 +352,23 @@ Character.prototype.move = function(blocks, gravity) {
 	
 	for(var i=0; i<steps; i++) {
 		if(!stopMovementY) {
-			this.positionY += (i/steps) * intendedMove.y;
+			this.positionY += (1/steps) * intendedMove.y;
 			
 			if(this.collisionWithBlocks(blocks)) {
 				if(intendedMove.y < 0) {
 					this.fallingState = 0;
 				}
 				this.jumpingState = 0;
-				this.positionY -= (i/steps) * intendedMove.y;
+				this.positionY -= (1/steps) * intendedMove.y;
 				stopMovementY = true;
 			}
 		}
 
 		if(!stopMovementX) {
-			this.positionX += (i/steps) * intendedMove.x;
+			this.positionX += (1/steps) * intendedMove.x;
 			
 			if(this.collisionWithBlocks(blocks)) {
-				this.positionX -= (i/steps) * intendedMove.x;
+				this.positionX -= (1/steps) * intendedMove.x;
 				stopMovementX = true;
 			}
 		}
@@ -410,7 +431,7 @@ Character.prototype.moveLeft = function(intendedMove) {
 	this.currentImage = this.runImages[this.currentImageIndex];
 	
 	this.lookingright = false;
-	intendedMove.x -= this.speed / 100;
+	intendedMove.x -= this.speed / blockSize;
 	
 	return intendedMove;
 }
@@ -421,14 +442,14 @@ Character.prototype.moveRight = function(intendedMove) {
 	this.currentImage = this.runImages[this.currentImageIndex];
 	
 	this.lookingright = true;
-	intendedMove.x += this.speed / 100;
+	intendedMove.x += this.speed / blockSize;
 	
 	return intendedMove;
 }
 
-Character.prototype.jump = function(height) {
+Character.prototype.jump = function(jumpHeight) {
 	if(this.fallingState <= 5) {
-		this.jumpingState = this.jumpPower * height;
+		this.jumpingState = this.jumpPower * jumpHeight;
 	}
 }
 
@@ -509,11 +530,22 @@ EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity) {
         this.currentMove ++;
     }
     
-    if(Math.random() * 100 < 1)
+    if(Math.random() * 100 < 0.5)
         this.jump(Math.random());
     
     return intendedMove;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -732,7 +764,10 @@ function handleTicks() {
 function DisplayPage() {
 	this.pageKey;
 	this.backgroundImage;
-	this.backgroundColor;
+	this.backgroundColor = "#000";
+    
+	this.textSize = 15;
+	this.textStyle = "#fff";
 }
 
 
@@ -757,11 +792,14 @@ DisplayPage.prototype.setBackgroundColor = function(colorString) {
 }
 
 DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercent) {
+	ctx.fillStyle = this.backgroundColor;
+	ctx.fillRect(0, 0, width, height);
+    
+    if(this.backgroundImage == null)
+        return;
+    
 	xPercent = Math.max(Math.min(xPercent, 1), 0);
 	yPercent = Math.max(Math.min(yPercent, 1), 0);
-	
-	ctx.fillStyle = "rgb(95, 150, 255)";
-	ctx.fillRect(0, 0, width, height);
 	
 	var offset = function () {  return {  x: 0,  y: 0  };  }
 	offset.x = (this.backgroundImage.width - width) * xPercent;
@@ -785,7 +823,7 @@ LevelPage.prototype = new DisplayPage();
 function LevelPage() {
 	this.levelScroll = function () {  return {  x: null,  y: null  };  };
 	this.mapSize = function () {  return {  x: null,  y: null  };  };
-	this.gravity;
+	this.gravity = 10;
 
 	this.blocks = [];
 	this.enemies = [];
@@ -825,6 +863,7 @@ LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
     
 	newEnemy.positionX = x;
 	newEnemy.positionY = y;
+	newEnemy.positionY = y-1 + (givenEnemy.collisionBoxY/2) / blockSize;
     
 	newEnemy.idleImages = givenEnemy.idleImages;
 	newEnemy.attackImages = givenEnemy.attackImages;
@@ -855,7 +894,7 @@ LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero = new HeroCharacter();
     
 	this.hero.positionX = x;
-	this.hero.positionY = y;
+	this.hero.positionY = y-1 + (newHero.collisionBoxY/2) / this.blockSize;
 	
 	this.hero.idleImages = newHero.idleImages;
 	this.hero.attackImages = newHero.attackImages;
@@ -1042,14 +1081,15 @@ MenuPage.prototype.addLogoImage = function(imageURL) {
 
 
 MenuPage.prototype.draw = function() {
-	this.drawBackground(0.5, 1);
+	this.drawBackground(0.5, 0.5);
 	
-	this.switchLogoAnimationIndex();
-	
-	ctx.drawImage(this.logoImages[this.logoImageAnimationIndex], width/2 - this.logoImages[this.logoImageAnimationIndex].width/2, height/2 - this.logoImages[this.logoImageAnimationIndex].height);
+	if(this.logoImages.length > 0) {
+	   this.switchLogoAnimationIndex();
+	   ctx.drawImage(this.logoImages[this.logoImageAnimationIndex], width/2 - this.logoImages[this.logoImageAnimationIndex].width/2, height/2 - this.logoImages[this.logoImageAnimationIndex].height);
+    }
     
     for(var i=0; i<this.buttons.length; i++) {
-        this.drawButton(this.buttons[i].text, 30, i);
+        this.drawButton(this.buttons[i].text, i);
     }
 }
 
@@ -1073,26 +1113,26 @@ MenuPage.prototype.addButton = function(text, pageKey) {
     this.buttons.push(newButton);
 }
 
-MenuPage.prototype.drawButton = function(text, textSize, index) {
+MenuPage.prototype.drawButton = function(text, index) {
 	ctx.textAlign = "center";
-	ctx.font = textSize+'pt Arial';
-	var textWidth = ctx.measureText(text).width + textSize;
-	var textHeight = textSize*2;
+	ctx.font = this.textSize+'pt Arial';
+	var textWidth = ctx.measureText(text).width + this.textSize;
+	var textHeight = this.textSize*2;
 	
-	ctx.fillStyle = "rgba(40,40,40, 0.5)";
+	ctx.fillStyle = hexToRgbA(this.textStyle, 0.4);
 	if(this.buttonIndex == index)
-		ctx.fillStyle = "rgba(60,60,60, 0.9)";
+		ctx.fillStyle = hexToRgbA(this.textStyle, 0.8);
 	
 	ctx.strokeStyle = "rgba(40,40,40, 1)";
 	
 	var x = width/2 - textWidth/ 2;
-	var y = 50 + height/2 + index * (textSize * 2 + 10);
+	var y = 50 + height/2 + index * (this.textSize * 2 + 10);
 	
 	ctx.fillRect(x, y, textWidth, textHeight);
 	ctx.strokeRect(x, y, textWidth, textHeight);
 
 	ctx.fillStyle = "rgba(255, 255, 255, 1)";
-	ctx.fillText(text, width/2, y+textSize*1.5);
+	ctx.fillText(text, width/2, y+this.textSize*1.5);
 }
 
 
@@ -1203,12 +1243,10 @@ function switchPage(pageKey) {
 
 TextPage.prototype = new DisplayPage();
 
-function TextPage(title) {
-	this.title = title;
+function TextPage() {
+	this.title = "";
 	this.paragraphs = [];
 	
-	this.textSize = 15;
-	this.textStyle = "rgba(255, 255, 255, 1)";
 	this.newPageKey;
 	
 	this.scroll = 0;
@@ -1222,7 +1260,7 @@ TextPage.prototype.addParagraph = function(text) {
 
 
 TextPage.prototype.draw = function() {
-	this.drawBackground(0.5, 1);
+	this.drawBackground(0.5, 0.5);
 
 	ctx.fillStyle = this.textStyle;
 
@@ -1257,10 +1295,9 @@ TextPage.prototype.draw = function() {
 		}
 	}
 	
-	currentLineIndex +=4;
+	/*currentLineIndex +=4;
 	ctx.font = this.textSize*2+'pt Arial';
-	
-	ctx.fillText("Press Enter to Continue", width/2, 150 + this.textSize * 1.5 * currentLineIndex + this.scroll);
+	ctx.fillText("Press Enter to Continue", width/2, 150 + this.textSize * 1.5 * currentLineIndex + this.scroll);*/
 	
 	this.lastLineCount = currentLineIndex;
 }

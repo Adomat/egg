@@ -13,7 +13,7 @@ function Character() {
 	this.life = 100;
     this.strength = 10;
 	this.speed = 5;
-	this.jumpPower = 40;
+	this.jumpPower = 50;
     this.showCollisionBox = false;
 	
 	this.lookingright = true;
@@ -159,8 +159,8 @@ Character.prototype.getIntendedMove = function(blocks, gravity, exitGates) {
 Character.prototype.move = function(blocks, gravity) {
 	var intendedMove = this.getIntendedMove(blocks, gravity);
 	
-	intendedMove.y += Math.pow((gravity / 1000) * this.jumpingState, 2);
-	intendedMove.y -= Math.min(Math.pow((gravity / 1000) * this.fallingState, 2), 0.1);
+	intendedMove.y += Math.pow((10 / 1000) * this.jumpingState, 2);
+	intendedMove.y -= Math.min(Math.pow((1 / gravity) * this.fallingState, 2), 0.2);
 	
 	this.fallingState++;
 	this.jumpingState = Math.max(this.jumpingState-1, 0);
@@ -171,23 +171,23 @@ Character.prototype.move = function(blocks, gravity) {
 	
 	for(var i=0; i<steps; i++) {
 		if(!stopMovementY) {
-			this.positionY += (i/steps) * intendedMove.y;
+			this.positionY += (1/steps) * intendedMove.y;
 			
 			if(this.collisionWithBlocks(blocks)) {
 				if(intendedMove.y < 0) {
 					this.fallingState = 0;
 				}
 				this.jumpingState = 0;
-				this.positionY -= (i/steps) * intendedMove.y;
+				this.positionY -= (1/steps) * intendedMove.y;
 				stopMovementY = true;
 			}
 		}
 
 		if(!stopMovementX) {
-			this.positionX += (i/steps) * intendedMove.x;
+			this.positionX += (1/steps) * intendedMove.x;
 			
 			if(this.collisionWithBlocks(blocks)) {
-				this.positionX -= (i/steps) * intendedMove.x;
+				this.positionX -= (1/steps) * intendedMove.x;
 				stopMovementX = true;
 			}
 		}
@@ -250,7 +250,7 @@ Character.prototype.moveLeft = function(intendedMove) {
 	this.currentImage = this.runImages[this.currentImageIndex];
 	
 	this.lookingright = false;
-	intendedMove.x -= this.speed / 100;
+	intendedMove.x -= this.speed / blockSize;
 	
 	return intendedMove;
 }
@@ -261,13 +261,13 @@ Character.prototype.moveRight = function(intendedMove) {
 	this.currentImage = this.runImages[this.currentImageIndex];
 	
 	this.lookingright = true;
-	intendedMove.x += this.speed / 100;
+	intendedMove.x += this.speed / blockSize;
 	
 	return intendedMove;
 }
 
-Character.prototype.jump = function(height) {
+Character.prototype.jump = function(jumpHeight) {
 	if(this.fallingState <= 5) {
-		this.jumpingState = this.jumpPower * height;
+		this.jumpingState = this.jumpPower * jumpHeight;
 	}
 }

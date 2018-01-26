@@ -228,6 +228,14 @@
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
             defaultValueLiteral="false"/>
       </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="FontColor" eSuperTypes="#//attributes/gui/TextPageAttribute #//attributes/gui/MenuPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="FontSize" eSuperTypes="#//attributes/gui/TextPageAttribute #//attributes/gui/MenuPageAttribute">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      </eClassifiers>
     </eSubpackages>
   </eSubpackages>
 </ecore:EPackage>

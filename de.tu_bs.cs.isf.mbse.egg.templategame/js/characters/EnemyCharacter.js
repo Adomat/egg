@@ -69,8 +69,18 @@ EnemyCharacter.prototype.getIntendedMove = function(blocks, gravity) {
         this.currentMove ++;
     }
     
-    if(Math.random() * 100 < 1)
+    if(Math.random() * 100 < 0.5)
         this.jump(Math.random());
     
     return intendedMove;
 }
+
+
+
+
+
+
+
+
+
+

@@ -47,6 +47,8 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Speed;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundColor;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundImage;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Button;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.FontColor;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.FontSize;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Logo;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.MenuPageAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.NextPage;
@@ -70,13 +72,15 @@ import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.WarpPoint;
 
 public class JavaScriptGenerator {
+	private static String _GAME_TITLE;
 	private static String _GENERATED_CODE;
 	
-	public static void generateCode(File selectedFile, Shell shell) throws IOException, URISyntaxException, CoreException {
+	public static void generateCode(File selectedFile, String projectName, Shell shell) throws IOException, URISyntaxException, CoreException {
 		if(!selectedFile.getParentFile().isDirectory()) {
 			System.out.println("Generator messed up...");
 			return;
 		}
+		_GAME_TITLE = projectName;
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
@@ -114,7 +118,7 @@ public class JavaScriptGenerator {
 		String templateContent = new String(Files.readAllBytes(Paths.get(templateFile.toURI())));
 		
 		generateCodeFromModels(resourceSet);
-		String modifiedContent = String.format(templateContent, _GENERATED_CODE);
+		String modifiedContent = String.format(templateContent, _GAME_TITLE, _GENERATED_CODE);
 		
 		// Create / Override the target file
 		File targetFile = new File(selectedFile.getParentFile() + "/index.html");
@@ -179,8 +183,10 @@ public class JavaScriptGenerator {
 		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
 		addCodeLine("%s.blockSize = %d;", variableName, level.getElementSize());
 		addCodeLine("%s.gravity = %f;", variableName, level.getGravity());
-		addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, level.getBackgroundColor());
-		addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, level.getBackgroundImage());
+		if(level.getBackgroundColor() != null)
+			addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, level.getBackgroundColor());
+		if(level.getBackgroundImage() != null)
+			addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, derivePictureURL(level.getBackgroundImage()));
 		
 		for(Entry<Integer, EMap<Integer, PlacedElement>> column : level.getElements()) {
 			for(Entry<Integer, PlacedElement> row : column.getValue()) {
@@ -188,7 +194,7 @@ public class JavaScriptGenerator {
 					PlacedElement element = row.getValue();
 
 					int x = column.getKey();
-					int y = row.getKey();
+					int y = level.getHeight()-1 - row.getKey();
 					
 					if(element instanceof PlacedBlock) {
 						BlockDescription desc = ((PlacedBlock) element).getProperties();
@@ -197,10 +203,10 @@ public class JavaScriptGenerator {
 						addCodeLine("%s.addBlock(%s, %d, %d);", variableName, blockVariableName, x, y);
 					}
 					else if(element instanceof WarpPoint) {
-						if(((WarpPoint) element).isEntry()) {
+						if(!(((WarpPoint) element).getHeroOnEntry() == null)) {
 							// This is the entry to our level
 							// The last entry point will implicitely be applied to the generated game
-							String heroName = ((WarpPoint) element).getChangeHeroTo().getName();
+							String heroName = ((WarpPoint) element).getHeroOnEntry().getName();
 							
 							addCodeLine("%s.addHero(%s, %d, %d);", variableName, heroName, x, y);
 						}
@@ -208,19 +214,20 @@ public class JavaScriptGenerator {
 							// This is an exit block to another page
 							String newPage = ((WarpPoint) element).getWarpTo();
 
-							addCodeLine("%s.addExitGate(%s, %d, %d);", variableName, newPage, x, y);
+							addCodeLine("%s.addExitGate(\"%s\", %d, %d);", variableName, newPage, x, y);
 						}
 					}
 					else if(element instanceof EndPoint) {
 						addCodeLine("%s.addFinishBlock(%s, %d, %d);", variableName, x, y);
 					}
 					else {
-						System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n  > " + element.getClass().getSimpleName().replace("Impl", ""));
+						System.out.println("ATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n  > " + element.getClass().getSimpleName().replace("Impl", ""));
 					}
 				}
 			}
 		}
-		
+
+		addCodeLine("pages.push(%s);\n", variableName);
 		addCodeLine("");
 	}
 
@@ -238,7 +245,7 @@ public class JavaScriptGenerator {
 				for(AnimationAttribute animationProperty : ((AnimationDescription) property).getProperties()) {
 					if(animationProperty instanceof Pictures) {
 						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
-							addCodeLine("%s.addImage(\"%s\");", variableName, pictureURL);
+							addCodeLine("%s.addImage(\"%s\");", variableName, derivePictureURL(pictureURL));
 						}
 					}
 					else if(animationProperty instanceof Duration) {
@@ -282,7 +289,7 @@ public class JavaScriptGenerator {
 				for(AnimationAttribute animationProperty : ((RunAnimation) property).getValue().getProperties()) {
 					if(animationProperty instanceof Pictures) {
 						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
-							addCodeLine("%s.addRunImage(\"%s\");", variableName, pictureURL);
+							addCodeLine("%s.addRunImage(\"%s\");", variableName, derivePictureURL(pictureURL));
 						}
 					}
 					else if(animationProperty instanceof Duration) {
@@ -296,7 +303,7 @@ public class JavaScriptGenerator {
 				for(AnimationAttribute animationProperty : ((JumpAnimation) property).getValue().getProperties()) {
 					if(animationProperty instanceof Pictures) {
 						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
-							addCodeLine("%s.addJumpImage(\"%s\");", variableName, pictureURL);
+							addCodeLine("%s.addJumpImage(\"%s\");", variableName, derivePictureURL(pictureURL));
 						}
 					}
 					else if(animationProperty instanceof Duration) {
@@ -310,7 +317,7 @@ public class JavaScriptGenerator {
 				for(AnimationAttribute animationProperty : ((IdleAnimation) property).getValue().getProperties()) {
 					if(animationProperty instanceof Pictures) {
 						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
-							addCodeLine("%s.addIdleImage(\"%s\");", variableName, pictureURL);
+							addCodeLine("%s.addIdleImage(\"%s\");", variableName, derivePictureURL(pictureURL));
 						}
 					}
 					else if(animationProperty instanceof Duration) {
@@ -335,33 +342,30 @@ public class JavaScriptGenerator {
 
 		addCodeLine("// Text Page to the description with name \"%s\"", description.getName());
 		addCodeLine("var %s = new TextPage();", variableName);
-		for(TextPageAttribute property : description.getProperties()) {
-			if(property instanceof Title) {
-				addCodeLine("var %s = new TextPage(\"%s\");", variableName, ((Title) property).getValue());
-				break;
-			}
-		}
-		
-		for(TextPageAttribute property : description.getProperties()) {
-			if(property instanceof NextPage) {
-				String nextPageKey = ((NextPage) property).getValue();
-				addCodeLine("%s.newPageKey = \"%s\";", variableName, nextPageKey);
-				break;
-			}
-		}
-		
 		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
 		
 		for(TextPageAttribute property : description.getProperties()) {
-			if(property instanceof Text) {
+			if(property instanceof Title) {
+				addCodeLine(".title = \"%s\";", variableName, ((Title) property).getValue());
+			}
+			else if(property instanceof NextPage) {
+				String nextPageKey = ((NextPage) property).getValue();
+				addCodeLine("%s.newPageKey = \"%s\";", variableName, nextPageKey);
+			}
+			else if(property instanceof Text) {
 				EList<String> allParagraphs = ((Text) property).getValue();
 				for(String paragraph : allParagraphs) {
 					addCodeLine("%s.addParagraph(\"%s\");", variableName, paragraph);
 				}
-				break;
+			}
+			else if(property instanceof FontColor) {
+				addCodeLine("%s.textStyle = \"%s\";", variableName, ((FontColor) property).getValue());
+			}
+			else if(property instanceof FontSize) {
+				addCodeLine("%s.textSize = %d;", variableName, ((FontSize) property).getValue());
 			}
 			else if(property instanceof BackgroundImage) {
-				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, ((BackgroundImage) property).getValue());
+				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, derivePictureURL(((BackgroundImage) property).getValue()));
 			}
 			else if(property instanceof BackgroundColor) {
 				addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, ((BackgroundColor) property).getValue());
@@ -397,12 +401,18 @@ public class JavaScriptGenerator {
 					}
 				}
 			}
+			else if(property instanceof FontColor) {
+				addCodeLine("%s.textStyle = \"%s\";", variableName, ((FontColor) property).getValue());
+			}
+			else if(property instanceof FontSize) {
+				addCodeLine("%s.textSize = %d;", variableName, ((FontSize) property).getValue());
+			}
 			else if(property instanceof Button) {
 				String nextPageKey = ((Button) property).getPage();
 				addCodeLine("%s.addButton(\"%s\", \"%s\");", variableName, ((Button) property).getLabel(), nextPageKey);
 			}
 			else if(property instanceof BackgroundImage) {
-				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, ((BackgroundImage) property).getValue());
+				addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, derivePictureURL(((BackgroundImage) property).getValue()));
 			}
 			else if(property instanceof BackgroundColor) {
 				addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, ((BackgroundColor) property).getValue());
@@ -425,6 +435,10 @@ public class JavaScriptGenerator {
 	
 	private static void addCodeLine(String line, Object ... args) {
 		_GENERATED_CODE += "\t" + String.format(line, args) + "\n";
+	}
+
+	private static Object derivePictureURL(String pictureURL) {
+		return "images/" + pictureURL;
 	}
 
 	private static File getFileFromBundle(String bundleString, String filePath) throws URISyntaxException, IOException {

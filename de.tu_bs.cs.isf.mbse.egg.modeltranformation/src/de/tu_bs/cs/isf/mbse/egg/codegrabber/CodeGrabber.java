@@ -44,6 +44,8 @@ public class CodeGrabber {
 						contentWithoutSetup += "%s}\n\n\n";
 						contentWithoutSetup += wholeContent.substring(wholeContent.indexOf("function drawCurrentPage() {")+0, wholeContent.length());
 						
+						contentWithoutSetup = contentWithoutSetup.replaceAll("Jump'n'Run Template Game", "%s");
+						
 						System.out.println(contentWithoutSetup);
 						
 						break;

@@ -185,6 +185,12 @@
         <genClasses ecoreClass="descriptions.ecore#//attributes/gui/StartPage">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/StartPage/value"/>
         </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/FontColor">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/FontColor/value"/>
+        </genClasses>
+        <genClasses ecoreClass="descriptions.ecore#//attributes/gui/FontSize">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute descriptions.ecore#//attributes/gui/FontSize/value"/>
+        </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
   </genPackages>

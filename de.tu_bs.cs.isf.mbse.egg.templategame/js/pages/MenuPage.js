@@ -29,14 +29,15 @@ MenuPage.prototype.addLogoImage = function(imageURL) {
 
 
 MenuPage.prototype.draw = function() {
-	this.drawBackground(0.5, 1);
+	this.drawBackground(0.5, 0.5);
 	
-	this.switchLogoAnimationIndex();
-	
-	ctx.drawImage(this.logoImages[this.logoImageAnimationIndex], width/2 - this.logoImages[this.logoImageAnimationIndex].width/2, height/2 - this.logoImages[this.logoImageAnimationIndex].height);
+	if(this.logoImages.length > 0) {
+	   this.switchLogoAnimationIndex();
+	   ctx.drawImage(this.logoImages[this.logoImageAnimationIndex], width/2 - this.logoImages[this.logoImageAnimationIndex].width/2, height/2 - this.logoImages[this.logoImageAnimationIndex].height);
+    }
     
     for(var i=0; i<this.buttons.length; i++) {
-        this.drawButton(this.buttons[i].text, 30, i);
+        this.drawButton(this.buttons[i].text, i);
     }
 }
 
@@ -60,26 +61,26 @@ MenuPage.prototype.addButton = function(text, pageKey) {
     this.buttons.push(newButton);
 }
 
-MenuPage.prototype.drawButton = function(text, textSize, index) {
+MenuPage.prototype.drawButton = function(text, index) {
 	ctx.textAlign = "center";
-	ctx.font = textSize+'pt Arial';
-	var textWidth = ctx.measureText(text).width + textSize;
-	var textHeight = textSize*2;
+	ctx.font = this.textSize+'pt Arial';
+	var textWidth = ctx.measureText(text).width + this.textSize;
+	var textHeight = this.textSize*2;
 	
-	ctx.fillStyle = "rgba(40,40,40, 0.5)";
+	ctx.fillStyle = hexToRgbA(this.textStyle, 0.4);
 	if(this.buttonIndex == index)
-		ctx.fillStyle = "rgba(60,60,60, 0.9)";
+		ctx.fillStyle = hexToRgbA(this.textStyle, 0.8);
 	
 	ctx.strokeStyle = "rgba(40,40,40, 1)";
 	
 	var x = width/2 - textWidth/ 2;
-	var y = 50 + height/2 + index * (textSize * 2 + 10);
+	var y = 50 + height/2 + index * (this.textSize * 2 + 10);
 	
 	ctx.fillRect(x, y, textWidth, textHeight);
 	ctx.strokeRect(x, y, textWidth, textHeight);
 
 	ctx.fillStyle = "rgba(255, 255, 255, 1)";
-	ctx.fillText(text, width/2, y+textSize*1.5);
+	ctx.fillText(text, width/2, y+this.textSize*1.5);
 }
 
 

@@ -3,7 +3,7 @@ LevelPage.prototype = new DisplayPage();
 function LevelPage() {
 	this.levelScroll = function () {  return {  x: null,  y: null  };  };
 	this.mapSize = function () {  return {  x: null,  y: null  };  };
-	this.gravity;
+	this.gravity = 10;
 
 	this.blocks = [];
 	this.enemies = [];
@@ -43,6 +43,7 @@ LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
     
 	newEnemy.positionX = x;
 	newEnemy.positionY = y;
+	newEnemy.positionY = y-1 + (givenEnemy.collisionBoxY/2) / blockSize;
     
 	newEnemy.idleImages = givenEnemy.idleImages;
 	newEnemy.attackImages = givenEnemy.attackImages;
@@ -73,7 +74,7 @@ LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero = new HeroCharacter();
     
 	this.hero.positionX = x;
-	this.hero.positionY = y;
+	this.hero.positionY = y-1 + (newHero.collisionBoxY/2) / this.blockSize;
 	
 	this.hero.idleImages = newHero.idleImages;
 	this.hero.attackImages = newHero.attackImages;

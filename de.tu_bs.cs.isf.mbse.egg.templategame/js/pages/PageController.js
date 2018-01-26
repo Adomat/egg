@@ -13,6 +13,8 @@ function setupPages() {
 	menuPage.setPageKey("menu");
 	menuPage.setBackgroundImage("images/background.png");
 	menuPage.setBackgroundColor("6699ff");
+    menuPage.textSize = 25;
+	menuPage.textStyle = "#942020";
 	menuPage.addLogoImage("images/title/title1.png");
 	menuPage.addLogoImage("images/title/title2.png");
 	menuPage.logoAnimationSpeed = 500;
@@ -22,19 +24,17 @@ function setupPages() {
 	pages.push(menuPage);
 
 	// TUTORIAL PAGE
-	var tutorialPage = new TextPage("How to move the poorly drawn lines");
+	var tutorialPage = new TextPage();
+    //tutorialPage.title = "How to move the poorly drawn lines";
 	tutorialPage.setPageKey("tutorial");
+    tutorialPage.textSize = 15;
+	tutorialPage.textStyle = "#942020";
 	tutorialPage.newPageKey = "menu";
 	tutorialPage.setBackgroundImage("images/background.png");
 	tutorialPage.addParagraph("Have you tried the Arrow keys? FFS...");
 	tutorialPage.addParagraph("");
-//	tutorialPage.addParagraph("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
-//	tutorialPage.addParagraph("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
-//	tutorialPage.addParagraph("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
-//	tutorialPage.addParagraph("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
-//	tutorialPage.addParagraph("");
 	tutorialPage.addParagraph("HAVE FUN!");
-	
+    
 	pages.push(tutorialPage);
     
     var dirtBlock = new Block();
@@ -50,8 +50,8 @@ function setupPages() {
 	hero.animationSpeed = 150;
 	hero.life = 100;
     hero.strength = 10;
-	hero.speed = 5;
-	hero.jumpPower = 35;
+	hero.speed = 10;
+	hero.jumpPower = 50;
     //hero.showCollisionBox = true;
 	hero.addIdleImage("images/enemy/hero_idle.png");
 	hero.addJumpImage("images/enemy/hero_jump.png");
@@ -73,7 +73,7 @@ function setupPages() {
 	enemy.life = 100;
     enemy.strength = 10;
 	enemy.speed = 3;
-	enemy.jumpPower = 50;
+	enemy.jumpPower = 40;
     //enemy.showCollisionBox = true;
 	enemy.addIdleImage("images/enemy/hero_idle.png");
 	enemy.addJumpImage("images/enemy/hero_jump.png");
@@ -87,10 +87,10 @@ function setupPages() {
 
 	// LEVEL PAGE 1
 	var level1Page = new LevelPage();
-    level1Page.blockSize = 100;
+    level1Page.blockSize = 75;
 	level1Page.setPageKey("level1");
-	level1Page.setBackgroundImage("images/background.png");
-	level1Page.setBackgroundColor("6699ff");
+	//level1Page.setBackgroundImage("images/background.png");
+	//level1Page.setBackgroundColor("6699ff");
     
 	for(var i=0; i<10; i++) {
 		level1Page.addBlock(dirtBlock, -1, i);
@@ -115,9 +115,9 @@ function setupPages() {
 		level1Page.addBlock(grassBlock, 12+j, 1);
 	}
     
-	level1Page.addEnemy(enemy, 21, 2);
-	level1Page.addHero(hero, 15, 2);
-	level1Page.gravity = 10,00;
+	//level1Page.addEnemy(enemy, 25, 1);
+	level1Page.addHero(hero, 20, 1);
+	level1Page.gravity = 10;
 	level1Page.addExitGate("level2", 24, 15);
     level1Page.addFinishBlock(1, 1);
 
@@ -125,7 +125,7 @@ function setupPages() {
 
 	// LEVEL PAGE 2
 	var level2Page = new LevelPage();
-    level2Page.blockSize = 60;
+    level2Page.blockSize = 200;
 	level2Page.setPageKey("level2");
 	level2Page.setBackgroundImage("images/background.png");
 	level2Page.setBackgroundColor("6699ff");
@@ -141,7 +141,7 @@ function setupPages() {
 	   level2Page.addEnemy(enemy, i, 3);
 	}
 	level2Page.addHero(hero, 1, 3);
-	level2Page.gravity = 5;
+	level2Page.gravity = 2;
 
 	pages.push(level2Page);
 }
