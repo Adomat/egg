@@ -48,9 +48,10 @@ DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercen
     if(Math.random() < 0.01)
         console.log(additionalZoom);
 	
-	offset = (this.backgroundImage.width * ratio - width) * xPercent;
+	var offsetX = (this.backgroundImage.width * ratio - width) * xPercent;
+    var offsetY = (this.backgroundImage.height * ratio - height);
 	
-	ctx.drawImage(this.backgroundImage, -offset, 0, this.backgroundImage.width * ratio, this.backgroundImage.height * ratio);
+	ctx.drawImage(this.backgroundImage, -offsetX, -offsetY, this.backgroundImage.width * ratio, this.backgroundImage.height * ratio);
 }
 
 DisplayPage.prototype.keyPressed = function(event) {
