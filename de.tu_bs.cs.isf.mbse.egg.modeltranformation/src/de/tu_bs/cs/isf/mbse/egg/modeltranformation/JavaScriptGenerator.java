@@ -18,9 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
@@ -31,13 +29,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.osgi.framework.Bundle;
 
 import de.tu_bs.cs.isf.mbse.egg.descriptions.Description;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.DescriptionRoot;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.BlockAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.block.NoCollision;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CollisionBox;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.EnemyAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.HeroAttribute;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.IdleAnimation;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.JumpAnimation;
@@ -46,6 +44,7 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.MaxLife;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.RunAnimation;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.ShowCollisionBox;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Speed;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.Strength;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundColor;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.BackgroundImage;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Button;
@@ -63,6 +62,7 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.AnimationDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Duration;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.auxiliary.Pictures;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.BlockDescription;
+import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.EnemyDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gameelements.HeroDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.MenuPageDescription;
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription;
@@ -71,6 +71,7 @@ import de.tu_bs.cs.isf.mbse.egg.level.LevelPackage;
 import de.tu_bs.cs.isf.mbse.egg.level.PlacedElement;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.EndPoint;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedBlock;
+import de.tu_bs.cs.isf.mbse.egg.level.Elements.PlacedEnemy;
 import de.tu_bs.cs.isf.mbse.egg.level.Elements.WarpPoint;
 
 public class JavaScriptGenerator {
@@ -175,11 +176,14 @@ public class JavaScriptGenerator {
 						else if(description instanceof TextPageDescription) {
 							generateCodeForTextPage((TextPageDescription) description);
 						}
+						else if(description instanceof BlockDescription) {
+							generateCodeForBlock((BlockDescription) description);
+						}
 						else if(description instanceof HeroDescription) {
 							generateCodeForHero((HeroDescription) description);
 						}
-						else if(description instanceof BlockDescription) {
-							generateCodeForBlock((BlockDescription) description);
+						else if(description instanceof EnemyDescription) {
+							generateCodeForEnemy((EnemyDescription) description);
 						}
 						else {
 							System.out.println("ATTENTION: The JavaScript Generator did not generate Code for the following Description:\n  > " + description.getClass().getSimpleName().replace("Impl", ""));
@@ -237,6 +241,10 @@ public class JavaScriptGenerator {
 					else if(element instanceof EndPoint) {
 						addCodeLine("%s.addFinishBlock(%s, %d, %d);", variableName, x, y);
 					}
+					else if(element instanceof PlacedEnemy) {
+						String enemyName = ((PlacedEnemy) element).getProperties().getName();
+						addCodeLine("%s.addEnemy(%s, %d, %d);", variableName, enemyName, x, y);
+					}
 					else {
 						System.out.println("ATTENTION: The JavaScript Generator did not generate Code for the following Level Element:\n  > " + element.getClass().getSimpleName().replace("Impl", ""));
 					}
@@ -271,27 +279,30 @@ public class JavaScriptGenerator {
 				}
 			}
 			else {
-				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
+				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Block Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
 			}
 		}
 		
 		addCodeLine("");
 	}
 
-	private static void generateCodeForHero(HeroDescription description) {
+	private static void generateCodeForEnemy(EnemyDescription description) {
 		String variableName = description.getName();
-		addCodeLine("// Hero to the description with name \"%s\"", description.getName());
+		addCodeLine("// Enemy to the description with name \"%s\"", description.getName());
 
-		addCodeLine("var %s = new HeroCharacter();", variableName);
+		addCodeLine("var %s = new EnemyCharacter();", variableName);
 		
 		int refreshTime = 200;
 		
-		for(HeroAttribute property : description.getProperties()) {
+		for(EnemyAttribute property : description.getProperties()) {
 			if(property instanceof Speed) {
 				addCodeLine("%s.speed = %d;", variableName, ((Speed) property).getValue());
 			}
 			else if(property instanceof MaxLife) {
 				addCodeLine("%s.life = %d;", variableName, ((MaxLife) property).getValue());
+			}
+			else if(property instanceof Strength) {
+				addCodeLine("%s.strength = %d;", variableName, ((Strength) property).getValue());
 			}
 			else if(property instanceof JumpPower) {
 				addCodeLine("%s.jumpPower = %d;", variableName, ((JumpPower) property).getValue());
@@ -345,7 +356,86 @@ public class JavaScriptGenerator {
 				}
 			}
 			else {
-				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
+				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Enemy Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
+			}
+		}
+
+		addCodeLine("// The Generator will simply take the highest refresh rate of all animation types.");
+		addCodeLine("%s.animationSpeed = %d;", variableName, refreshTime);
+		addCodeLine("");
+	}
+	
+	private static void generateCodeForHero(HeroDescription description) {
+		String variableName = description.getName();
+		addCodeLine("// Hero to the description with name \"%s\"", description.getName());
+
+		addCodeLine("var %s = new HeroCharacter();", variableName);
+		
+		int refreshTime = 200;
+		
+		for(HeroAttribute property : description.getProperties()) {
+			if(property instanceof Speed) {
+				addCodeLine("%s.speed = %d;", variableName, ((Speed) property).getValue());
+			}
+			else if(property instanceof MaxLife) {
+				addCodeLine("%s.life = %d;", variableName, ((MaxLife) property).getValue());
+			}
+			else if(property instanceof Strength) {
+				addCodeLine("%s.strength = %d;", variableName, ((Strength) property).getValue());
+			}
+			else if(property instanceof JumpPower) {
+				addCodeLine("%s.jumpPower = %d;", variableName, ((JumpPower) property).getValue());
+			}
+			else if(property instanceof CollisionBox) {
+				addCodeLine("%s.setCollisionBox(%d, %d);", variableName, ((CollisionBox) property).getWidth(), ((CollisionBox) property).getHeight());
+			}
+			else if(property instanceof ShowCollisionBox) {
+				addCodeLine("%s.showCollisionBox = true;", variableName);
+			}
+			else if(property instanceof RunAnimation) {
+				for(AnimationAttribute animationProperty : ((RunAnimation) property).getValue().getProperties()) {
+					if(animationProperty instanceof Pictures) {
+						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
+							addCodeLine("%s.addRunImage(\"%s\");", variableName, derivePictureURL(pictureURL));
+						}
+					}
+					else if(animationProperty instanceof Duration) {
+						if(((Duration) animationProperty).getValue() > refreshTime) {
+							refreshTime = ((Duration) animationProperty).getValue();
+						}
+					}
+				}
+			}
+			else if(property instanceof JumpAnimation) {
+				for(AnimationAttribute animationProperty : ((JumpAnimation) property).getValue().getProperties()) {
+					if(animationProperty instanceof Pictures) {
+						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
+							addCodeLine("%s.addJumpImage(\"%s\");", variableName, derivePictureURL(pictureURL));
+						}
+					}
+					else if(animationProperty instanceof Duration) {
+						if(((Duration) animationProperty).getValue() > refreshTime) {
+							refreshTime = ((Duration) animationProperty).getValue();
+						}
+					}
+				}
+			}
+			else if(property instanceof IdleAnimation) {
+				for(AnimationAttribute animationProperty : ((IdleAnimation) property).getValue().getProperties()) {
+					if(animationProperty instanceof Pictures) {
+						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
+							addCodeLine("%s.addIdleImage(\"%s\");", variableName, derivePictureURL(pictureURL));
+						}
+					}
+					else if(animationProperty instanceof Duration) {
+						if(((Duration) animationProperty).getValue() > refreshTime) {
+							refreshTime = ((Duration) animationProperty).getValue();
+						}
+					}
+				}
+			}
+			else {
+				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Hero Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
 			}
 		}
 
@@ -391,7 +481,7 @@ public class JavaScriptGenerator {
 				addCodeLine("startPageKey = \"%s\";", variableName);
 			}
 			else {
-				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
+				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following TextPage Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
 			}
 		}
 		
@@ -438,7 +528,7 @@ public class JavaScriptGenerator {
 				addCodeLine("startPageKey = \"%s\";", variableName);
 			}
 			else {
-				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
+				System.out.println("\tATTENTION: The JavaScript Generator did not generate Code for the following MenuPage Attribute:\n\t  > " + property.getClass().getSimpleName().replace("Impl", ""));
 			}
 		}
 		
