@@ -1,9 +1,11 @@
 package de.tu_bs.cs.isf.mbse.egg.modeltranformation;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -114,8 +116,23 @@ public class JavaScriptGenerator {
 	        resourceSet.getResource(URI.createURI(sibling.toURI().toString()), true);
 		}
 		
-		File templateFile = getFileFromBundle("de.tu_bs.cs.isf.mbse.egg.modeltranformation", "PlaceHolder.eggtransformation");
-		String templateContent = new String(Files.readAllBytes(Paths.get(templateFile.toURI())));
+		/*Bundle bundle = Platform.getBundle("de.tu_bs.cs.isf.mbse.egg.modeltranformation");
+		URL fileURL = bundle.getEntry("PlaceHolder.eggtransformation");
+		File templateFile = new File(FileLocator.resolve(fileURL).toURI());
+		String templateContent = new String(Files.readAllBytes(Paths.get(templateFile.toURI())));*/
+		
+		URL url = new URL("platform:/plugin/de.tu_bs.cs.isf.mbse.egg.modeltranformation/PlaceHolder.eggtransformation");
+	    InputStream inputStream = url.openConnection().getInputStream();
+	    BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+	    String templateContent = "";
+	    while (true) {
+	    	String newLine = in.readLine();
+	    	if(newLine == null)
+	    		break;
+	    	
+	    	templateContent += newLine + "\n";
+	    }
+	    in.close();
 		
 		generateCodeFromModels(resourceSet);
 		String modifiedContent = String.format(templateContent, _GAME_TITLE, _GENERATED_CODE);
@@ -439,11 +456,5 @@ public class JavaScriptGenerator {
 
 	private static Object derivePictureURL(String pictureURL) {
 		return "images/" + pictureURL;
-	}
-
-	private static File getFileFromBundle(String bundleString, String filePath) throws URISyntaxException, IOException {
-		Bundle bundle = Platform.getBundle(bundleString);
-		URL fileURL = bundle.getEntry(filePath);
-		return new File(FileLocator.resolve(fileURL).toURI());
 	}
 }
