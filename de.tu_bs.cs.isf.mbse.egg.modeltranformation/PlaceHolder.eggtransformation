@@ -822,7 +822,7 @@ DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercen
         console.log(additionalZoom);
 	
 	var offsetX = (this.backgroundImage.width * ratio - width) * xPercent;
-    var offsetY = (this.backgroundImage.height * ratio - height);
+    var offsetY = (this.backgroundImage.height * ratio - height) * yPercent;
 	
 	ctx.drawImage(this.backgroundImage, -offsetX, -offsetY, this.backgroundImage.width * ratio, this.backgroundImage.height * ratio);
 }
