@@ -239,7 +239,7 @@ public class JavaScriptGenerator {
 						}
 					}
 					else if(element instanceof EndPoint) {
-						addCodeLine("%s.addFinishBlock(%s, %d, %d);", variableName, x, y);
+						addCodeLine("%s.addFinishBlock(%d, %d);", variableName, x, y);
 					}
 					else if(element instanceof PlacedEnemy) {
 						String enemyName = ((PlacedEnemy) element).getProperties().getName();

@@ -12,7 +12,7 @@ function setupPages() {
 	var menuPage = new MenuPage();
 	menuPage.setPageKey("menu");
 	menuPage.setBackgroundImage("images/background.png");
-	menuPage.setBackgroundColor("6699ff");
+	menuPage.setBackgroundColor("#6699ff");
     menuPage.textSize = 25;
 	menuPage.textStyle = "#942020";
 	menuPage.addLogoImage("images/title/title1.png");
@@ -111,8 +111,8 @@ function setupPages() {
 	var level1Page = new LevelPage();
     level1Page.blockSize = 75;
 	level1Page.setPageKey("level1");
-	//level1Page.setBackgroundImage("images/background.png");
-	//level1Page.setBackgroundColor("6699ff");
+	level1Page.setBackgroundImage("images/grassland.png");
+	level1Page.setBackgroundColor("6699ff");
     
 	for(var i=0; i<10; i++) {
 		level1Page.addBlock(dirtBlock, -1, i);

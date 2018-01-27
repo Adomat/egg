@@ -37,12 +37,20 @@ DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercen
     
 	xPercent = Math.max(Math.min(xPercent, 1), 0);
 	yPercent = Math.max(Math.min(yPercent, 1), 0);
+    
+    var imageWidth = this.backgroundImage.width;
+    var imageHeight = this.backgroundImage.height;
+    
+    var ratio = height / imageHeight;
+    var additionalZoom = 1 - Math.max(width - this.backgroundImage.width * ratio, 0) / width;
+    ratio = ratio / additionalZoom;
+    
+    if(Math.random() < 0.01)
+        console.log(additionalZoom);
 	
-	var offset = function () {  return {  x: 0,  y: 0  };  }
-	offset.x = (this.backgroundImage.width - width) * xPercent;
-	offset.y = (this.backgroundImage.height - height) * yPercent;
+	offset = (this.backgroundImage.width * ratio - width) * xPercent;
 	
-	ctx.drawImage(this.backgroundImage, -offset.x, -offset.y);
+	ctx.drawImage(this.backgroundImage, -offset, 0, this.backgroundImage.width * ratio, this.backgroundImage.height * ratio);
 }
 
 DisplayPage.prototype.keyPressed = function(event) {
