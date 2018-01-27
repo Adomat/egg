@@ -208,6 +208,14 @@ public class JavaScriptGenerator {
 			addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, level.getBackgroundColor());
 		if(level.getBackgroundImage() != null)
 			addCodeLine("%s.setBackgroundImage(\"%s\");", variableName, derivePictureURL(level.getBackgroundImage()));
+		if(level.getDeathScreenTitle() != null)
+			addCodeLine("%s.deathMessage = \"%s\";", variableName, level.getDeathScreenTitle());
+		if(level.getDeathScreenText() != null)
+			addCodeLine("%s.deathMessageParagraph = \"%s\";", variableName, level.getDeathScreenText());
+//		if(level.getWinScreenTitle() != null)
+//			addCodeLine("%s.winMessage = \"%s\";", variableName, level.getWinScreenTitle());
+//		if(level.getWinScreenText() != null)
+//			addCodeLine("%s.winMessageParagraph = \"%s\";", variableName, level.getWinScreenText());
 		
 		for(Entry<Integer, EMap<Integer, PlacedElement>> column : level.getElements()) {
 			for(Entry<Integer, PlacedElement> row : column.getValue()) {

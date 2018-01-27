@@ -111,6 +111,10 @@ function setupPages() {
 	var level1Page = new LevelPage();
     level1Page.blockSize = 75;
 	level1Page.setPageKey("level1");
+    level1Page.deathMessage = "GAME OVER";
+    level1Page.deathMessageParagraph = "Press \'Enter\' to return to the main menu";
+    level1Page.winMessage = "CONGRATULIATIONS";
+    level1Page.winMessageParagraph = "You won the Game.\nPress \'Enter\' to return to the main menu";
 	level1Page.setBackgroundImage("images/grassland.png");
 	level1Page.setBackgroundColor("6699ff");
     
