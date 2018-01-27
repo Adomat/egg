@@ -50,6 +50,7 @@ import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.Button
 import de.tu_bs.cs.isf.mbse.egg.descriptions.gui.TextPageDescription
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.TextPageAttribute
 import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.gui.NextPage
+import de.tu_bs.cs.isf.mbse.egg.descriptions.attributes.character.CollisionBox
 
 /**
  * This class contains custom validation rules. 
@@ -303,8 +304,10 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		var foundInvTypes = false;
 		var foundInvCounts = false;
 		var foundDistanceKiller = false;
+		var foundCollisionBox = false;
 		
 		for(HeroAttribute attribute : desc.properties) {
+			if(attribute instanceof CollisionBox) foundCollisionBox = true;
 			if(attribute instanceof Speed) foundSpeed = true;
 			if(attribute instanceof JumpPower) foundJumpPower = true;
 			if(attribute instanceof MaxLife) foundMaxLife = true;
@@ -325,6 +328,10 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		}
 		if((foundInvTypes && !foundInvCounts) ||(!foundInvTypes && foundInvCounts)) {
 			error('Found incomplete specification of inventory (types and counts) in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
+		}
+		if(!foundCollisionBox) {
+			error('Could not find attribute collisionBox in hero  \"' + desc.name.toString + '\"', 
 				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundSpeed) {
@@ -384,8 +391,10 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 		var foundInvTypes = false;
 		var foundInvCounts = false;
 		var foundDistanceKiller = false;
+		var foundCollisionBox = false;
 		
 		for(EnemyAttribute attribute : desc.properties) {
+			if(attribute instanceof CollisionBox) foundCollisionBox = true;
 			if(attribute instanceof Speed) foundSpeed = true;
 			if(attribute instanceof JumpPower) foundJumpPower = true;
 			if(attribute instanceof MaxLife) foundMaxLife = true;
@@ -399,6 +408,10 @@ class EggScriptionValidator extends AbstractEggScriptionValidator {
 			if(attribute instanceof InventoryItemsTypes) foundInvTypes = true;
 			if(attribute instanceof InventoryItemsCounts) foundInvCounts = true;
 			if(attribute instanceof RangeAttackEnabled) foundDistanceKiller = true;
+		}
+		if(!foundCollisionBox) {
+			error('Could not find attribute collisionBox in hero  \"' + desc.name.toString + '\"', 
+				DescriptionsPackage.Literals.DESCRIPTION__NAME);
 		}
 		if(!foundIQ) {
 			warning('Could not find attribute iq in enemy  \"' + desc.name.toString + '\"', 
