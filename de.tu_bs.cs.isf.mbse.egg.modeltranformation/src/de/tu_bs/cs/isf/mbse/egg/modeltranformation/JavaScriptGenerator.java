@@ -204,6 +204,8 @@ public class JavaScriptGenerator {
 		addCodeLine("%s.setPageKey(\"%s\");", variableName, variableName);
 		addCodeLine("%s.blockSize = %d;", variableName, level.getElementSize());
 		addCodeLine("%s.gravity = %f;", variableName, level.getGravity());
+		if(level.isEntryPoint())
+			addCodeLine("startPageKey = \"%s\";", variableName);
 		if(level.getBackgroundColor() != null)
 			addCodeLine("%s.setBackgroundColor(\"%s\");", variableName, level.getBackgroundColor());
 		if(level.getBackgroundImage() != null)
@@ -212,10 +214,6 @@ public class JavaScriptGenerator {
 			addCodeLine("%s.deathMessage = \"%s\";", variableName, level.getDeathScreenTitle());
 		if(level.getDeathScreenText() != null)
 			addCodeLine("%s.deathMessageParagraph = \"%s\";", variableName, level.getDeathScreenText());
-//		if(level.getWinScreenTitle() != null)
-//			addCodeLine("%s.winMessage = \"%s\";", variableName, level.getWinScreenTitle());
-//		if(level.getWinScreenText() != null)
-//			addCodeLine("%s.winMessageParagraph = \"%s\";", variableName, level.getWinScreenText());
 		
 		for(Entry<Integer, EMap<Integer, PlacedElement>> column : level.getElements()) {
 			for(Entry<Integer, PlacedElement> row : column.getValue()) {
@@ -248,6 +246,11 @@ public class JavaScriptGenerator {
 					}
 					else if(element instanceof EndPoint) {
 						addCodeLine("%s.addFinishBlock(%d, %d);", variableName, x, y);
+						
+						if(((EndPoint) element).getWinScreenTitle() != null)
+							addCodeLine("%s.winMessage = \"%s\";", variableName, ((EndPoint) element).getWinScreenTitle());
+						if(((EndPoint) element).getWinScreenText() != null)
+							addCodeLine("%s.winMessageParagraph = \"%s\";", variableName, ((EndPoint) element).getWinScreenText());
 					}
 					else if(element instanceof PlacedEnemy) {
 						String enemyName = ((PlacedEnemy) element).getProperties().getName();
