@@ -67,6 +67,7 @@ function setupPages() {
 	hero.addJumpImage("images/character/jump.png");*/
 	
 	var enemy = new EnemyCharacter();
+    enemy.name = "enemy";
     enemy.movable = true;
 	enemy.setCollisionBox(90, 90);
 	enemy.animationSpeed = 150;
@@ -83,6 +84,27 @@ function setupPages() {
 	enemy.addRunImage("images/enemy/hero04.png");
 	enemy.addRunImage("images/enemy/hero05.png");
 	enemy.addRunImage("images/enemy/hero06.png");
+    
+    var tentacleAlien = new EnemyCharacter();
+    tentacleAlien.name = "tentacleAlien";
+    tentacleAlien.showCollisionBox = true;
+	tentacleAlien.setCollisionBox(50, 50);
+	tentacleAlien.jumpPower = 50;
+	tentacleAlien.life = 3;
+	tentacleAlien.speed = 2;
+	tentacleAlien.strength = 2;
+	tentacleAlien.addRunImage("images/tentacle_alien_idle.png");
+	tentacleAlien.addRunImage("images/tentacle_alien_run_01.png");
+	tentacleAlien.addRunImage("images/tentacle_alien_run_02.png");
+	tentacleAlien.addRunImage("images/tentacle_alien_run_03.png");
+	tentacleAlien.addRunImage("images/tentacle_alien_run_04.png");
+	tentacleAlien.addJumpImage("images/tentacle_alien_idle.png");
+	tentacleAlien.addJumpImage("images/tentacle_alien_run_01.png");
+	tentacleAlien.addJumpImage("images/tentacle_alien_run_02.png");
+	tentacleAlien.addJumpImage("images/tentacle_alien_run_03.png");
+	tentacleAlien.addJumpImage("images/tentacle_alien_run_04.png");
+	tentacleAlien.addIdleImage("images/tentacle_alien_idle.png");
+	tentacleAlien.animationSpeed = 200;
     
 
 	// LEVEL PAGE 1
@@ -115,7 +137,7 @@ function setupPages() {
 		level1Page.addBlock(grassBlock, 12+j, 1);
 	}
     
-	//level1Page.addEnemy(enemy, 25, 1);
+	level1Page.addEnemy(tentacleAlien, 25, 1);
 	level1Page.addHero(hero, 20, 1);
 	level1Page.gravity = 10;
 	level1Page.addExitGate("level2", 24, 15);
@@ -138,7 +160,7 @@ function setupPages() {
 	}
     
 	for(var i=15; i<45; i++) {
-	   level2Page.addEnemy(enemy, i, 3);
+	   //level2Page.addEnemy(enemy, i, 3);
 	}
 	level2Page.addHero(hero, 1, 3);
 	level2Page.gravity = 2;

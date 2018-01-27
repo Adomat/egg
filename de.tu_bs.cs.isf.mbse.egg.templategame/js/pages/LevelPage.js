@@ -42,22 +42,12 @@ LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
     newEnemy.movable = givenEnemy.movable;
     
 	newEnemy.positionX = x;
-	newEnemy.positionY = y;
-	newEnemy.positionY = y-1 + (givenEnemy.collisionBoxY/2) / blockSize;
+	newEnemy.positionY = y-1 + (givenEnemy.collisionBoxY/2) / this.blockSize;
     
 	newEnemy.idleImages = givenEnemy.idleImages;
 	newEnemy.attackImages = givenEnemy.attackImages;
 	newEnemy.runImages = givenEnemy.runImages;
 	newEnemy.jumpImages = givenEnemy.jumpImages;
-	
-    /*for(var i=0; i<givenEnemy.idleImages.length; i++)
-	   newEnemy.idleImages.push(givenEnemy.idleImages[i]);
-    for(var i=0; i<givenEnemy.attackImages.length; i++)
-	   newEnemy.attackImages.push(givenEnemy.attackImages[i]);
-    for(var i=0; i<givenEnemy.runImages.length; i++)
-        newEnemy.addRunImage(givenEnemy.runImages[i].src);
-    for(var i=0; i<givenEnemy.jumpImages.length; i++)
-	   newEnemy.jumpImages.push(givenEnemy.jumpImages[i]);*/
 	
 	newEnemy.collisionBoxX = givenEnemy.collisionBoxX;
 	newEnemy.collisionBoxY = givenEnemy.collisionBoxY;

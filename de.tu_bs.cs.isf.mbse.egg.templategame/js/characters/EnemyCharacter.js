@@ -4,6 +4,11 @@ function EnemyCharacter() {
     this.movable = false;
     
     this.currentMove = 0;
+    
+    this.idleImages = [];
+	this.attackImages = [];
+	this.runImages = [];
+	this.jumpImages = [];
 }
 
 

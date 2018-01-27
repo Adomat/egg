@@ -34,7 +34,8 @@ function Character() {
 Character.prototype.addIdleImage = function(imageURL) {
 	var image = new Image();
 	image.src = imageURL;
-	
+    
+    console.log("addIdleImage: " + this.idleImages.length + " : " + imageURL);
 	this.idleImages.push(image);
 }
 

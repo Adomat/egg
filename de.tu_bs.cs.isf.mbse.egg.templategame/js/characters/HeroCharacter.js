@@ -2,6 +2,11 @@ HeroCharacter.prototype = new Character();
 
 function HeroCharacter() {
     this.movable = true;
+    
+    this.idleImages = [];
+	this.attackImages = [];
+	this.runImages = [];
+	this.jumpImages = [];
 }
 
 
