@@ -109,7 +109,7 @@ function setupPages() {
 
 	// LEVEL PAGE 1
 	var level1Page = new LevelPage();
-    level1Page.blockSize = 75;
+    level1Page.blockSize = 50;
 	level1Page.setPageKey("level1");
     level1Page.deathMessage = "GAME OVER";
     level1Page.deathMessageParagraph = "Press \'Enter\' to return to the main menu";
@@ -143,8 +143,8 @@ function setupPages() {
     
 	level1Page.addEnemy(tentacleAlien, 25, 1);
 	level1Page.addHero(hero, 20, 1);
-	level1Page.gravity = 10;
-	level1Page.addExitGate("level2", 24, 15);
+	level1Page.gravity = 15;
+	level1Page.addExitGate("level2", 50, 1);
     level1Page.addFinishBlock(1, 1);
 
 	pages.push(level1Page);

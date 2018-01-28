@@ -16,12 +16,12 @@ function LevelPage() {
     
 	this.showDeathScreen = false;
     this.deathMessage = "GAME OVER";
-    this.deathMessageParagraph = "Press \'Enter\' to return to the main menu";
+    this.deathMessageParagraph = "Press \'Enter\' to continue";
     this.deathReturnPage = startPageKey;
     
 	this.showWinScreen = false;
     this.winMessage = "CONGRATULIATIONS";
-    this.winMessageParagraph = "You won the Game.\nPress \'Enter\' to return to the main menu";
+    this.winMessageParagraph = "You won the Game. Press \'Enter\' to continue";
     this.winReturnPage = startPageKey;
 }
 
@@ -54,8 +54,8 @@ LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
 	newEnemy.animationSpeed = givenEnemy.animationSpeed;
 	newEnemy.life = givenEnemy.life;
 	newEnemy.speed = givenEnemy.speed;
+    newEnemy.strength = givenEnemy.strength;
 	newEnemy.jumpPower = givenEnemy.jumpPower;
-    newEnemy.showCollisionBox = givenEnemy.showCollisionBox;
     
 	this.enemies.push(newEnemy);
 }
@@ -76,8 +76,9 @@ LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero.animationSpeed = newHero.animationSpeed;
 	this.hero.life = newHero.life;
 	this.hero.speed = newHero.speed;
+    this.hero.strength = newHero.strength;
 	this.hero.jumpPower = newHero.jumpPower;
-    this.hero.showCollisionBox = newHero.showCollisionBox;
+    
 }
 
 LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
@@ -107,6 +108,10 @@ LevelPage.prototype.draw = function() {
 	for(var i=0; i<this.blocks.length; i++) {
 		this.blocks[i].draw(this.levelScroll, this.mapSize);
 	}
+    
+    /*for(var i=0; i<this.exitGates.length; i++) {
+        this.exitGates[i].draw(this.levelScroll, this.mapSize);
+    }*/
 	
 	if(this.showWinScreen) {
 		this.drawAfterScreen(this.winMessage, this.winMessageParagraph, this.winReturnPage);
@@ -193,11 +198,11 @@ LevelPage.prototype.drawAfterScreen = function(message, messageParagraph, return
 	ctx.fillRect(0, 0, width, height);
 
 	ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
-	ctx.font = '100pt Arial';
+	ctx.font = '50pt Arial';
 	ctx.textAlign = "center";
 	ctx.fillText(message, width/2, height/2+0);
 
-	ctx.font = '20pt Arial';
+	ctx.font = '15pt Arial';
 	ctx.fillText(messageParagraph, width/2, height/2+100);
 	
 	if(keyDownArray.includes(13)) {

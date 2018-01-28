@@ -112,7 +112,13 @@ Block.prototype.draw = function(scroll, mapSize) {
 	
 	x += offSet.x;
 	y -= offSet.y;
-	ctx.drawImage(this.images[this.currentImageIndex], x, y, blockSize, blockSize);
+    
+    if(this.images.length > 0)
+	   ctx.drawImage(this.images[this.currentImageIndex], x, y, blockSize, blockSize);
+    else {
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        ctx.fillRect(x, y, blockSize, blockSize);
+    }
 }
 
 Block.prototype.switchAnimationIndex = function() {
@@ -470,6 +476,13 @@ function EnemyCharacter() {
 	this.attackImages = [];
 	this.runImages = [];
 	this.jumpImages = [];
+    
+    this.animationSpeed = 300;
+	this.life = 100;
+    this.strength = 10;
+	this.speed = 5;
+	this.jumpPower = 50;
+    this.showCollisionBox = false;
 }
 
 
@@ -567,6 +580,13 @@ function HeroCharacter() {
 	this.attackImages = [];
 	this.runImages = [];
 	this.jumpImages = [];
+    
+    this.animationSpeed = 300;
+	this.life = 100;
+    this.strength = 10;
+	this.speed = 5;
+	this.jumpPower = 50;
+    this.showCollisionBox = false;
 }
 
 
@@ -817,9 +837,6 @@ DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercen
     var ratio = height / imageHeight;
     var additionalZoom = 1 - Math.max(width - this.backgroundImage.width * ratio, 0) / width;
     ratio = ratio / additionalZoom;
-    
-    if(Math.random() < 0.01)
-        console.log(additionalZoom);
 	
 	var offsetX = (this.backgroundImage.width * ratio - width) * xPercent;
     var offsetY = (this.backgroundImage.height * ratio - height) * yPercent;
@@ -855,12 +872,12 @@ function LevelPage() {
     
 	this.showDeathScreen = false;
     this.deathMessage = "GAME OVER";
-    this.deathMessageParagraph = "Press \'Enter\' to return to the main menu";
+    this.deathMessageParagraph = "Press \'Enter\' to continue";
     this.deathReturnPage = startPageKey;
     
 	this.showWinScreen = false;
     this.winMessage = "CONGRATULIATIONS";
-    this.winMessageParagraph = "You won the Game.\nPress \'Enter\' to return to the main menu";
+    this.winMessageParagraph = "You won the Game. Press \'Enter\' to continue";
     this.winReturnPage = startPageKey;
 }
 
@@ -893,8 +910,8 @@ LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
 	newEnemy.animationSpeed = givenEnemy.animationSpeed;
 	newEnemy.life = givenEnemy.life;
 	newEnemy.speed = givenEnemy.speed;
+    newEnemy.strength = givenEnemy.strength;
 	newEnemy.jumpPower = givenEnemy.jumpPower;
-    newEnemy.showCollisionBox = givenEnemy.showCollisionBox;
     
 	this.enemies.push(newEnemy);
 }
@@ -915,8 +932,9 @@ LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero.animationSpeed = newHero.animationSpeed;
 	this.hero.life = newHero.life;
 	this.hero.speed = newHero.speed;
+    this.hero.strength = newHero.strength;
 	this.hero.jumpPower = newHero.jumpPower;
-    this.hero.showCollisionBox = newHero.showCollisionBox;
+    
 }
 
 LevelPage.prototype.addExitGate = function(newPageKey, x, y) {
@@ -946,6 +964,10 @@ LevelPage.prototype.draw = function() {
 	for(var i=0; i<this.blocks.length; i++) {
 		this.blocks[i].draw(this.levelScroll, this.mapSize);
 	}
+    
+    /*for(var i=0; i<this.exitGates.length; i++) {
+        this.exitGates[i].draw(this.levelScroll, this.mapSize);
+    }*/
 	
 	if(this.showWinScreen) {
 		this.drawAfterScreen(this.winMessage, this.winMessageParagraph, this.winReturnPage);
@@ -1032,11 +1054,11 @@ LevelPage.prototype.drawAfterScreen = function(message, messageParagraph, return
 	ctx.fillRect(0, 0, width, height);
 
 	ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
-	ctx.font = '100pt Arial';
+	ctx.font = '50pt Arial';
 	ctx.textAlign = "center";
 	ctx.fillText(message, width/2, height/2+0);
 
-	ctx.font = '20pt Arial';
+	ctx.font = '15pt Arial';
 	ctx.fillText(messageParagraph, width/2, height/2+100);
 	
 	if(keyDownArray.includes(13)) {

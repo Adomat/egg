@@ -7,6 +7,13 @@ function HeroCharacter() {
 	this.attackImages = [];
 	this.runImages = [];
 	this.jumpImages = [];
+    
+    this.animationSpeed = 300;
+	this.life = 100;
+    this.strength = 10;
+	this.speed = 5;
+	this.jumpPower = 50;
+    this.showCollisionBox = false;
 }
 
 

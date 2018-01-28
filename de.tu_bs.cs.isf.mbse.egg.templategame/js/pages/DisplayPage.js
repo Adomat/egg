@@ -44,9 +44,6 @@ DisplayPage.prototype.drawBackground = function drawBackground(xPercent, yPercen
     var ratio = height / imageHeight;
     var additionalZoom = 1 - Math.max(width - this.backgroundImage.width * ratio, 0) / width;
     ratio = ratio / additionalZoom;
-    
-    if(Math.random() < 0.01)
-        console.log(additionalZoom);
 	
 	var offsetX = (this.backgroundImage.width * ratio - width) * xPercent;
     var offsetY = (this.backgroundImage.height * ratio - height) * yPercent;

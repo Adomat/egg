@@ -511,7 +511,7 @@ public class JavaScriptGenerator {
 				for(AnimationAttribute animationProperty : ((Logo) property).getAnimation().getProperties()) {
 					if(animationProperty instanceof Pictures) {
 						for(String pictureURL : ((Pictures) animationProperty).getValue()) {
-							addCodeLine("%s.addLogoImage(\"%s\");", variableName, pictureURL);
+							addCodeLine("%s.addLogoImage(\"%s\");", variableName, derivePictureURL(pictureURL));
 						}
 					}
 					else if(animationProperty instanceof Duration) {

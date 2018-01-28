@@ -36,7 +36,13 @@ Block.prototype.draw = function(scroll, mapSize) {
 	
 	x += offSet.x;
 	y -= offSet.y;
-	ctx.drawImage(this.images[this.currentImageIndex], x, y, blockSize, blockSize);
+    
+    if(this.images.length > 0)
+	   ctx.drawImage(this.images[this.currentImageIndex], x, y, blockSize, blockSize);
+    else {
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        ctx.fillRect(x, y, blockSize, blockSize);
+    }
 }
 
 Block.prototype.switchAnimationIndex = function() {
