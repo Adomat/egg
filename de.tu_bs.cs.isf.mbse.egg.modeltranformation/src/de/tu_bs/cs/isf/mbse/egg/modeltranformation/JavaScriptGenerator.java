@@ -230,14 +230,14 @@ public class JavaScriptGenerator {
 						addCodeLine("%s.addBlock(%s, %d, %d);", variableName, blockVariableName, x, y);
 					}
 					else if(element instanceof WarpPoint) {
-						if(!(((WarpPoint) element).getHeroOnEntry() == null)) {
+						if(((WarpPoint) element).getHeroOnEntry() != null) {
 							// This is the entry to our level
 							// The last entry point will implicitely be applied to the generated game
 							String heroName = ((WarpPoint) element).getHeroOnEntry().getName();
 							
 							addCodeLine("%s.addHero(%s, %d, %d);", variableName, heroName, x, y);
 						}
-						else {
+						if(((WarpPoint) element).getWarpTo() != null)  {
 							// This is an exit block to another page
 							String newPage = ((WarpPoint) element).getWarpTo();
 

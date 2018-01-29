@@ -31,8 +31,8 @@ LevelPage.prototype.addBlock = function(givenBlock, x, y) {
     newBlock.isSolid = givenBlock.isSolid;
     newBlock.animationSpeed = givenBlock.animationSpeed;
     
-    newBlock.position.x = x;
-    newBlock.position.y = y;
+    newBlock.positionX = x;
+    newBlock.positionY = y;
     
 	this.blocks.push(newBlock);
 }
@@ -179,11 +179,11 @@ LevelPage.prototype.calculateMapSize = function() {
 		this.mapSize.y = 1;
 		
 		for(var i=0; i<this.blocks.length; i++) {
-			if(this.blocks[i].position.x > this.mapSize.x)
-				this.mapSize.x = this.blocks[i].position.x;
+			if(this.blocks[i].positionX > this.mapSize.x)
+				this.mapSize.x = this.blocks[i].positionX;
 			
-			if(this.blocks[i].position.y > this.mapSize.y)
-				this.mapSize.y = this.blocks[i].position.y;
+			if(this.blocks[i].positionY > this.mapSize.y)
+				this.mapSize.y = this.blocks[i].positionY;
 		}
 	}
 }

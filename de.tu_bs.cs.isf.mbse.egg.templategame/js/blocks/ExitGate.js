@@ -1,8 +1,8 @@
 ExitGate.prototype = new Block();
 
 function ExitGate(newPageKey, x, y) {
-	this.position.x = x;
-	this.position.y = y;
+	this.positionX = x;
+	this.positionY = y;
 	
 	this.newPageKey = newPageKey;
 }

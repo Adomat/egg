@@ -77,8 +77,8 @@ function hexToRgbA(hex, opacity){
 function Block() {
 	this.images = [];
 	this.position = function () {  return {  x: null,  y: null  };  }
-	this.position.x;
-	this.position.y;
+	this.positionX;
+	this.positionY;
 	
 	this.currentImageIndex = 0;
 	this.lastAnimationChange = 0;
@@ -102,8 +102,8 @@ Block.prototype.draw = function(scroll, mapSize) {
     if(this.images.length > 1 && this.animationSpeed > 0)
 	   this.switchAnimationIndex();
     
-	var x = this.position.x * blockSize;
-	var y = height - this.position.y * blockSize;
+	var x = this.positionX * blockSize;
+	var y = height - this.positionY * blockSize;
 
 	x -= scroll.x * mapSize.x * blockSize - width/2 + blockSize/2;
 	y -= height/2 - (1-scroll.y) * mapSize.y * blockSize;
@@ -134,8 +134,8 @@ Block.prototype.switchAnimationIndex = function() {
 }
 
 Block.prototype.getCenter = function() {
-	var x = this.position.x * blockSize;
-	var y = height - blockSize - this.position.y * blockSize;
+	var x = this.positionX * blockSize;
+	var y = height - blockSize - this.positionY * blockSize;
 
 	x += blockSize / 2;
 	y += blockSize / 2;
@@ -156,8 +156,8 @@ Block.prototype.getCenter = function() {
 ExitGate.prototype = new Block();
 
 function ExitGate(newPageKey, x, y) {
-	this.position.x = x;
-	this.position.y = y;
+	this.positionX = x;
+	this.positionY = y;
 	
 	this.newPageKey = newPageKey;
 }
@@ -171,8 +171,8 @@ function ExitGate(newPageKey, x, y) {
 FinishBlock.prototype = new Block();
 
 function FinishBlock(x, y) {
-	this.position.x = x;
-	this.position.y = y;
+	this.positionX = x;
+	this.positionY = y;
 	
 	this.newPageKey = "FINISHBLOCK";
     
@@ -887,8 +887,8 @@ LevelPage.prototype.addBlock = function(givenBlock, x, y) {
     newBlock.isSolid = givenBlock.isSolid;
     newBlock.animationSpeed = givenBlock.animationSpeed;
     
-    newBlock.position.x = x;
-    newBlock.position.y = y;
+    newBlock.positionX = x;
+    newBlock.positionY = y;
     
 	this.blocks.push(newBlock);
 }
@@ -1035,11 +1035,11 @@ LevelPage.prototype.calculateMapSize = function() {
 		this.mapSize.y = 1;
 		
 		for(var i=0; i<this.blocks.length; i++) {
-			if(this.blocks[i].position.x > this.mapSize.x)
-				this.mapSize.x = this.blocks[i].position.x;
+			if(this.blocks[i].positionX > this.mapSize.x)
+				this.mapSize.x = this.blocks[i].positionX;
 			
-			if(this.blocks[i].position.y > this.mapSize.y)
-				this.mapSize.y = this.blocks[i].position.y;
+			if(this.blocks[i].positionY > this.mapSize.y)
+				this.mapSize.y = this.blocks[i].positionY;
 		}
 	}
 }
@@ -1220,7 +1220,8 @@ MenuPage.prototype.keyPressed = function(event) {
 
 
 var currentPage = null;
-var pages; 
+var lastWarpTime = 0;
+var pages;
 
 
 function setupPages() {%s}
@@ -1253,14 +1254,20 @@ function passTickToCurrentPage() {
 
 
 function switchPage(pageKey) {
-	for(var i=0; i<pages.length; i++) {
-		if(pages[i].getPageKey() == pageKey) {
-			currentPage = pages[i];
-            
-            if(currentPage instanceof LevelPage) {
-                blockSize = currentPage.blockSize;
-            }
+	var timePassed = (new Date()).getTime() - lastWarpTime;
+	
+	if(timePassed > 1000) {
+		for(var i=0; i<pages.length; i++) {
+			if(pages[i].getPageKey() == pageKey) {
+				currentPage = pages[i];
+	            
+	            if(currentPage instanceof LevelPage) {
+	                blockSize = currentPage.blockSize;
+	            }
+			}
 		}
+		
+		lastWarpTime = (new Date()).getTime();
 	}
 }
 

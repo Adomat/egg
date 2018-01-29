@@ -1,8 +1,8 @@
 FinishBlock.prototype = new Block();
 
 function FinishBlock(x, y) {
-	this.position.x = x;
-	this.position.y = y;
+	this.positionX = x;
+	this.positionY = y;
 	
 	this.newPageKey = "FINISHBLOCK";
     

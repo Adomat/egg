@@ -1,5 +1,6 @@
 var currentPage = null;
-var pages; 
+var lastWarpTime = 0;
+var pages;
 
 
 function setupPages() {
@@ -200,14 +201,20 @@ function passTickToCurrentPage() {
 
 
 function switchPage(pageKey) {
-	for(var i=0; i<pages.length; i++) {
-		if(pages[i].getPageKey() == pageKey) {
-			currentPage = pages[i];
-            
-            if(currentPage instanceof LevelPage) {
-                blockSize = currentPage.blockSize;
-            }
+	var timePassed = (new Date()).getTime() - lastWarpTime;
+	
+	if(timePassed > 1000) {
+		for(var i=0; i<pages.length; i++) {
+			if(pages[i].getPageKey() == pageKey) {
+				currentPage = pages[i];
+	            
+	            if(currentPage instanceof LevelPage) {
+	                blockSize = currentPage.blockSize;
+	            }
+			}
 		}
+		
+		lastWarpTime = (new Date()).getTime();
 	}
 }
 

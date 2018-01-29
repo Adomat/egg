@@ -1,8 +1,8 @@
 function Block() {
 	this.images = [];
 	this.position = function () {  return {  x: null,  y: null  };  }
-	this.position.x;
-	this.position.y;
+	this.positionX;
+	this.positionY;
 	
 	this.currentImageIndex = 0;
 	this.lastAnimationChange = 0;
@@ -26,8 +26,8 @@ Block.prototype.draw = function(scroll, mapSize) {
     if(this.images.length > 1 && this.animationSpeed > 0)
 	   this.switchAnimationIndex();
     
-	var x = this.position.x * blockSize;
-	var y = height - this.position.y * blockSize;
+	var x = this.positionX * blockSize;
+	var y = height - this.positionY * blockSize;
 
 	x -= scroll.x * mapSize.x * blockSize - width/2 + blockSize/2;
 	y -= height/2 - (1-scroll.y) * mapSize.y * blockSize;
@@ -58,8 +58,8 @@ Block.prototype.switchAnimationIndex = function() {
 }
 
 Block.prototype.getCenter = function() {
-	var x = this.position.x * blockSize;
-	var y = height - blockSize - this.position.y * blockSize;
+	var x = this.positionX * blockSize;
+	var y = height - blockSize - this.positionY * blockSize;
 
 	x += blockSize / 2;
 	y += blockSize / 2;
