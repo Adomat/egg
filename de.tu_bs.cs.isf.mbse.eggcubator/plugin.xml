@@ -36,6 +36,7 @@
             class="de.tu_bs.cs.isf.mbse.eggcubator.LevelEditor"
             contributorClass="org.eclipse.graphiti.ui.editor.DiagramEditorActionBarContributor"
             extensions="level"
+            icon="images/icon.png"
             id="de.tu_bs.cs.isf.mbse.eggcubator.levelEditor"
             matchingStrategy="org.eclipse.graphiti.ui.editor.DiagramEditorMatchingStrategy"
             name="Level Editor">
