@@ -40,6 +40,7 @@ LevelPage.prototype.addBlock = function(givenBlock, x, y) {
 LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
 	var newEnemy = new EnemyCharacter();
     newEnemy.movable = givenEnemy.movable;
+	newEnemy.showCollisionBox = givenEnemy.showCollisionBox;
     
 	newEnemy.positionX = x;
 	newEnemy.positionY = y-1 + (givenEnemy.collisionBoxY/2) / this.blockSize;
@@ -62,6 +63,7 @@ LevelPage.prototype.addEnemy = function(givenEnemy, x, y) {
 
 LevelPage.prototype.addHero = function(newHero, x, y) {
 	this.hero = new HeroCharacter();
+	this.hero.showCollisionBox = newHero.showCollisionBox;
     
 	this.hero.positionX = x;
 	this.hero.positionY = y-1 + (newHero.collisionBoxY/2) / this.blockSize;

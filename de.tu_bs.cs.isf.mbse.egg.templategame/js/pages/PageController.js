@@ -203,7 +203,7 @@ function passTickToCurrentPage() {
 function switchPage(pageKey) {
 	var timePassed = (new Date()).getTime() - lastWarpTime;
 	
-	if(timePassed > 1000) {
+	if(timePassed > 500) {
 		for(var i=0; i<pages.length; i++) {
 			if(pages[i].getPageKey() == pageKey) {
 				currentPage = pages[i];
